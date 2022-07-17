@@ -218,15 +218,21 @@ class LearnHelper(requests.Session):
                         student_homework_id=work["xszyid"],  # 学生作业 ID
                     )
                 ),
-                deadline=work["jzsj"],  # 截止时间
+                deadline=datetime.datetime.fromtimestamp(work["jzsj"] / 1000.0)
+                if work["jzsj"]
+                else None,  # 截止时间
                 submit_url=urls.learn_homework_submit(
                     work["wlkcid"], work["xszyid"]  # 课程 ID, 学生作业 ID
                 ),
-                submit_time=work["scsj"],  # 上传时间
+                submit_time=datetime.datetime.fromtimestamp(work["scsj"] / 1000.0)
+                if work["scsj"]
+                else None,  # 上传时间
                 grade=work["cj"],  # 成绩
                 grader_name=work["jsm"],  # 教师名
                 grade_content=work["pynr"],  # 批阅内容
-                grade_time=work["pysj"],  # 批阅时间
+                grade_time=datetime.datetime.fromtimestamp(work["pysj"] / 1000.0)
+                if work["pysj"]
+                else None,  # 批阅时间
                 submitted=status.submitted,
                 graded=status.graded,
                 description=detail.description,

@@ -17,14 +17,17 @@ parser.add_argument(
     help="semesters to be synced. If you want to sync all semesters, do not pass this argument",
 )
 parser.add_argument(
-    "--prefix", default=None, required=False, help="location to save downloaded files",
+    "--prefix",
+    default=None,
+    required=False,
+    help='location to save downloaded files, default to "learn/"',
 )
 parser.add_argument(
     "--file_size_limit",
     default=None,
     type=float,
     required=False,
-    help="files exceed limit will not be downloaded",
+    help="(unit: MB) files exceed limit will not be downloaded",
 )
 parser.add_argument(
     "--no_sync_docs",
