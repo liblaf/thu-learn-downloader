@@ -9,7 +9,7 @@ from thu_learn_lib.utils import slugify
 
 class Downloader(LearnHelper):
     prefix: str = ""
-    file_size_limit: int = None
+    file_size_limit: int = None # MB
     sync_docs: bool = True
     sync_work: bool = True
     sync_submit: bool = True
@@ -34,12 +34,13 @@ class Downloader(LearnHelper):
 
     def Download(self, url: str, prefix: str, filename: str) -> bool:
         os.makedirs(prefix, exist_ok=True)
-        filename = slugify(filename)
         response = self.get(url=url, stream=True)
         file_size = int(response.headers.get("content-length", 0))
         if self.file_size_limit:
-            if file_size > self.file_size_limit * 1024:
+            if file_size > self.file_size_limit * 1024 * 1024:
+                print(f"Skipping file {filename}")
                 return False
+        filename = slugify(filename)
         chunk_size = 8192  # 8KB
         with tqdm(
             desc=filename,
@@ -122,7 +123,7 @@ class Downloader(LearnHelper):
         lines.append(f"")
         if homework.attachment:
             filename = slugify(
-                f"{homework.title}{os.path.splitext(homework.attachment.name)[-1]}"
+                f"attach-{homework.title}{os.path.splitext(homework.attachment.name)[-1]}"
             )
             self.Download(
                 url=homework.attachment.download_url, prefix=prefix, filename=filename,
@@ -150,7 +151,7 @@ class Downloader(LearnHelper):
             lines.append(f"")
         lines.append(f"### Deadline (GMT+8)")
         lines.append(f"")
-        lines.append(f"{homework.deadline}")
+        lines.append(f"{homework.deadline.isoformat() if homework.deadline else None}")
         lines.append(f"")
         if self.sync_submit:
             lines.append(f"## My coursework submitted")
@@ -180,7 +181,9 @@ class Downloader(LearnHelper):
             lines.append(f"")
             lines.append(f"### Date")
             lines.append(f"")
-            lines.append(f"{homework.grade_time}")
+            lines.append(
+                f"{homework.grade_time.isoformat() if homework.grade_time else None}"
+            )
             lines.append(f"")
             lines.append(f"### Grade")
             lines.append(f"")
