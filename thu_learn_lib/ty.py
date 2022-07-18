@@ -1,7 +1,33 @@
 import dataclasses
 import datetime
 import enum
-import typing
+import os
+import urllib.parse
+
+
+@dataclasses.dataclass
+class URL:
+    scheme: str = "https"
+    netloc: str = ""
+    path: str = ""
+    params: str = ""
+    query: str | dict[str, str | list[str]] | list[tuple[str, str | list[str]]] = ""
+    fragment: str = ""
+
+    def __str__(self) -> str:
+        return urllib.parse.urlunparse(self.astuple())
+
+    def astuple(self) -> urllib.parse.ParseResult:
+        return urllib.parse.ParseResult(
+            scheme=self.scheme,
+            netloc=self.netloc,
+            path=os.path.join(self.path) if isinstance(self.path, list) else self.path,
+            params=self.params,
+            query=self.query
+            if isinstance(self.query, str)
+            else urllib.parse.urlencode(self.query, doseq=True),
+            fragment=self.fragment,
+        )
 
 
 @dataclasses.dataclass
@@ -19,11 +45,6 @@ class FailReason(enum.Enum):
     NOT_IMPLEMENTED = "not implemented"
     INVALID_RESPONSE = "invalid response"
     UNEXPECTED_STATUS = "unexpected status"
-
-
-class ApiError(RuntimeError):
-    reason: FailReason
-    extra: typing.Any = None
 
 
 class SemesterType(enum.Enum):
@@ -58,16 +79,16 @@ class CourseType(enum.Enum):
 
 @dataclasses.dataclass
 class CourseInfo:
-    id: str
-    name: str
-    english_name: str
-    time_and_location: list[str]
-    url: str
-    teacher_name: str
-    teacher_number: str
-    course_number: str
-    course_index: int
-    course_type: CourseType
+    id: str = None
+    name: str = None
+    english_name: str = None
+    time_and_location: list[str] = None
+    url: str = None
+    teacher_name: str = None
+    teacher_number: str = None
+    course_number: str = None
+    course_index: int = None
+    course_type: CourseType = None
 
 
 @dataclasses.dataclass
@@ -89,6 +110,7 @@ class Notification:
     marked_important: bool
     publish_time: datetime.datetime
     publisher: str
+
     # notification detail
     attachment: RemoteFile = None
 
@@ -135,6 +157,7 @@ class Homework(HomeworkStatus, HomeworkDetail):
     # status
     # submitted: bool
     # graded: bool
+
     # homework
     id: str = None
     student_homework_id: str = None
@@ -148,6 +171,7 @@ class Homework(HomeworkStatus, HomeworkDetail):
     grade_time: datetime.datetime = None
     grader_name: str = None
     grade_content: str = None
+
     # detail
     # description: str = None
     # attachment: RemoteFile = None  # attachment from teacher
@@ -169,6 +193,7 @@ class Discussion:
     last_reply_time: datetime.datetime
     visit_count: int
     reply_count: int
+
     # discussion
     url: str
     board_id: str
@@ -185,6 +210,7 @@ class Question:
     last_reply_time: datetime.datetime
     visit_count: int
     reply_count: int
+
     # question
     url: str
     question: str
