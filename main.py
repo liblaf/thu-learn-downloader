@@ -1,5 +1,6 @@
 import argparse
 
+import tqdm
 
 from downloader import Downloader
 
@@ -18,7 +19,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--prefix",
-    default=None,
+    default="thu-learn",
     required=False,
     help='location to save downloaded files, default to "learn/"',
 )
@@ -54,18 +55,25 @@ parser.add_argument(
 
 def main(args: argparse.Namespace):
     downloader = Downloader(
+        username=args.username,
+        password=args.password,
         prefix=args.prefix,
         file_size_limit=args.file_size_limit,
         sync_docs=(not args.no_sync_docs),
         sync_work=(not args.no_sync_work),
         sync_submit=(not args.no_sync_submit),
     )
-    downloader.login(username=args.username, password=args.password)
-    semester_id_list = downloader.get_semester_id_list()
-    semesters = args.semesters if args.semesters else semester_id_list
-    for semester in semesters:
+    semester_id_list: list[str] = downloader.helper.get_semester_id_list()
+    semesters: list[str] = args.semesters if args.semesters else semester_id_list
+    for semester in tqdm.tqdm(
+        iterable=semesters,
+        desc="semesters",
+        leave=False,
+        dynamic_ncols=True,
+        position=0,
+    ):
         if semester in semester_id_list:
-            downloader.SyncSemester(semester_id=semester)
+            downloader.sync_semester(semester_id=semester)
         else:
             print(f"{semester} not found")
 

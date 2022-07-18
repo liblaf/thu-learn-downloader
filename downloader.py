@@ -1,113 +1,234 @@
+import dataclasses
 import os
-from tqdm import tqdm
+
+import tqdm
+import tqdm.contrib
+import tqdm.contrib.concurrent
+
+import thu_learn_lib
+import thu_learn_lib.ty
+import thu_learn_lib.utils
 
 
-from thu_learn_lib import LearnHelper
-from thu_learn_lib import ty as types
-from thu_learn_lib.utils import slugify
+@dataclasses.dataclass
+class DownloadTask:
+    session: "Downloader"
+    url: str
+    filename: str
+    prefix: str = "."
 
 
-class Downloader(LearnHelper):
-    prefix: str = ""
-    file_size_limit: int = None # MB
+class Downloader:
+    helper: thu_learn_lib.LearnHelper
+    prefix: str
+    file_size_limit: float = None  # MB
     sync_docs: bool = True
     sync_work: bool = True
     sync_submit: bool = True
+    download_tasks: list[DownloadTask] = None
 
     def __init__(
         self,
-        prefix: str = "",
-        file_size_limit: int = None,
+        username: str,
+        password: str,
+        prefix: str = "thu-learn",
+        file_size_limit: float = None,
         sync_docs: bool = True,
         sync_work: bool = True,
         sync_submit: bool = True,
     ) -> None:
-        super().__init__()
-        if prefix:
-            self.prefix = prefix
-        else:
-            self.prefix = os.path.join(os.getcwd(), slugify("learn"))
+        self.helper = thu_learn_lib.LearnHelper(
+            username=username,
+            password=password,
+        )
+        self.prefix = prefix
         self.file_size_limit = file_size_limit
         self.sync_docs = sync_docs
         self.sync_work = sync_work
         self.sync_submit = sync_submit
 
-    def Download(self, url: str, prefix: str, filename: str) -> bool:
-        os.makedirs(prefix, exist_ok=True)
-        response = self.get(url=url, stream=True)
+        assert self.helper.login()
+
+    @staticmethod
+    def download(
+        self: "Downloader",
+        url: str,
+        filename: str,
+        prefix: str = ".",
+        position: int = 0,
+    ) -> bool:
+        response = self.helper.get(url=url, stream=True)
         file_size = int(response.headers.get("content-length", 0))
         if self.file_size_limit:
             if file_size > self.file_size_limit * 1024 * 1024:
-                print(f"Skipping file {filename}")
+                print(f"Skip file {filename}")
                 return False
-        filename = slugify(filename)
+        filename = thu_learn_lib.utils.slugify(filename)
+        path = os.path.join(prefix, filename)
+        if os.path.exists(path):
+            if os.path.getsize(path) == file_size:
+                # print(f"file {filename} is already synced")
+                return True
+        os.makedirs(prefix, exist_ok=True)
         chunk_size = 8192  # 8KB
-        with tqdm(
-            desc=filename,
-            total=file_size,
-            unit="B",
-            ascii=True,
-            unit_scale=True,
-            dynamic_ncols=True,
-        ) as bar:
-            with open(os.path.join(prefix, filename), "wb") as file:
-                for chunck in response.iter_content(chunk_size):
-                    file.write(chunck)
-                    bar.update(len(chunck))
+        try:
+            with open(
+                file=os.path.join(prefix, filename),
+                mode="wb",
+            ) as file:
+                list(
+                    tqdm.contrib.tmap(
+                        file.write,
+                        response.iter_content(chunk_size),
+                        desc=f"{position - 6} {filename}",
+                        total=file_size,
+                        leave=False,
+                        unit="B",
+                        unit_scale=True,
+                        dynamic_ncols=True,
+                        position=position,
+                    )
+                )
+                pass
+        except KeyboardInterrupt:
+            raise KeyboardInterrupt()
+        except:
+            return False
         return True
 
-    def SyncSemester(
-        self, semester_id: str, course_type: types.CourseType = types.CourseType.STUDENT
+    @staticmethod
+    def retry_download(
+        task: DownloadTask,
+        position: int = 0,
+        max_retries: int = 5,
     ) -> bool:
-        print(f"Syncing Semester {semester_id} ......")
-        course_list = self.get_course_list(
-            semester_id=semester_id, course_type=course_type
-        )
-        for course in course_list:
-            self.SyncCourse(
-                course=course, semester_id=semester_id,
-            )
+        for i in range(max_retries):
+            if Downloader.download(
+                self=task.session,
+                url=task.url,
+                filename=task.filename,
+                prefix=task.prefix,
+                position=position,
+            ):
+                return True
+        print(f"Failed to download file {task.filename}")
+        return False
 
-    def SyncCourse(self, course: types.CourseInfo, semester_id: str) -> bool:
-        file_list = self.get_file_list(
-            course_id=course.id, course_type=course.course_type
+    def schedule_download(
+        self,
+        url: str,
+        filename: str,
+        prefix: str = ".",
+    ) -> None:
+        if not self.download_tasks:
+            self.download_tasks = []
+        self.download_tasks.append(
+            DownloadTask(
+                session=self,
+                url=url,
+                filename=filename,
+                prefix=prefix,
+            )
         )
-        print(
-            f"Syncing Course {course.course_number} {course.name} {course.english_name} ......"
+
+    def finish_download(self, desc: str = "download") -> bool:
+        if self.download_tasks:
+            success = all(
+                tqdm.contrib.concurrent.process_map(
+                    Downloader.retry_download,
+                    self.download_tasks,
+                    range(6, 6 + len(self.download_tasks)),
+                    desc=desc,
+                    leave=False,
+                    dynamic_ncols=True,
+                    position=4,
+                )
+            )
+            self.download_tasks.clear()
+            return success
+        else:
+            return True
+
+    def sync_semester(
+        self,
+        semester_id: str,
+        course_type: thu_learn_lib.ty.CourseType = thu_learn_lib.ty.CourseType.STUDENT,
+    ) -> bool:
+        course_list = self.helper.get_course_list(
+            semester_id=semester_id,
+            course_type=course_type,
         )
+        for course in tqdm.tqdm(
+            iterable=course_list,
+            desc=semester_id,
+            leave=False,
+            dynamic_ncols=True,
+            position=2,
+        ):
+            self.sync_course(course=course, semester_id=semester_id)
+
+    def sync_course(
+        self,
+        course: thu_learn_lib.ty.CourseInfo,
+        semester_id: str,
+    ) -> bool:
+        file_list = self.helper.get_file_list(
+            course_id=course.id,
+            course_type=course.course_type,
+        )
+        # print(
+        #     f"Syncing Course {course.course_number} {course.name} {course.english_name} ......"
+        # )
+        if self.sync_docs:
+            pass
         if self.sync_docs:
             for file in file_list:
-                self.SyncFile(file, semester_id=semester_id, course=course)
+                self.sync_file(file, semester_id=semester_id, course=course)
+            self.finish_download(desc=course.english_name)
         if self.sync_work:
-            homework_list = self.get_homework_list(course_id=course.id)
+            homework_list = self.helper.get_homework_list(course_id=course.id)
             for homework in homework_list:
-                self.SyncHomework(
+                self.sync_homework(
                     homework=homework, semester_id=semester_id, course=course
                 )
+            self.finish_download(desc=course.english_name)
 
-    def SyncFile(
-        self, file: types.File, semester_id: str, course: types.CourseInfo
+    def sync_file(
+        self,
+        file: thu_learn_lib.ty.File,
+        semester_id: str,
+        course: thu_learn_lib.ty.CourseInfo,
     ) -> bool:
         prefix = os.path.join(
             self.prefix,
-            slugify(course.english_name),
-            slugify("documents"),
-            slugify(file.clazz),
+            thu_learn_lib.utils.slugify(course.english_name),
+            thu_learn_lib.utils.slugify("documents"),
+            thu_learn_lib.utils.slugify(file.clazz),
         )
-        filename = slugify(file.title) + slugify(
-            f".{file.file_type}" if file.file_type else ""
+        filename = (
+            thu_learn_lib.utils.slugify(file.title)
+            + f".{thu_learn_lib.utils.slugify(file.file_type)}"
+            if file.file_type
+            else ""
         )
-        self.Download(url=file.download_url, prefix=prefix, filename=filename)
+        self.schedule_download(
+            url=file.download_url,
+            filename=filename,
+            prefix=prefix,
+        )
         return True
 
-    def SyncHomework(
-        self, homework: types.Homework, semester_id: str, course: types.CourseInfo
+    def sync_homework(
+        self,
+        homework: thu_learn_lib.ty.Homework,
+        semester_id: str,
+        course: thu_learn_lib.ty.CourseInfo,
     ) -> bool:
         prefix = os.path.join(
-            self.prefix,
-            slugify(course.english_name),
-            slugify("work"),
-            slugify(homework.title),
+            thu_learn_lib.utils.slugify(self.prefix),
+            thu_learn_lib.utils.slugify(course.english_name),
+            thu_learn_lib.utils.slugify("work"),
+            thu_learn_lib.utils.slugify(homework.title),
         )
         os.makedirs(prefix, exist_ok=True)
         lines = []
@@ -122,11 +243,13 @@ class Downloader(LearnHelper):
         lines.append(f"{homework.description}")
         lines.append(f"")
         if homework.attachment:
-            filename = slugify(
+            filename = thu_learn_lib.utils.slugify(
                 f"attach-{homework.title}{os.path.splitext(homework.attachment.name)[-1]}"
             )
-            self.Download(
-                url=homework.attachment.download_url, prefix=prefix, filename=filename,
+            self.schedule_download(
+                url=homework.attachment.download_url,
+                prefix=prefix,
+                filename=filename,
             )
             lines.append(f"### Attach.")
             lines.append(f"")
@@ -137,10 +260,10 @@ class Downloader(LearnHelper):
         lines.append(f"{homework.answer_content}")
         lines.append(f"")
         if homework.answer_attachment:
-            filename = slugify(
+            filename = thu_learn_lib.utils.slugify(
                 f"ans-{homework.title}{os.path.splitext(homework.answer_attachment.name)[-1]}"
             )
-            self.Download(
+            self.schedule_download(
                 url=homework.answer_attachment.download_url,
                 prefix=prefix,
                 filename=filename,
@@ -161,10 +284,10 @@ class Downloader(LearnHelper):
             lines.append(f"{homework.submitted_content}")
             lines.append(f"")
             if homework.submitted_attachment:
-                filename = slugify(
+                filename = thu_learn_lib.utils.slugify(
                     f"submit-{homework.title}{os.path.splitext(homework.submitted_attachment.name)[-1]}"
                 )
-                self.Download(
+                self.schedule_download(
                     url=homework.submitted_attachment.download_url,
                     prefix=prefix,
                     filename=filename,
@@ -194,10 +317,10 @@ class Downloader(LearnHelper):
             lines.append(f"{homework.grade_content}")
             lines.append(f"")
             if homework.grade_attachment:
-                filename = slugify(
+                filename = thu_learn_lib.utils.slugify(
                     f"comment-{homework.title}{os.path.splitext(homework.grade_attachment.name)[-1]}"
                 )
-                self.Download(
+                self.schedule_download(
                     url=homework.grade_attachment.download_url,
                     prefix=prefix,
                     filename=filename,
@@ -207,6 +330,6 @@ class Downloader(LearnHelper):
                 lines.append(f"[{homework.grade_attachment.name}]({filename})")
                 lines.append(f"")
         lines = [line + "\n" for line in lines]
-        filename = slugify("README.md")
+        filename = thu_learn_lib.utils.slugify("README.md")
         with open(os.path.join(prefix, filename), "w") as file:
             file.writelines(lines)
