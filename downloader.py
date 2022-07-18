@@ -73,23 +73,21 @@ class Downloader:
         chunk_size = 8192  # 8KB
         try:
             with open(
-                file=os.path.join(prefix, filename),
+                file=path,
                 mode="wb",
             ) as file:
-                list(
-                    tqdm.contrib.tmap(
-                        file.write,
-                        response.iter_content(chunk_size),
-                        desc=f"{position - 6} {filename}",
-                        total=file_size,
-                        leave=False,
-                        unit="B",
-                        unit_scale=True,
-                        dynamic_ncols=True,
-                        position=position,
-                    )
-                )
-                pass
+                with tqdm.tqdm(
+                    desc=f"{position - 6} {filename}",
+                    total=file_size,
+                    leave=False,
+                    unit="B",
+                    unit_scale=True,
+                    dynamic_ncols=True,
+                    position=position,
+                ) as progress_bar:
+                    for content in response.iter_content(chunk_size):
+                        file.write(content)
+                        progress_bar.update(len(content))
         except KeyboardInterrupt:
             raise KeyboardInterrupt()
         except:
@@ -225,7 +223,7 @@ class Downloader:
         course: thu_learn_lib.ty.CourseInfo,
     ) -> bool:
         prefix = os.path.join(
-            thu_learn_lib.utils.slugify(self.prefix),
+            self.prefix,
             thu_learn_lib.utils.slugify(course.english_name),
             thu_learn_lib.utils.slugify("work"),
             thu_learn_lib.utils.slugify(homework.title),
@@ -330,6 +328,6 @@ class Downloader:
                 lines.append(f"[{homework.grade_attachment.name}]({filename})")
                 lines.append(f"")
         lines = [line + "\n" for line in lines]
-        filename = thu_learn_lib.utils.slugify("README.md")
+        filename = "README.md"
         with open(os.path.join(prefix, filename), "w") as file:
             file.writelines(lines)
