@@ -199,7 +199,9 @@ class Downloader:
     ) -> bool:
         prefix = os.path.join(
             self.prefix,
-            thu_learn_lib.utils.slugify(course.english_name),
+            thu_learn_lib.utils.slugify(
+                f"{course.course_number}-{course.english_name}"
+            ),
             thu_learn_lib.utils.slugify("documents"),
             thu_learn_lib.utils.slugify(file.clazz),
         )
@@ -224,7 +226,9 @@ class Downloader:
     ) -> bool:
         prefix = os.path.join(
             self.prefix,
-            thu_learn_lib.utils.slugify(course.english_name),
+            thu_learn_lib.utils.slugify(
+                f"{course.course_number}-{course.english_name}"
+            ),
             thu_learn_lib.utils.slugify("work"),
             thu_learn_lib.utils.slugify(homework.title),
         )
