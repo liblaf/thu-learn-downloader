@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: ${{ matrix.os }}
-          file: dist/*
+          path: dist/*
 
   release:
     needs: build
