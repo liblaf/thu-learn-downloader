@@ -2,6 +2,7 @@ name: Continuous Delivery
 
 on:
   push:
+  pull_request:
 
 jobs:
   build:
@@ -24,6 +25,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install --requirement requirements.txt
           pip install pyinstaller
+      - name: Build
+        run: |
+          pyinstaller --onefile main.py --name thu-learn-downloader-${{ matrix.os }}
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: ${{ matrix.os }}
+          file: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v3.0.0
+      - run: mv identity.yaml dist/
       - name: GitHub Tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.0
@@ -34,3 +51,4 @@ jobs:
         with:
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
+          files: dist/*
