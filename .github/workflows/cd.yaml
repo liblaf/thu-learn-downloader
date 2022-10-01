@@ -50,7 +50,8 @@ jobs:
         with:
           github_token: ${{ github.token }}
           default_bump: false
-      - name: Release
+      - if: ${{ steps.tag_version.outputs.new_tag }}
+        name: Release
         uses: softprops/action-gh-release@v0.1.14
         with:
           tag_name: ${{ steps.tag_version.outputs.new_tag }}
