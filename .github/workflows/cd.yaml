@@ -38,6 +38,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.2
       - name: Download a Build Artifact
         uses: actions/download-artifact@v3.0.0
       - run: mv identity.yaml dist/
