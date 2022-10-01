@@ -44,15 +44,15 @@ jobs:
         uses: actions/download-artifact@v3.0.0
         with:
           path: dist/
-      - run: mv identity.yaml dist/
-      - name: GitHub Tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.0
-        with:
-          github_token: ${{ github.token }}
-      - name: Release
-        uses: softprops/action-gh-release@v0.1.14
-        with:
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
-          files: dist/*
+      - run: mv identity.yaml dist/ && ls -R dist/
+      # - name: GitHub Tag
+      #   id: tag_version
+      #   uses: mathieudutour/github-tag-action@v6.0
+      #   with:
+      #     github_token: ${{ github.token }}
+      # - name: Release
+      #   uses: softprops/action-gh-release@v0.1.14
+      #   with:
+      #     tag_name: ${{ steps.tag_version.outputs.new_tag }}
+      #     body: ${{ steps.tag_version.outputs.changelog }}
+      #     files: dist/*
