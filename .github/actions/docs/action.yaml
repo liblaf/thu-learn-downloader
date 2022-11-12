@@ -1,0 +1,41 @@
+name: Deploy MkDocs
+description: Build and Deploy MkDocs to GitHub Pages
+
+inputs:
+  python-version:
+    description: "Python Version"
+    required: false
+    default: "3.10"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+    - name: Load Cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-docs-${{ runner.os }}-${{ runner.arch }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+    - if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      name: Install dependencies
+      shell: bash
+      run: poetry install --with docs --no-root --no-interaction
+    - name: Deploy GitHub Pages
+      shell: bash
+      run: |
+        source .venv/bin/activate
+        bash scripts/docs.sh prepare
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        mkdocs gh-deploy --force

@@ -1,0 +1,119 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  cz:
+    if: ${{ github.repository != 'liblaf/template' }}
+    outputs:
+      bumped: ${{ steps.bumped.outputs.bumped }}
+      version: ${{ steps.cz.outputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+        with:
+          fetch-depth: 0
+      - id: cz
+        name: Create Bump and Changelog
+        uses: commitizen-tools/commitizen-action@0.15.1
+        with:
+          github_token: ${{ github.token }}
+          changelog_increment_filename: body.md
+      - id: bumped
+        run: |
+          if [[ -n "$(cat body.md)" ]]; then
+            echo "bumped = true"
+            echo "bumped=true" >> $GITHUB_OUTPUT
+          else
+            echo "bumped = false"
+            echo "bumped=false" >> $GITHUB_OUTPUT
+          fi
+      - if: ${{ steps.bumped.outputs.bumped == 'true' }}
+        name: Upload Changelog
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: changelog
+          path: body.md
+
+  publish:
+    needs: cz
+    if: ${{ needs.cz.outputs.bumped == 'true' }}
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+      - run: git pull
+      - name: Publish Package
+        uses: ./.github/actions/publish
+        with:
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+
+  deploy:
+    needs: cz
+    if: ${{ needs.cz.outputs.bumped == 'true' }}
+    continue-on-error: true
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+      - run: git pull
+      - id: detect
+        name: Detect Build Script
+        shell: bash
+        run: |
+          set +o errexit
+          set +o pipefail
+          cat pyproject.toml | grep "build = \".*.build:run\""
+          if (( $? == 0 )); then
+            echo "build=true" >> $GITHUB_OUTPUT
+          else
+            echo "build=false" >> $GITHUB_OUTPUT
+          fi
+      - if: ${{ steps.detect.outputs.build == 'true' }}
+        name: Build Artifacts
+        uses: ./.github/actions/deploy
+      - if: ${{ steps.detect.outputs.build == 'true' }}
+        name: Upload Artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: ${{ matrix.os }}
+          path: dist/**/*
+
+  release:
+    needs:
+      - cz
+      - deploy
+    if: ${{ needs.cz.outputs.bumped == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.1.0
+      - run: git pull
+      - name: Download Changelog
+        uses: actions/download-artifact@v3.0.1
+        with:
+          name: changelog
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3.0.1
+        with:
+          path: artifacts
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.cz.outputs.version }}
+          body_path: body.md
+          files: |
+            artifacts/macos-latest/**/*
+            artifacts/ubuntu-latest/**/*
+            artifacts/windows-latest/**/*

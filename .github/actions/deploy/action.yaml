@@ -1,0 +1,50 @@
+name: Build Artifacts
+description: Build Artifacts
+
+inputs:
+  python-version:
+    description: "Python Version"
+    required: false
+    default: "3.10"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+        installer-parallel: true
+    - name: Load Cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-deploy-${{ runner.os }}-${{ runner.arch }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+    - name: Install Dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      shell: bash
+      run: poetry install --no-interaction --no-root
+    - name: Install Project
+      shell: bash
+      run: poetry install --no-interaction
+    - if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
+      name: Build Artifacts
+      shell: bash
+      run: |
+        source .venv/bin/activate
+        poetry run build
+        mv dist/* dist/$(poetry version | tr ' ' '-')-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}
+    - if: ${{ runner.os == 'Windows' }}
+      name: Build Artifacts
+      shell: bash
+      run: |
+        source .venv/Scripts/activate
+        poetry run build
+        mv dist/* dist/$(poetry version | tr ' ' '-')-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}.exe

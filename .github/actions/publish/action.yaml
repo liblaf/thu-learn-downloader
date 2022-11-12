@@ -1,0 +1,17 @@
+name: Publish to PyPI
+description: Publish Python Package to PyPI
+
+inputs:
+  pypi_token:
+    description: "PyPI Token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - if: ${{ inputs.pypi_token != '' }}
+      name: Build and Publish to PyPI
+      uses: JRubics/poetry-publish@v1.13
+      with:
+        pypi_token: ${{ inputs.pypi_token }}
+      continue-on-error: true
