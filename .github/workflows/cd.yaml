@@ -41,7 +41,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.4.2
       - name: Download a Build Artifact
-        uses: actions/download-artifact@v3.0.0
+        uses: actions/download-artifact@v3.0.1
         with:
           path: dist/
       - name: GitHub Tag
