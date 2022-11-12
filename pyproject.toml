@@ -1,0 +1,41 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.0.5"
+tag_format = "$version"
+version_files = ["pyproject.toml:version"]
+
+[tool.poetry]
+name = "thu-learn-downloader"
+version = "0.0.5"
+description = "Auto download files from thu-learn"
+authors = ["Qin Li <liblaf@outlook.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://liblaf.github.io/thu-learn-downloader/"
+repository = "https://github.com/liblaf/thu-learn-downloader"
+documentation = "https://liblaf.github.io/thu-learn-downloader/"
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.12"
+beautifulsoup4 = "^4.11.1"
+hydra-core = "^1.2.0"
+python-slugify = "^6.1.2"
+requests = "^2.28.1"
+rich = "^12.6.0"
+
+[tool.poetry.group.build.dependencies]
+pyinstaller = "^5.6.2"
+
+[tool.poetry.group.docs.dependencies]
+lxml = "^4.9.1"
+mkdocs-git-authors-plugin = "^0.6.4"
+mkdocs-git-committers-plugin-2 = "^1.1.1"
+mkdocs-git-revision-date-localized-plugin = "^1.1.0"
+mkdocs-material = "^8.5.7"
+
+[tool.poetry.scripts]
+build = "thu_learn_downloader.build:run"
