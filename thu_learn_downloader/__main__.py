@@ -1,13 +1,13 @@
-import sys
 import os
+import sys
 
 import hydra
 import omegaconf
-import rich.progress
-import rich.panel
-import rich.table
 import rich.console
 import rich.live
+import rich.panel
+import rich.progress
+import rich.table
 
 from thu_learn_downloader import sync
 from thu_learn_downloader.downloader import Downloader

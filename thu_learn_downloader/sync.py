@@ -7,9 +7,7 @@ import omegaconf
 import rich.console
 import rich.progress
 
-from . import readme
-from . import types
-from . import utils
+from . import readme, types, utils
 from .downloader import Downloader
 from .helper import LearnHelper
 

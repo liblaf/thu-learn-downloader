@@ -8,16 +8,19 @@ version = "0.1.0"
 tag_format = "$version"
 version_files = ["pyproject.toml:version"]
 
+[tool.iosrt]
+profile = "black"
+
 [tool.poetry]
 name = "thu-learn-downloader"
 version = "0.1.0"
 description = "Auto download files from thu-learn"
 authors = ["Qin Li <liblaf@outlook.com>"]
-license = "MIT"
 readme = "README.md"
+license = "MIT"
 homepage = "https://liblaf.github.io/thu-learn-downloader/"
-repository = "https://github.com/liblaf/thu-learn-downloader"
 documentation = "https://liblaf.github.io/thu-learn-downloader/"
+repository = "https://github.com/liblaf/thu-learn-downloader"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.12"

@@ -5,8 +5,7 @@ import urllib.parse
 
 import bs4
 
-from . import types
-from . import urls
+from . import types, urls
 
 
 def parse_course_info(

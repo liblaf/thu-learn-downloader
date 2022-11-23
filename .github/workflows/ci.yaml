@@ -53,7 +53,7 @@ jobs:
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}
 
-  deploy:
+  build:
     needs: cz
     if: ${{ needs.cz.outputs.bumped == 'true' }}
     continue-on-error: true
@@ -74,15 +74,14 @@ jobs:
         run: |
           set +o errexit
           set +o pipefail
-          cat pyproject.toml | grep "build = \".*.build:run\""
-          if (( $? == 0 )); then
+          if grep 'build = ".*.build:run"' pyproject.toml; then
             echo "build=true" >> $GITHUB_OUTPUT
           else
             echo "build=false" >> $GITHUB_OUTPUT
           fi
       - if: ${{ steps.detect.outputs.build == 'true' }}
         name: Build Artifacts
-        uses: ./.github/actions/deploy
+        uses: ./.github/actions/build
       - if: ${{ steps.detect.outputs.build == 'true' }}
         name: Upload Artifacts
         uses: actions/upload-artifact@v3.1.1
@@ -93,7 +92,7 @@ jobs:
   release:
     needs:
       - cz
-      - deploy
+      - build
     if: ${{ needs.cz.outputs.bumped == 'true' }}
     runs-on: ubuntu-latest
     steps:

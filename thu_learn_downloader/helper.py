@@ -6,9 +6,7 @@ import bs4
 import requests
 import requests.adapters
 
-from . import parser
-from . import types
-from . import urls
+from . import parser, types, urls
 
 
 class LearnHelper(requests.Session):

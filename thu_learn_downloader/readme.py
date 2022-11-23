@@ -1,6 +1,5 @@
 from . import types
 
-
 WORK_README = """## {title}
 
 ### Contents and Requirements

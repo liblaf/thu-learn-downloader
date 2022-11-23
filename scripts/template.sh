@@ -3,18 +3,19 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-if command -v rich > /dev/null 2>&1; then
-  function info() {
-    rich --print "[bold bright_blue]${*}"
-  }
-else
-  function info() {
-    echo -e -n "\x1b[1
-94m"
+function exists() {
+  command -v "${@}" > /dev/null 2>&1
+}
+
+function info() {
+  if exists rich; then
+    rich --print --style "bold bright_blue" "${*}"
+  else
+    echo -e -n "\x1b[1;94m"
     echo -n "${*}"
     echo -e "\x1b[0m"
-  }
-fi
+  fi
+}
 
 function call() {
   info "+ ${*}"
@@ -36,14 +37,14 @@ files=(
   "pyproject.toml"
 )
 for file in "${files[@]}"; do
-  call sed --in-place "s/template/${REPO_NAME}/g" "${file}"
+  call sed --in-place "s@template@${REPO_NAME}@g" "${file}"
 done
 
-call sed --in-place "s/description = \"Repository Template\"/description = \"${description}\"/g" pyproject.toml
+call sed --in-place "s@description =.*@description = \"${description}\"@g" pyproject.toml
 
 call gh repo edit --description "${description}"
 call gh repo edit --homepage "https://liblaf.github.io/${REPO_NAME}/"
 
 call git add --all
-call git commit --message "build: initialize" --verify --gpg-sign
+call git commit --message "build: initialize" --gpg-sign
 call git push

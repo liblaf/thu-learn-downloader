@@ -1,6 +1,4 @@
-from . import types
-from . import utils
-
+from . import types, utils
 
 LEARN_PREFIX = types.URL(netloc="learn.tsinghua.edu.cn")
 REGISTRAR_PREFIX = types.URL(netloc="zhjw.cic.tsinghua.edu.cn")

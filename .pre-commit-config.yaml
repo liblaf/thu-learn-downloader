@@ -3,14 +3,13 @@ ci:
     - latexindent-system
     - poetry-lock
     - shfmt-system
-exclude: "^(.cz.yaml)|(poetry.lock)|(requirements.txt)$"
 repos:
   - repo: https://github.com/commitizen-tools/commitizen
     rev: "v2.37.0"
     hooks:
       - id: commitizen
   - repo: https://github.com/liblaf/pre-commit-hooks
-    rev: "0.2.0"
+    rev: "0.2.2"
     hooks:
       - id: latexindent-system
       - id: shfmt-system
@@ -20,8 +19,9 @@ repos:
       - id: pretty-format-toml
         args:
           - "--autofix"
+        exclude: poetry.lock
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: "v14.0.6"
+    rev: "v15.0.4"
     hooks:
       - id: clang-format
         args:
@@ -44,6 +44,7 @@ repos:
       - id: check-yaml
       - id: destroyed-symlinks
       - id: end-of-file-fixer
+        exclude: requirements.txt
       - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
@@ -51,8 +52,16 @@ repos:
     hooks:
       - id: black
       - id: black-jupyter
+  - repo: https://github.com/PyCQA/isort
+    rev: "5.10.1"
+    hooks:
+      - id: isort
+        args:
+          - "--profile"
+          - "black"
+          - "--filter-files"
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.18.4"
+    rev: "0.19.2"
     hooks:
       - id: check-dependabot
       - id: check-github-actions
@@ -62,9 +71,7 @@ repos:
     hooks:
       - id: poetry-check
       - id: poetry-lock
-        files: "^pyproject.toml$"
       - id: poetry-export
-        files: "^pyproject.toml$"
         args:
           - "--output"
           - "requirements.txt"

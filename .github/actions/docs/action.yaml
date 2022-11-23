@@ -35,7 +35,6 @@ runs:
       shell: bash
       run: |
         source .venv/bin/activate
-        bash scripts/docs.sh prepare
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
         mkdocs gh-deploy --force
