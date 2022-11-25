@@ -190,7 +190,7 @@ def sync_work_detail(
     with open(file=file, mode="w") as fp:
         fp.write(readme.dump_work(work))
     if shutil.which(cmd="prettier"):
-        os.system(f"prettier --write {file}")
+        os.system(f"prettier --write {file} > /dev/null")
 
 
 def sync_work_attachment(
@@ -214,6 +214,13 @@ def sync_work_attachment(
         for p in ["attach", "ans", "submit", "comment"]:
             title = title.removeprefix(p + "-")
         title = attachment_type + "-" + title
+        upload_time = None
+        if attachment_type == "submit":
+            upload_time = work.submit_time
+        elif attachment_type == "comment":
+            upload_time = work.grade_time
+        else:
+            upload_time = None
         downloader.schedule_download(
             url=attachment.download_url,
             file=os.path.join(
@@ -223,6 +230,7 @@ def sync_work_attachment(
                 utils.slugify(work.title),
                 utils.slugify(title),
             ),
+            upload_time=upload_time,
             session=helper,
             console=console,
             description=f"[bold bright_blue]{course.name} > {title}",

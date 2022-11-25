@@ -18,7 +18,7 @@ def download_once(
     console: rich.console.Console = rich.console.Console(),
     progress: rich.progress.Progress = rich.progress.Progress(),
     task_id: rich.progress.TaskID = rich.progress.TaskID(0),
-) -> None:
+) -> bool:
     res = (session or requests).get(url=url, stream=True)
     raw_size = int(res.headers.get("Content-Length", 0)) or raw_size
     if os.path.exists(file):
@@ -27,7 +27,7 @@ def download_once(
                 mtime = os.path.getmtime(filename=file)
                 mtime = datetime.datetime.fromtimestamp(mtime)
                 if mtime >= upload_time:
-                    return
+                    return False
     os.makedirs(name=os.path.dirname(file), exist_ok=True)
     progress.reset(task_id=task_id, total=raw_size)
     with open(file=file, mode="wb") as fp:
@@ -40,6 +40,7 @@ def download_once(
     if upload_time:
         mtime = int(upload_time.timestamp())
         os.utime(path=file, times=(mtime, mtime))
+    return True
 
 
 def download(
@@ -60,7 +61,7 @@ def download(
                     f"Retry {i}: {progress.tasks[task_id].description}",
                     style="bold bright_blue",
                 )
-            download_once(
+            ret = download_once(
                 url=url,
                 file=file,
                 raw_size=raw_size,
@@ -76,10 +77,16 @@ def download(
                 style="bold bright_red",
             )
         else:
-            console.log(
-                f"Download Success: {progress.tasks[task_id].description}",
-                style="bold bright_green",
-            )
+            if ret:
+                console.log(
+                    f"Download Success: {progress.tasks[task_id].description}",
+                    style="bold bright_green",
+                )
+            else:
+                console.log(
+                    f"Download Skipped: {progress.tasks[task_id].description}",
+                    style="dim",
+                )
             progress.update(task_id=task_id, visible=False)
             return
 

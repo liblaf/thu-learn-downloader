@@ -35,7 +35,7 @@ function call() {
 function copy() {
   mkdir --parents "$(realpath --canonicalize-missing ${2}/..)"
   cp --force --recursive "${1}" "${2}"
-  success "${1} -> ${2}"
+  success "Copy: ${1} -> ${2}"
 }
 
 cd "$(git rev-parse --show-toplevel || echo .)"
