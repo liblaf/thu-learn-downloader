@@ -57,7 +57,7 @@ optional = false
 python-versions = ">=3.6.0"
 
 [package.extras]
-unicode_backport = ["unicodedata2"]
+unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
@@ -370,7 +370,7 @@ setuptools = "*"
 
 [package.extras]
 encryption = ["tinyaes (>=1.0.0)"]
-hook_testing = ["execnet (>=1.5.0)", "psutil", "pytest (>=2.7.3)"]
+hook-testing = ["execnet (>=1.5.0)", "psutil", "pytest (>=2.7.3)"]
 
 [[package]]
 name = "pyinstaller-hooks-contrib"
@@ -415,11 +415,11 @@ six = ">=1.5"
 
 [[package]]
 name = "python-slugify"
-version = "6.1.2"
+version = "7.0.0"
 description = "A Python slugify application that also handles Unicode"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
+python-versions = ">=3.7"
 
 [package.dependencies]
 text-unidecode = ">=1.3"
@@ -478,7 +478,7 @@ urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<6)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "rich"
@@ -566,8 +566,8 @@ watchmedo = ["PyYAML (>=3.10)"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = ">=3.10,<3.12"
-content-hash = "28cad533c85919d3a1ffeb3f51f3a2adcc15e6d8fb1d883a6f4f651fca329663"
+python-versions = "~3.11"
+content-hash = "640debe79999cfd2a4621b1f8cdbcca909d6a36047cd710c992be5b567ed40f7"
 
 [metadata.files]
 altgraph = [
@@ -827,8 +827,8 @@ python-dateutil = [
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
 python-slugify = [
-    {file = "python-slugify-6.1.2.tar.gz", hash = "sha256:272d106cb31ab99b3496ba085e3fea0e9e76dcde967b5e9992500d1f785ce4e1"},
-    {file = "python_slugify-6.1.2-py2.py3-none-any.whl", hash = "sha256:7b2c274c308b62f4269a9ba701aa69a797e9bca41aeee5b3a9e79e36b6656927"},
+    {file = "python-slugify-7.0.0.tar.gz", hash = "sha256:7a0f21a39fa6c1c4bf2e5984c9b9ae944483fd10b54804cb0e23a3ccd4954f0b"},
+    {file = "python_slugify-7.0.0-py2.py3-none-any.whl", hash = "sha256:003aee64f9fd955d111549f96c4b58a3f40b9319383c70fad6277a4974bbf570"},
 ]
 pytz = [
     {file = "pytz-2022.6-py2.py3-none-any.whl", hash = "sha256:222439474e9c98fced559f1709d89e6c9cbf8d79c794ff3eb9f8800064291427"},

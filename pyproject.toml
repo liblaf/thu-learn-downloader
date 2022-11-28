@@ -26,7 +26,7 @@ repository = "https://github.com/liblaf/thu-learn-downloader"
 python = ">=3.10,<3.12"
 beautifulsoup4 = "^4.11.1"
 hydra-core = "^1.2.0"
-python-slugify = "^6.1.2"
+python-slugify = ">=6.1.2,<8.0.0"
 requests = "^2.28.1"
 rich = "^12.6.0"
 
