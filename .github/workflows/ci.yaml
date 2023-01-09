@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - id: cz
         name: Create Bump and Changelog
-        uses: commitizen-tools/commitizen-action@0.15.1
+        uses: commitizen-tools/commitizen-action@0.16.0
         with:
           github_token: ${{ github.token }}
           changelog_increment_filename: body.md
