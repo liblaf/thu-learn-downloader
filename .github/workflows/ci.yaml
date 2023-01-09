@@ -34,7 +34,7 @@ jobs:
           fi
       - if: ${{ steps.bumped.outputs.bumped == 'true' }}
         name: Upload Changelog
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: changelog
           path: body.md
@@ -84,7 +84,7 @@ jobs:
         uses: ./.github/actions/build
       - if: ${{ steps.detect.outputs.build == 'true' }}
         name: Upload Artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: ${{ matrix.os }}
           path: dist/**/*
