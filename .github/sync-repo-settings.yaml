@@ -1,0 +1,2 @@
+# Automatically delete head branches after merging PRs.  Defaults to `true`.
+deleteBranchOnMerge: true

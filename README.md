@@ -1,31 +1,25 @@
 # thu-learn-downloader
 
-Auto download files from thu-learn
+Download everything from Web Learning of Tsinghua University
 
 ## Demo
 
-See Screen Recording at [demo.webm](https://drive.liblaf.top/github/thu-learn-downloader/demo.webm).
+![Demo](https://res.cloudinary.com/liblaf/image/upload/v1677213088/2023/02/24/20230224-1677213085.gif)
 
 The resulting file structure looks like:
 
 ```
 thu-learn
-└── engineering-mechanics-for-civil-engineering
+└── Quantum Mechanics(1)
    ├── docs
-   │  ├── 作业与思考题
-   │  │  └── 第三周部分作业及思考题.pdf
-   │  ├── 电子教案
-   │  │  └── 第13讲-杆件拉伸和压缩.pdf
-   │  └── 课外阅读
-   │     └── 基于月面原位资源的月球基地建造技术.pdf
+   │  └── 电子教案
+   │     ├── 01-0量子力学介绍1.pdf
+   │     └── 04-0量子力学介绍2.pdf
    └── work
-      ├── 期中考试
-      │  └── README.md
-      └── 第2周作业
-         ├── attach-第2周作业.docx
-         ├── comment-2020012872-李钦-6544.pdf
-         ├── README.md
-         └── submit-第2周作业.pdf
+      └── 01-第一周作业
+         ├── attach-第一周作业.pdf
+         ├── submit-第一周作业.pdf
+         └── README.md
 ```
 
 ## Features

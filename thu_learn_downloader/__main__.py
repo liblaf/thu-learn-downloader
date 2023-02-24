@@ -1,50 +1,56 @@
 import os
-import sys
 
 import hydra
-import omegaconf
-import rich.console
-import rich.live
-import rich.panel
-import rich.progress
-import rich.table
+from omegaconf import DictConfig
+from rich.console import Group
+from rich.live import Live
+from rich.panel import Panel
+from rich.progress import (
+    BarColumn,
+    MofNCompleteColumn,
+    Progress,
+    TextColumn,
+    TimeElapsedColumn,
+)
 
-from thu_learn_downloader import sync
-from thu_learn_downloader.downloader import Downloader
-from thu_learn_downloader.helper import LearnHelper
+from . import sync
+from .constants import MAX_ACTIVE_TASKS, SUCCESS_PREFIX
+from .downloader import Downloader
+from .helper import Helper
 
 
-@hydra.main(config_path=os.getcwd(), config_name="config.yaml", version_base="1.2")
-def main(config: omegaconf.DictConfig) -> int:
-    helper = LearnHelper(
-        username=config.get("username"), password=config.get("password")
-    )
+@hydra.main(config_path=os.getcwd(), config_name="config.yaml", version_base="1.3")
+def main(config: DictConfig) -> None:
+    helper = Helper()
     downloader = Downloader()
-    overall_progress = rich.progress.Progress(
-        rich.progress.TextColumn("{task.description}", style="bold bright_blue"),
-        rich.progress.BarColumn(),
-        rich.progress.MofNCompleteColumn(),
-        rich.progress.TimeElapsedColumn(),
+    overall_progress = Progress(
+        TextColumn("{task.description}", style="bold bright_blue"),
+        BarColumn(),
+        MofNCompleteColumn(),
+        TimeElapsedColumn(),
     )
     semesters_task_id = overall_progress.add_task(description="Semesters")
     courses_task_id = overall_progress.add_task(description="Courses")
-    progress_group = rich.console.Group(
-        rich.panel.Panel(overall_progress),
-        rich.panel.Panel(downloader.progress),
+    progress_group = Group(
+        Panel(downloader.progress, height=MAX_ACTIVE_TASKS + 2),
+        Panel(overall_progress),
     )
 
-    with rich.live.Live(progress_group) as live:
+    username: str = config.get("username")
+    password: str = config.get("password")
+    with Live(progress_group) as live:
         with downloader.pool:
             try:
-                helper.login()
+                helper.login(username=username, password=password)
             except:
                 live.console.log(
-                    f"Login as {helper.username} {helper.status or 'FAILED'}",
+                    f"Login as {username} FAILED",
                     style="bold bright_red",
                 )
             else:
                 live.console.log(
-                    f"Login as {helper.username} {helper.status}",
+                    SUCCESS_PREFIX,
+                    f"Login as {username} SUCCESS",
                     style="bold bright_green",
                 )
                 sync.sync_all(
@@ -57,8 +63,6 @@ def main(config: omegaconf.DictConfig) -> int:
                     courses_task_id=courses_task_id,
                 )
 
-    return 0
-
 
 if __name__ == "__main__":
-    sys.exit(main())
+    pass

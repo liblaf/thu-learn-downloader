@@ -3,116 +3,172 @@ name: CI/CD
 on:
   push:
     branches:
-      - "main"
+      - main
+
+# - [x] Settings > General > Pull Requests > Automatically delete head branches
+# - [x] Settings > Actions > General > Workflow permissions > Allow GitHub Actions to create and approve pull requests
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  PYTHON_VERSION: "3.11"
 
 jobs:
-  cz:
-    if: ${{ github.repository != 'liblaf/template' }}
+  detect-build:
+    name: Detect Build Script
+    runs-on: ubuntu-latest
     outputs:
-      bumped: ${{ steps.bumped.outputs.bumped }}
-      version: ${{ steps.cz.outputs.version }}
-    runs-on: ubuntu-latest
+      build: ${{ steps.detect.outputs.build }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
-        with:
-          fetch-depth: 0
-      - id: cz
-        name: Create Bump and Changelog
-        uses: commitizen-tools/commitizen-action@0.15.1
-        with:
-          github_token: ${{ github.token }}
-          changelog_increment_filename: body.md
-      - id: bumped
+        uses: actions/checkout@v3
+      - id: detect
+        name: Detect Build Script
         run: |
-          if [[ -n "$(cat body.md)" ]]; then
-            echo "bumped = true"
-            echo "bumped=true" >> $GITHUB_OUTPUT
+          if [[ -f "scripts/build.sh" ]]; then
+            echo "build=true" >> "${GITHUB_OUTPUT}"
+            echo ":heavy_check_mark: Build Script Detected" >> "${GITHUB_STEP_SUMMARY}"
           else
-            echo "bumped = false"
-            echo "bumped=false" >> $GITHUB_OUTPUT
+            echo "build=false" >> "${GITHUB_OUTPUT}"
+            echo ":x: Build Script Not Found" >> "${GITHUB_STEP_SUMMARY}"
           fi
-      - if: ${{ steps.bumped.outputs.bumped == 'true' }}
-        name: Upload Changelog
-        uses: actions/upload-artifact@v3.1.1
-        with:
-          name: changelog
-          path: body.md
 
-  publish:
-    needs: cz
-    if: ${{ needs.cz.outputs.bumped == 'true' }}
-    continue-on-error: true
+  detect-publish:
+    name: Detect PyPI Credential
+    runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.detect.outputs.publish }}
+    steps:
+      - id: detect
+        name: Detect PyPI Credential
+        run: |
+          if [[ -n "${PYPI_USERNAME}" && -n "${PYPI_PASSWORD}" ]]; then
+            echo "publish=true" >> "${GITHUB_OUTPUT}"
+            echo ":heavy_check_mark: PyPI Credential Detected" >> "${GITHUB_STEP_SUMMARY}"
+          else
+            echo "publish=false" >> "${GITHUB_OUTPUT}"
+            echo ":x: PyPI Credential Not Found" >> "${GITHUB_STEP_SUMMARY}"
+          fi
+        env:
+          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+
+  build-pkg:
+    name: Build Package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
-      - run: git pull
-      - name: Publish Package
-        uses: ./.github/actions/publish
+        uses: actions/checkout@v3
+      - name: Install Poetry
+        run: pipx install poetry
+      - id: python
+        name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: poetry
+      - name: Install Dependencies
+        run: poetry install --no-interaction
+      - name: Build Package
+        run: poetry build --no-interaction
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: dist/*
 
-  build:
-    needs: cz
-    if: ${{ needs.cz.outputs.bumped == 'true' }}
-    continue-on-error: true
+  build-exe:
+    name: Build Executable
+    needs:
+      - detect-build
+    if: needs.detect-build.outputs.build == 'true'
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Poetry
+        run: pipx install poetry
+      - id: python
+        name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: poetry
+      - name: Install Dependencies
+        run: poetry install --no-interaction
+      - name: Build Executable
+        run: poetry run bash "scripts/build.sh"
+      - if: runner.os != 'Windows'
+        name: Rename Build Artifact
+        run: mv dist/* "dist/$(poetry version | tr ' ' -)-${{ runner.os }}-${{ runner.arch }}"
+      - if: runner.os == 'Windows'
+        name: Rename Build Artifact
+        run: mv dist/* "dist/$(poetry version | tr ' ' -)-${{ runner.os }}-${{ runner.arch }}.exe"
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ runner.os }}-${{ runner.arch }}
+          path: dist/*
     strategy:
       matrix:
         os:
           - macos-latest
           - ubuntu-latest
           - windows-latest
-    runs-on: ${{ matrix.os }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3.1.0
-      - run: git pull
-      - id: detect
-        name: Detect Build Script
-        shell: bash
-        run: |
-          set +o errexit
-          set +o pipefail
-          if grep 'build = ".*.build:run"' pyproject.toml; then
-            echo "build=true" >> $GITHUB_OUTPUT
-          else
-            echo "build=false" >> $GITHUB_OUTPUT
-          fi
-      - if: ${{ steps.detect.outputs.build == 'true' }}
-        name: Build Artifacts
-        uses: ./.github/actions/build
-      - if: ${{ steps.detect.outputs.build == 'true' }}
-        name: Upload Artifacts
-        uses: actions/upload-artifact@v3.1.1
-        with:
-          name: ${{ matrix.os }}
-          path: dist/**/*
 
   release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    outputs:
+      releases-created: ${{ steps.release.outputs.releases_created }}
+      tag-name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        name: Create GitHub Release
+        uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: python
+
+  upload:
+    name: Upload Release Assets
     needs:
-      - cz
-      - build
-    if: ${{ needs.cz.outputs.bumped == 'true' }}
+      - build-exe
+      - build-pkg
+      - release
+    if: always() && needs.release.outputs.releases-created == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts
+      - name: Upload Release Assets
+        uses: svenstaro/upload-release-action@master
+        with:
+          file: artifacts/**/*
+          tag: ${{ needs.release.outputs.tag-name }}
+          file_glob: true
+          overwrite: true
+
+  publish:
+    name: Publish to PyPI
+    needs:
+      - detect-publish
+      - release
+    if: needs.detect-publish.outputs.publish == 'true' && needs.release.outputs.releases-created == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3.1.0
-      - run: git pull
-      - name: Download Changelog
-        uses: actions/download-artifact@v3.0.1
+        uses: actions/checkout@v3
+      - name: Install Poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          name: changelog
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3.0.1
-        with:
-          path: artifacts
-      - name: GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ needs.cz.outputs.version }}
-          body_path: body.md
-          files: |
-            artifacts/macos-latest/**/*
-            artifacts/ubuntu-latest/**/*
-            artifacts/windows-latest/**/*
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: poetry
+      - name: Install Dependencies
+        run: poetry install --no-interaction
+      - name: Publish to PyPI
+        run: poetry publish --username "${{ secrets.PYPI_USERNAME }}" --password "${{ secrets.PYPI_PASSWORD }}" --build --no-interaction
