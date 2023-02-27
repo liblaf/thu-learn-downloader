@@ -26,7 +26,7 @@ jobs:
       - id: detect
         name: Detect Build Script
         run: |
-          if [[ -f "scripts/build.sh" ]]; then
+          if [[ -f scripts/build.sh ]]; then
             echo "build=true" >> "${GITHUB_OUTPUT}"
             echo ":heavy_check_mark: Build Script Detected" >> "${GITHUB_STEP_SUMMARY}"
           else
@@ -98,13 +98,13 @@ jobs:
       - name: Install Dependencies
         run: poetry install --no-interaction
       - name: Build Executable
-        run: poetry run bash "scripts/build.sh"
+        run: poetry run bash scripts/build.sh
       - if: runner.os != 'Windows'
         name: Rename Build Artifact
-        run: mv dist/* "dist/$(poetry version | tr ' ' -)-${{ runner.os }}-${{ runner.arch }}"
+        run: mv dist/* "dist/${{ github.event.repository.name }}-${{ runner.os }}-${{ runner.arch }}"
       - if: runner.os == 'Windows'
         name: Rename Build Artifact
-        run: mv dist/* "dist/$(poetry version | tr ' ' -)-${{ runner.os }}-${{ runner.arch }}.exe"
+        run: mv dist/* "dist/${{ github.event.repository.name }}-${{ runner.os }}-${{ runner.arch }}.exe"
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
