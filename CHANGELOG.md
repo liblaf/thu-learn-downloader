@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.2...v0.1.3) (2023-02-27)
+
+### Bug Fixes
+
+- rename release assets ([c03b735](https://github.com/liblaf/thu-learn-downloader/commit/c03b735b0213dc2851916e3ba1af14498d284296))
+
 ## [0.1.2](https://github.com/liblaf/thu-learn-downloader/compare/0.1.1...v0.1.2) (2023-02-24)
 
 ### Bug Fixes
