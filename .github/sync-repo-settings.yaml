@@ -6,3 +6,6 @@ branchProtectionRules:
   # Identifies the protection rule pattern. Name of the branch to be protected.
   # Defaults to `master`
   - pattern: main
+    # Number of approving reviews required to update matching branches.
+    # Defaults to `1`
+    requiredApprovingReviewCount: 0
