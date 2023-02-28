@@ -24,6 +24,7 @@ thu-learn
 
 ## Features
 
+- fast concurrent download
 - pretty TUI powered by [rich](https://github.com/Textualize/rich)
 - auto set `mtime` of downloaded files according to timestamp of remote file
 - auto skip download when local file is newer
@@ -32,6 +33,15 @@ thu-learn
 
 ## Usage
 
+### Pre-built Binary
+
 1. Download pre-built binary from [releases](https://github.com/liblaf/thu-learn-downloader/releases).
 2. Prepare a `config.yaml` like [config.yaml](https://github.com/liblaf/thu-learn-downloader/blob/main/config.yaml).
 3. Run `thu-learn-downloader password="***"` and wait for the sync to finish.
+
+### pip
+
+```shell
+pip install thu-learn-downloader
+python -m thu_learn_downloader username="***" password="***"
+```

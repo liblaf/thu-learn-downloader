@@ -174,3 +174,4 @@ poetry.toml
 
 *.gif
 dist
+outputs
