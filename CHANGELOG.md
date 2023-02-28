@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.5](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.4...v0.1.5) (2023-02-28)
+
+### Bug Fixes
+
+- fix usage as module ([89fe654](https://github.com/liblaf/thu-learn-downloader/commit/89fe6543cebf51b697016b37f5c7f44724380060))
+
 ## [0.1.4](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.3...v0.1.4) (2023-02-27)
 
 ### Documentation
