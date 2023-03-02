@@ -41,9 +41,6 @@ jobs:
 
   build-exe:
     name: Build Executable
-    needs:
-      - detect-build
-    if: needs.detect-build.outputs.build == 'true'
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -112,9 +109,8 @@ jobs:
   publish:
     name: Publish to PyPI
     needs:
-      - detect-publish
       - release
-    if: needs.detect-publish.outputs.publish == 'true' && needs.release.outputs.releases-created == 'true'
+    if: needs.release.outputs.releases-created == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
