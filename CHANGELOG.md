@@ -2,10 +2,9 @@
 
 ## [0.1.7](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.6...v0.1.7) (2023-03-02)
 
-
 ### Bug Fixes
 
-* fix filename on macOS ([5fb82a6](https://github.com/liblaf/thu-learn-downloader/commit/5fb82a61f81befc475c39f5b866a60b014cae51b))
+- fix filename on macOS ([5fb82a6](https://github.com/liblaf/thu-learn-downloader/commit/5fb82a61f81befc475c39f5b866a60b014cae51b))
 
 ## [0.1.6](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.5...v0.1.6) (2023-03-02)
 
