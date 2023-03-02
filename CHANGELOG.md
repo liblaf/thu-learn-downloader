@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.5...v0.1.6) (2023-03-02)
+
+### Bug Fixes
+
+- **ci:** fix workflow syntax ([d8e68d9](https://github.com/liblaf/thu-learn-downloader/commit/d8e68d9aa21bb667d857fa74e3858e4387b4d8f4))
+- fix filename ([#29](https://github.com/liblaf/thu-learn-downloader/issues/29)) ([aa35ee4](https://github.com/liblaf/thu-learn-downloader/commit/aa35ee4a0d6fd821596107b70ffd0bf9a629a1d3))
+
 ## [0.1.5](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.4...v0.1.5) (2023-02-28)
 
 ### Bug Fixes
