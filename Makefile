@@ -1,9 +1,9 @@
-BIN    := $(HOME)/.local/bin
-DIST   := $(CURDIR)/dist
-NAME   := thu-learn-downloader
+BIN  := $(HOME)/.local/bin
+DIST := $(CURDIR)/dist
+NAME := thu-learn-downloader
 
-OS   != echo $(RUNNER_OS)   | tr '[:upper:]' '[:lower:]'
-ARCH != echo $(RUNNER_ARCH) | tr '[:upper:]' '[:lower:]'
+OS   := $(shell echo $(RUNNER_OS)   | tr '[:upper:]' '[:lower:]')
+ARCH := $(shell echo $(RUNNER_ARCH) | tr '[:upper:]' '[:lower:]')
 ifeq ($(OS), windows)
 	EXE := .exe
 else
