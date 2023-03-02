@@ -9,7 +9,7 @@ profile = "black"
 authors = ["Qin Li <liblaf@outlook.com>"]
 description = "Download everything from Web Learning of Tsinghua University"
 name = "thu-learn-downloader"
-packages = [{include = "thu_learn_downloader"}]
+packages = [{ include = "thu_learn_downloader" }]
 readme = "README.md"
 repository = "https://github.com/liblaf/thu-learn-downloader"
 version = "0.1.5"
@@ -23,3 +23,6 @@ rich = "^13.3.1"
 
 [tool.poetry.group.dev.dependencies]
 pyinstaller = "^5.8.0"
+
+[tool.poetry.scripts]
+thu-learn-downloader = "thu_learn_downloader.__main__:main"
