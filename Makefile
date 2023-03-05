@@ -1,6 +1,6 @@
 BIN  := $(HOME)/.local/bin
 DIST := $(CURDIR)/dist
-NAME := thu-learn-downloader
+NAME := tld
 
 OS   := $(shell echo $(RUNNER_OS)   | tr '[:upper:]' '[:lower:]')
 ARCH := $(shell echo $(RUNNER_ARCH) | tr '[:upper:]' '[:lower:]')

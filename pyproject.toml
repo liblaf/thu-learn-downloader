@@ -26,3 +26,4 @@ pyinstaller = "^5.8.0"
 
 [tool.poetry.scripts]
 thu-learn-downloader = "thu_learn_downloader.__main__:main"
+tld = "thu_learn_downloader.__main__:main"
