@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.8](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.7...v0.1.8) (2023-03-10)
+
+
+### Bug Fixes
+
+* add tld script ([ebd2f60](https://github.com/liblaf/thu-learn-downloader/commit/ebd2f608350acd485d87f4e39165acd6f74a4d27))
+* compatible with py3.10 ([8c1c3bd](https://github.com/liblaf/thu-learn-downloader/commit/8c1c3bdd27d7ee04c7c30d414efd854ffe411e1f))
+* compatible with py3.11 ([b54350b](https://github.com/liblaf/thu-learn-downloader/commit/b54350b7759bebe7b128c3f892f993a59e227795))
+
 ## [0.1.7](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.6...v0.1.7) (2023-03-02)
 
 ### Bug Fixes
