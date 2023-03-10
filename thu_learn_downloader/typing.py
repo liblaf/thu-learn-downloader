@@ -1,15 +1,15 @@
 import dataclasses
 from datetime import datetime
-from enum import StrEnum
+from enum import Enum
 from typing import Optional
 
 
-class CourseType(StrEnum):
+class CourseType(Enum):
     STUDENT = "student"
     TEACHER = "teacher"
 
 
-class SemesterSeason(StrEnum):
+class SemesterSeason(Enum):
     FALL = "Autumn Term"
     SPRING = "Spring Term"
     SUMMER = "Summer Term"
