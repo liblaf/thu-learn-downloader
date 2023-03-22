@@ -1,12 +1,9 @@
-from pathlib import Path
-
 from rich.style import Style
 
 from . import typing as t
 
 BS_FEATURES = "html.parser"
 CHUNK_SIZE = 1024 * 1024
-DEFAULT_PREFIX = Path.home() / "Desktop" / "thu-learn"
 MAX_ACTIVE_TASKS = 16
 
 

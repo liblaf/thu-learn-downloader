@@ -4,7 +4,7 @@ Download everything from Web Learning of Tsinghua University
 
 ## Demo
 
-![Demo](https://res.cloudinary.com/liblaf/image/upload/v1677213088/2023/02/24/20230224-1677213085.gif)
+![Demo](https://res.cloudinary.com/liblaf/image/upload/v1679497703/2023/03/22/20230322-1679497699.gif)
 
 The resulting file structure looks like:
 
@@ -22,6 +22,26 @@ thu-learn
          └── README.md
 ```
 
+## Usage
+
+**Usage**:
+
+```shell-session
+$ tld [OPTIONS]
+```
+
+**Options**:
+
+- `-u, --username TEXT`: [default: liqin20]
+- `-p, --password TEXT`
+- `-s, --semester TEXT`: [default: 2022-2023-2]
+- `-c, --course TEXT`
+- `--prefix PATH`: [default: /home/liblaf/Desktop/thu-learn]
+- `-s, --size-limit INTEGER`: [default: 9223372036854775807]
+- `--install-completion`: Install completion for the current shell.
+- `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
+- `--help`: Show this message and exit.
+
 ## Features
 
 - fast concurrent download
@@ -31,9 +51,8 @@ thu-learn
 - dump homework details into `README.md` in each homework folder
 - pretty markdown files powered by [prettier](https://prettier.io) (require `prettier` installed)
 
-## Usage
+## Installation
 
-Download pre-built binary from [releases](https://github.com/liblaf/thu-learn-downloader/releases) or install from PyPI by executing `pip install thu-learn-downloader`.
-
-1. Prepare a `config.yaml` like [config.yaml](https://github.com/liblaf/thu-learn-downloader/blob/main/config.yaml).
-2. Run `thu-learn-downloader password="***"` and wait for the sync to finish.
+- download pre-built binary form [GitHub Releases](https://github.com/liblaf/thu-learn-downloader/releases)
+- `pip install thu-learn-downloader`
+- `pipx install thu-learn-downloader`

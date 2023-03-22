@@ -1,24 +1,17 @@
 import os
 import shutil
 import subprocess
-import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-from omegaconf import DictConfig
 from rich.console import Console
 from rich.progress import Progress, TaskID
 
 from . import typing as t
 from . import utils
-from .constants import (
-    DEFAULT_PREFIX,
-    DOCUMENT_STYLE,
-    HOMEWORK_STYLE,
-    SKIPPED_PREFIX,
-    SUCCESS_PREFIX,
-)
+from .config import Config
+from .constants import DOCUMENT_STYLE, HOMEWORK_STYLE, SKIPPED_PREFIX, SUCCESS_PREFIX
 from .downloader import Downloader
 from .helper import Helper
 
@@ -26,14 +19,14 @@ from .helper import Helper
 def sync_all(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     *,
     console: Console = Console(),
     overall_progress: Progress = Progress(),
     semesters_task_id: TaskID = TaskID(0),
     courses_task_id: TaskID = TaskID(1),
 ) -> None:
-    semesters = config.get("semesters") or helper.get_semester_id_list()
+    semesters = config.semesters or helper.get_semester_id_list()
 
     for semester in overall_progress.track(
         semesters, task_id=semesters_task_id, description="Semesters"
@@ -52,7 +45,7 @@ def sync_all(
 def sync_semester(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     semester_id: str,
     *,
     console: Console = Console(),
@@ -61,12 +54,12 @@ def sync_semester(
 ) -> None:
     courses: list[t.CourseInfo] = helper.get_course_list(semester_id=semester_id)
 
-    if config.get("courses"):
+    if config.courses:
         courses = [
             course
             for course in courses
-            if course.name in config["courses"]
-            or course.english_name in config["courses"]
+            if (course.name in config.courses)
+            or (course.english_name in config.courses)
         ]
 
     overall_progress.update(
@@ -85,7 +78,7 @@ def sync_semester(
 def sync_course(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     course: t.CourseInfo,
     *,
     console: Console = Console(),
@@ -109,15 +102,13 @@ def sync_course(
 def sync_files(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     course: t.CourseInfo,
     *,
     console: Console = Console(),
 ) -> None:
-    prefix: Path = Path(
-        config.get(key="prefix", default_value=DEFAULT_PREFIX)
-    ).expanduser()
-    size_limit: int = config.get(key="size_limit", default_value=sys.maxsize)
+    prefix: Path = config.prefix
+    size_limit: int = config.size_limit
 
     files: list[t.File] = helper.get_file_list(course_id=course.id)
     files: list[t.File] = sorted(files, key=lambda f: f.id)
@@ -153,7 +144,7 @@ def sync_files(
 def sync_homeworks(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     course: t.CourseInfo,
     *,
     console: Console = Console(),
@@ -182,15 +173,13 @@ def sync_homeworks(
 def sync_homework_detail(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     course: t.CourseInfo,
     hw: t.Homework,
     *,
     console: Console = Console(),
 ) -> None:
-    prefix: Path = Path(
-        config.get(key="prefix", default_value=DEFAULT_PREFIX)
-    ).expanduser()
+    prefix: Path = config.prefix
     title: str = f"{hw.number:02d}-{hw.title}"
     filepath: Path = prefix / course.english_name / "work" / title / "README.md"
     os.makedirs(filepath.parent, exist_ok=True)
@@ -211,7 +200,7 @@ def sync_homework_detail(
 def sync_homework_attachments(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     course: t.CourseInfo,
     hw: t.Homework,
     *,
@@ -262,7 +251,7 @@ def sync_homework_attachments(
 def sync_homework_attachment(
     helper: Helper,
     downloader: Downloader,
-    config: DictConfig,
+    config: Config,
     course: t.CourseInfo,
     hw: t.Homework,
     attach: Optional[t.RemoteFile],
@@ -272,9 +261,7 @@ def sync_homework_attachment(
 ) -> None:
     if not attach:
         return
-    prefix: Path = Path(
-        config.get(key="prefix", default_value=DEFAULT_PREFIX)
-    ).expanduser()
+    prefix: Path = config.prefix
     title: str = f"{hw.number:02d}-{hw.title}"
     filename: str = utils.remove_attachment_prefix(attach.name)
     filename: str = f"{attach_type}-{filename}"

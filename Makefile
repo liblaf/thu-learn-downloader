@@ -12,31 +12,36 @@ endif
 
 TARGET := $(DIST)/$(NAME)$(EXE)
 
-.PHONY: build
-build:
-	pyinstaller --distpath $(DIST) --onefile --name $(NAME) $(CURDIR)/main.py
+build: $(TARGET)
 
 clean:
 	$(RM) --recursive $(CURDIR)/build
-	$(RM) --recursive $(CURDIR)/outputs
 	$(RM) --recursive $(DIST)
 	$(RM) $(CURDIR)/*.spec
 
-demo:
-ifeq ($(BW_SESSION),)
-	$(error Bitwarden Locked)
-else
-	vhs < $(CURDIR)/demo.tape
-endif
+demo: $(CURDIR)/demo.gif
 
-install: build
-	install --target-directory=$(BIN) $(TARGET)
+install: $(TARGET) | $(BIN)
+	install --target-directory=$(BIN) $<
 
 pretty:
 	isort --profile black $(CURDIR)
 	black $(CURDIR)
 
-rename: build
+rename: $(TARGET)
 ifneq ($(and $(OS), $(ARCH)), )
-	mv $(TARGET) $(DIST)/$(NAME)-$(OS)-$(ARCH)$(EXE)
+	mv $< $(DIST)/$(NAME)-$(OS)-$(ARCH)$(EXE)
+endif
+
+$(TARGET):
+	pyinstaller --distpath $(DIST) --onefile --name $(NAME) $(CURDIR)/main.py
+
+$(BIN):
+	mkdir --parents $@
+
+$(CURDIR)/demo.gif: $(CURDIR)/demo.tape
+ifeq ($(BW_SESSION),)
+	$(error Bitwarden Locked)
+else
+	vhs < $<
 endif

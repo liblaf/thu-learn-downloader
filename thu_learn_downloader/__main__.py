@@ -1,7 +1,7 @@
-import os
+import sys
+from pathlib import Path
 
-import hydra
-from omegaconf import DictConfig
+import typer
 from rich.console import Group
 from rich.live import Live
 from rich.panel import Panel
@@ -14,13 +14,30 @@ from rich.progress import (
 )
 
 from . import sync
+from .config import Config
 from .constants import MAX_ACTIVE_TASKS, SUCCESS_PREFIX
 from .downloader import Downloader
 from .helper import Helper
 
 
-@hydra.main(config_path=os.getcwd(), config_name="config.yaml", version_base="1.3")
-def main(config: DictConfig) -> None:
+def main(
+    username: str = typer.Option("liqin20", "-u", "--username"),
+    password: str = typer.Option(
+        None, "-p", "--password", prompt=True, hide_input=True
+    ),
+    semester: list[str] = typer.Option(["2022-2023-2"], "-s", "--semester"),
+    course: list[str] = typer.Option([], "-c", "--course"),
+    prefix: Path = typer.Option(Path.home() / "Desktop" / "thu-learn", "--prefix"),
+    size_limit: int = typer.Option(sys.maxsize, "-s", "--size-limit"),
+) -> None:
+    config = Config(
+        username=username,
+        password=password,
+        semesters=semester,
+        courses=course,
+        prefix=prefix,
+        size_limit=size_limit,
+    )
     helper = Helper()
     downloader = Downloader()
     overall_progress = Progress(
@@ -36,8 +53,6 @@ def main(config: DictConfig) -> None:
         Panel(overall_progress),
     )
 
-    username: str = config.get("username")
-    password: str = config.get("password")
     with Live(progress_group) as live:
         with downloader.pool:
             try:
@@ -64,5 +79,9 @@ def main(config: DictConfig) -> None:
                 )
 
 
+def run() -> None:
+    typer.run(main)
+
+
 if __name__ == "__main__":
-    main()
+    run()
