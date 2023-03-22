@@ -2,10 +2,9 @@
 
 ## [0.1.9](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.8...v0.1.9) (2023-03-22)
 
-
 ### Bug Fixes
 
-* migrate to typer ([a0542fa](https://github.com/liblaf/thu-learn-downloader/commit/a0542fa703c48a9967e6b4393a97f342217634f5))
+- migrate to typer ([a0542fa](https://github.com/liblaf/thu-learn-downloader/commit/a0542fa703c48a9967e6b4393a97f342217634f5))
 
 ## [0.1.8](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.7...v0.1.8) (2023-03-10)
 
