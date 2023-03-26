@@ -28,5 +28,5 @@ isort = "^5.12.0"
 pyinstaller = "^5.8.0"
 
 [tool.poetry.scripts]
-thu-learn-downloader = "thu_learn_downloader.__main__:run"
-tld = "thu_learn_downloader.__main__:run"
+thu-learn-downloader = "thu_learn_downloader.__main__:app"
+tld = "thu_learn_downloader.__main__:app"

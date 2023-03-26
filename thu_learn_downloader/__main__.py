@@ -19,7 +19,10 @@ from .constants import MAX_ACTIVE_TASKS, SUCCESS_PREFIX
 from .downloader import Downloader
 from .helper import Helper
 
+app = typer.Typer(name="tld")
 
+
+@app.command(name="tld")
 def main(
     username: str = typer.Option("liqin20", "-u", "--username"),
     password: str = typer.Option(
@@ -79,9 +82,5 @@ def main(
                 )
 
 
-def run() -> None:
-    typer.run(main)
-
-
 if __name__ == "__main__":
-    run()
+    app()
