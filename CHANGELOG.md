@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.10](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.9...v0.1.10) (2023-04-04)
+
+
+### Bug Fixes
+
+* use Typer app instead of command ([65c6ef7](https://github.com/liblaf/thu-learn-downloader/commit/65c6ef7fef181afb5a983e5a68ac1afe2d636358))
+
+
+### Documentation
+
+* update author ([25b1c24](https://github.com/liblaf/thu-learn-downloader/commit/25b1c24a28a1285c15ab5aa5e521a0031ec250bd))
+
 ## [0.1.9](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.8...v0.1.9) (2023-03-22)
 
 ### Bug Fixes
