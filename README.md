@@ -1,5 +1,7 @@
 # thu-learn-downloader
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/505052ec12444da49201278a3abb2b7d)](https://app.codacy.com/gh/liblaf/thu-learn-downloader?utm_source=github.com&utm_medium=referral&utm_content=liblaf/thu-learn-downloader&utm_campaign=Badge_Grade)
+
 Download everything from Web Learning of Tsinghua University
 
 ## Demo
