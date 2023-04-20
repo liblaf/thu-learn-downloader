@@ -40,7 +40,7 @@ def dataclass_as_dict_shallow(obj: Any) -> dict[str, Any]:
 
 
 def remove_attachment_prefix(name: str) -> str:
-    prefixes: list[str] = ["attach", "ans", "submit", "comment", "-"]
+    prefixes: list[str] = ["attach-", "ans-", "submit-", "comment-", "-"]
     while name.startswith(tuple(prefixes)):
         for p in prefixes:
             name = name.removeprefix(p)

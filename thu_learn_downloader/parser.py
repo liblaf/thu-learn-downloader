@@ -105,9 +105,10 @@ def parse_homework_detail(
 
 
 def parse_homework_file(file_div: Tag) -> Optional[t.RemoteFile]:
-    ftitle = file_div.select_one(".ftitle") or file_div.select_one(".fl")
-    assert ftitle
-    file_node = ftitle.select_one("a")
+    fl = file_div.select_one(".txt.fl")
+    if not fl:
+        return None
+    file_node = fl.select_one("a")
     if not file_node:
         return None
 
