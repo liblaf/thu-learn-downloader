@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.11](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.10...v0.1.11) (2023-04-20)
+
+### Bug Fixes
+
+- fail to download answer attachment ([64e0261](https://github.com/liblaf/thu-learn-downloader/commit/64e0261391a1b3928e911aee0050e2c0b0dbde49))
+
 ## [0.1.10](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.9...v0.1.10) (2023-04-04)
 
 ### Bug Fixes
