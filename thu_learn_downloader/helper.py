@@ -90,15 +90,18 @@ class Helper(Session):
         else:
             results = json["object"]
 
-        return list(
-            map(
-                parser.parse_file,
-                results,
-                [file_clazz] * len(results),
-                [course_id] * len(results),
-                [course_type] * len(results),
+        files: list[t.File] = [
+            parser.parse_file(
+                raw=result,
+                file_clazz=file_clazz,
+                course_id=course_id,
+                course_type=course_type,
             )
-        )
+            for result in results
+        ]
+        files.sort(key=lambda x: x.upload_time)
+
+        return files
 
     def get_homework_list(
         self, course_id: str, course_type: t.CourseType = t.CourseType.STUDENT

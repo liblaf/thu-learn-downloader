@@ -10,7 +10,9 @@ else
 	EXE :=
 endif
 
-TARGET := $(DIST)/$(NAME)$(EXE)
+TARGET         := $(DIST)/$(NAME)$(EXE)
+TARGET_INSTALL := $(BIN)/$(NAME)$(EXE)
+TARGET_RENAME  := $(DIST)/$(NAME)-$(OS)-$(ARCH)$(EXE)
 
 build: $(TARGET)
 
@@ -21,23 +23,22 @@ clean:
 
 demo: $(CURDIR)/demo.gif
 
-install: $(TARGET) | $(BIN)
-	install --target-directory=$(BIN) $<
+deps: $(CURDIR)/poetry.lock $(CURDIR)/requirements.txt
+
+install: $(TARGET_INSTALL)
 
 pretty:
 	isort --profile black $(CURDIR)
 	black $(CURDIR)
 
-rename: $(TARGET)
-ifneq ($(and $(OS), $(ARCH)), )
-	mv $< $(DIST)/$(NAME)-$(OS)-$(ARCH)$(EXE)
-endif
+rename: $(TARGET_RENAME)
 
-$(TARGET):
-	pyinstaller --distpath $(DIST) --onefile --name $(NAME) $(CURDIR)/main.py
+ALWAYS:
 
-$(BIN):
-	mkdir --parents $@
+$(TARGET_INSTALL): $(TARGET)
+$(TARGET_RENAME) : $(TARGET)
+$(TARGET_INSTALL) $(TARGET_RENAME):
+	install -D --mode=u=rwx,go=rx --no-target-directory $< $@
 
 $(CURDIR)/demo.gif: $(CURDIR)/demo.tape
 ifeq ($(BW_SESSION),)
@@ -45,3 +46,12 @@ ifeq ($(BW_SESSION),)
 else
 	vhs < $<
 endif
+
+$(CURDIR)/poetry.lock: ALWAYS
+	poetry lock
+
+$(CURDIR)/requirements.txt: $(CURDIR)/poetry.lock
+	poetry export --output=$@ --without-hashes --without-urls
+
+$(TARGET):
+	pyinstaller --distpath $(DIST) --onefile --name $(NAME) $(CURDIR)/main.py
