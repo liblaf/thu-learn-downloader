@@ -36,9 +36,10 @@ rename: $(TARGET_RENAME)
 ALWAYS:
 
 $(TARGET_INSTALL): $(TARGET)
-$(TARGET_RENAME) : $(TARGET)
-$(TARGET_INSTALL) $(TARGET_RENAME):
 	install -D --mode=u=rwx,go=rx --no-target-directory $< $@
+
+$(TARGET_RENAME): $(TARGET)
+	mv $< $@
 
 $(CURDIR)/demo.gif: $(CURDIR)/demo.tape
 ifeq ($(BW_SESSION),)
