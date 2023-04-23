@@ -2,10 +2,9 @@
 
 ## [0.1.12](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.11...v0.1.12) (2023-04-23)
 
-
 ### Bug Fixes
 
-* sort files by upload time ([1c6ef47](https://github.com/liblaf/thu-learn-downloader/commit/1c6ef4750875af988dda128a17b6da6c94da6997))
+- sort files by upload time ([1c6ef47](https://github.com/liblaf/thu-learn-downloader/commit/1c6ef4750875af988dda128a17b6da6c94da6997))
 
 ## [0.1.11](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.10...v0.1.11) (2023-04-20)
 
