@@ -26,7 +26,7 @@ thu-learn
 
 **Usage**:
 
-```shell-session
+```console
 $ tld [OPTIONS]
 ```
 
@@ -38,8 +38,6 @@ $ tld [OPTIONS]
 - `-c, --course TEXT`
 - `--prefix PATH`: [default: /home/liblaf/Desktop/thu-learn]
 - `-s, --size-limit INTEGER`: [default: 9223372036854775807]
-- `--install-completion`: Install completion for the current shell.
-- `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
 - `--help`: Show this message and exit.
 
 ## Features

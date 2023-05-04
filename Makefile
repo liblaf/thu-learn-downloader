@@ -2,8 +2,13 @@ BIN  := $(HOME)/.local/bin
 DIST := $(CURDIR)/dist
 NAME := tld
 
-OS   := $(shell echo $(RUNNER_OS)   | tr '[:upper:]' '[:lower:]')
-ARCH := $(shell echo $(RUNNER_ARCH) | tr '[:upper:]' '[:lower:]')
+OS   != echo $(RUNNER_OS)   | tr '[:upper:]' '[:lower:]'
+ARCH != echo $(RUNNER_ARCH) | tr '[:upper:]' '[:lower:]'
+
+ifneq ($(and $(OS), $(ARCH)),)
+	NAME := $(NAME)-$(OS)-$(ARCH)
+endif
+
 ifeq ($(OS), windows)
 	EXE := .exe
 else
@@ -12,9 +17,6 @@ endif
 
 TARGET         := $(DIST)/$(NAME)$(EXE)
 TARGET_INSTALL := $(BIN)/$(NAME)$(EXE)
-TARGET_RENAME  := $(DIST)/$(NAME)-$(OS)-$(ARCH)$(EXE)
-
-build: $(TARGET)
 
 clean:
 	$(RM) --recursive $(CURDIR)/build
@@ -23,23 +25,20 @@ clean:
 
 demo: $(CURDIR)/demo.gif
 
-deps: $(CURDIR)/poetry.lock $(CURDIR)/requirements.txt
+dist: $(TARGET)
 
 install: $(TARGET_INSTALL)
+
+poetry: $(CURDIR)/poetry.lock $(CURDIR)/requirements.txt
 
 pretty:
 	isort --profile black $(CURDIR)
 	black $(CURDIR)
 
-rename: $(TARGET_RENAME)
-
 ALWAYS:
 
 $(TARGET_INSTALL): $(TARGET)
 	install -D --mode=u=rwx,go=rx --no-target-directory $< $@
-
-$(TARGET_RENAME): $(TARGET)
-	mv $< $@
 
 $(CURDIR)/demo.gif: $(CURDIR)/demo.tape
 ifeq ($(BW_SESSION),)
@@ -55,4 +54,4 @@ $(CURDIR)/requirements.txt: $(CURDIR)/poetry.lock
 	poetry export --output=$@ --without-hashes --without-urls
 
 $(TARGET):
-	pyinstaller --distpath $(DIST) --onefile --name $(NAME) $(CURDIR)/main.py
+	pyinstaller --onefile --name $(NAME) $(CURDIR)/main.py

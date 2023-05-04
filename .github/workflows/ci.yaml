@@ -56,7 +56,7 @@ jobs:
       - name: Install Dependencies
         run: poetry install --no-interaction
       - name: Build Executable
-        run: poetry run make rename
+        run: poetry run make dist
         env:
           RUNNER_OS: ${{ runner.os }}
           RUNNER_ARCH: ${{ runner.arch }}
