@@ -58,4 +58,8 @@ else
 endif
 
 $(TARGET): $(CURDIR)/main.py
+ifeq ($(OS), windows)
+	pyinstaller --distpath=$(DIST) --workpath=$(CURDIR)/build --onefile --name=$(NAME) $<
+else
 	python -m nuitka --standalone --onefile --output-filename=$(NAME) --output-dir=$(DIST) --remove-output $<
+endif
