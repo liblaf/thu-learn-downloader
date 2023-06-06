@@ -18,6 +18,8 @@ endif
 TARGET         := $(DIST)/$(NAME)$(EXE)
 TARGET_INSTALL := $(BIN)/$(NAME)$(EXE)
 
+all:
+
 clean:
 	$(RM) --recursive $(CURDIR)/build
 	$(RM) --recursive $(DIST)
@@ -29,16 +31,21 @@ dist: $(TARGET)
 
 install: $(TARGET_INSTALL)
 
-poetry: $(CURDIR)/poetry.lock $(CURDIR)/requirements.txt
+pretty: black prettier
 
-pretty:
+################################################################
+#                      Auxiliary Targets                       #
+################################################################
+
+black:
 	isort --profile black $(CURDIR)
 	black $(CURDIR)
 
-ALWAYS:
+prettier: $(CURDIR)/.gitignore
+	prettier --write --ignore-path $< $(CURDIR)
 
 $(TARGET_INSTALL): $(TARGET)
-	install -D --mode=u=rwx,go=rx --no-target-directory $< $@
+	@ install -D --mode="u=rwx,go=rx" --no-target-directory --verbose $< $@
 
 $(CURDIR)/demo.gif: $(CURDIR)/demo.tape
 ifeq ($(BW_SESSION),)
@@ -47,11 +54,5 @@ else
 	vhs < $<
 endif
 
-$(CURDIR)/poetry.lock: ALWAYS
-	poetry lock
-
-$(CURDIR)/requirements.txt: $(CURDIR)/poetry.lock
-	poetry export --output=$@ --without-hashes --without-urls
-
-$(TARGET):
-	pyinstaller --onefile --name $(NAME) $(CURDIR)/main.py
+$(TARGET): $(CURDIR)/main.py
+	python -m nuitka --standalone --onefile --output-filename=$(NAME) --output-dir=$(DIST) --remove-output $<

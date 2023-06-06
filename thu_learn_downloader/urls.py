@@ -18,8 +18,8 @@ def make_url(scheme: str = "https", netloc: str = LEARN_PREFIX, path: str = "") 
 def make_req(
     method: str = "GET",
     url: str = make_url(),
-    data: dict = dict(),
-    params: dict = dict(),
+    data: dict = {},
+    params: dict = {},
 ) -> Request:
     return Request(method=method, url=url, data=data, params=params)
 

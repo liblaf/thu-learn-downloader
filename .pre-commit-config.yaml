@@ -1,45 +1,160 @@
 ci:
   skip:
+    - go-unit-tests
+    - go-build
+    - latexindent
     - poetry-lock
 
+exclude: .*.pdf
+
 repos:
-  - repo: https://github.com/commitizen-tools/commitizen
-    rev: "3.0.1"
-    hooks:
-      - id: commitizen
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v3.0.0-alpha.9-for-vscode"
-    hooks:
-      - id: prettier
-        stages:
-          - commit
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: "v4.4.0"
     hooks:
       - id: check-added-large-files
+      - id: check-ast
+      # - id: check-byte-order-marker # deprecated
+      - id: check-builtin-literals
       - id: check-case-conflict
+      # - id: check-docstring-first
+      - id: check-executables-have-shebangs
       - id: check-json
+      # - id: check-shebang-scripts-are-executable
+      # - id: pretty-format-json
+      - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-xml
       - id: check-yaml
+      - id: debug-statements
       - id: destroyed-symlinks
+      # - id: detect-aws-credentials
+      - id: detect-private-key
+      # - id: double-quote-string-fixer
       - id: end-of-file-fixer
+      # - id: file-contents-sorter
+      - id: fix-byte-order-marker
+      # - id: fix-encoding-pragma
+      # - id: forbid-new-submodules
+      # - id: forbid-submodules
       - id: mixed-line-ending
+      - id: name-tests-test
+      # - id: no-commit-to-branch
+      # - id: requirements-txt-fixer
+      # - id: sort-simple-yaml
       - id: trailing-whitespace
-  - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: "0.22.0"
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: "v16.0.4"
     hooks:
+      - id: clang-format
+        types_or:
+          - c
+          - c++
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v3.0.0-alpha.9-for-vscode"
+    hooks:
+      - id: prettier
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: "v0.5.1"
+    hooks:
+      - id: go-fmt
+      # - id: go-vet
+      # - id: go-lint
+      # - id: go-imports
+      # - id: go-cyclo
+      # - id: validate-toml
+      - id: no-go-testing
+      # - id: golangci-lint
+      # - id: go-critic
+      - id: go-unit-tests
+      - id: go-build
+      - id: go-mod-tidy
+        files: go.mod
+  - repo: https://github.com/psf/black
+    rev: "23.3.0"
+    hooks:
+      - id: black
+      - id: black-jupyter
+  - repo: https://github.com/PyCQA/isort
+    rev: "5.12.0"
+    hooks:
+      - id: isort
+        args:
+          - --profile
+          - black
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: "3.2.2"
+    hooks:
+      - id: commitizen
+      # - id: commitizen-branch
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: "v0.6.13"
+    hooks:
+      - id: cmake-format
+      - id: cmake-lint
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: "0.23.1"
+    hooks:
+      # - id: check-jsonschema
+      # - id: check-metaschema
+      - id: check-azure-pipelines
+      - id: check-bamboo-spec
+      - id: check-buildkite
       - id: check-dependabot
       - id: check-github-actions
       - id: check-github-workflows
+      - id: check-gitlab-ci
+      - id: check-readthedocs
+      - id: check-renovate
+      - id: check-travis
+  - repo: https://github.com/sirosen/texthooks
+    rev: "0.5.0"
+    hooks:
+      - id: fix-smartquotes
+      - id: fix-ligatures
+      - id: fix-spaces
+      - id: forbid-bidi-controls
+      - id: macro-expand
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: "v3.6.0-2"
+    hooks:
+      - id: shfmt
+        files: (.sh|.zsh|.zsh-theme|envrc|zshrc)(.tmpl)?$
+        types:
+          - text
+        args:
+          - --write
+          - --simplify
+          - --indent
+          - "2"
+          - --case-indent
+          - --space-redirects
+      # - id: shfmt-docker
+  - repo: https://github.com/cmhughes/latexindent.pl
+    rev: "V3.22"
+    hooks:
+      - id: latexindent
+        files: .(tex|sty|cls|bib)$
+        types:
+          - text
+        args:
+          - --overwriteIfDifferent
+          - --silent
+          - --cruft=/tmp
+          - --modifylinebreaks
+          - --GCString
+      # - id: latexindent-conda
+      # - id: latexindent-docker
+
   - repo: https://github.com/python-poetry/poetry
-    rev: "1.4.0"
+    rev: "1.5.0"
     hooks:
       - id: poetry-check
       - id: poetry-lock
+        files: pyproject.toml
       - id: poetry-export
         args:
-          - "--output"
-          - "requirements.txt"
-          - "--without-hashes"
-          - "--without-urls"
+          - --output=requirements.txt
+          - --without-hashes
+          - --without-urls

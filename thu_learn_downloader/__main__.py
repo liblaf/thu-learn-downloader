@@ -25,9 +25,7 @@ app = typer.Typer(name="tld")
 @app.command(name="tld")
 def main(
     username: str = typer.Option("liqin20", "-u", "--username"),
-    password: str = typer.Option(
-        None, "-p", "--password", prompt=True, hide_input=True
-    ),
+    password: str = typer.Option(..., "-p", "--password", prompt=True, hide_input=True),
     semester: list[str] = typer.Option(["2022-2023-2"], "-s", "--semester"),
     course: list[str] = typer.Option([], "-c", "--course"),
     prefix: Path = typer.Option(Path.home() / "Desktop" / "thu-learn", "--prefix"),

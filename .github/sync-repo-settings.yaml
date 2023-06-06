@@ -1,2 +1,4 @@
+# https://github.com/googleapis/repo-automation-bots/tree/main/packages/sync-repo-settings
+
 # Automatically delete head branches after merging PRs.  Defaults to `true`.
 deleteBranchOnMerge: true

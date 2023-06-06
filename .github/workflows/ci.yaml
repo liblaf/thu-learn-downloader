@@ -5,14 +5,12 @@ on:
     branches:
       - main
 
-# - [x] Settings > General > Pull Requests > Automatically delete head branches
-# - [x] Settings > Actions > General > Workflow permissions > Allow GitHub Actions to create and approve pull requests
 permissions:
   contents: write
   pull-requests: write
 
 env:
-  PYTHON_VERSION: "3.11"
+  PYTHON_VERSION: 3.x
 
 jobs:
   build-pkg:
@@ -56,10 +54,10 @@ jobs:
       - name: Install Dependencies
         run: poetry install --no-interaction
       - name: Build Executable
-        run: poetry run make dist
-        env:
-          RUNNER_OS: ${{ runner.os }}
-          RUNNER_ARCH: ${{ runner.arch }}
+        run: |-
+          poetry run make dist \
+            RUNNER_OS=${{ runner.os }} \
+            RUNNER_ARCH=${{ runner.arch }}
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -91,7 +89,7 @@ jobs:
       - build-exe
       - build-pkg
       - release
-    if: always() && needs.release.outputs.releases-created == 'true'
+    if: needs.release.outputs.releases-created == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
@@ -99,12 +97,10 @@ jobs:
         with:
           path: artifacts
       - name: Upload Release Assets
-        uses: svenstaro/upload-release-action@master
+        uses: softprops/action-gh-release@v0.1.15
         with:
-          file: artifacts/**/*
-          tag: ${{ needs.release.outputs.tag-name }}
-          file_glob: true
-          overwrite: true
+          tag_name: ${{ needs.release.outputs.tag-name }}
+          files: artifacts/**/*
 
   publish:
     name: Publish to PyPI

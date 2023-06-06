@@ -59,7 +59,7 @@ def parse_homework(raw: dict, status: t.HomeworkStatus, helper: "Helper") -> t.H
         id=raw["zyid"],  # 作业 ID
         student_homework_id=raw["xszyid"],  # 学生作业 ID
         number=int(raw["wz"]),  #
-        title=html.unescape(raw["bt"]),  #  标题
+        title=str(html.unescape(raw["bt"])).strip(),  #  标题
         starts_time=utils.from_timestamp(raw.get("kssj")),  # 开始时间
         deadline=utils.from_timestamp(raw.get("jzsj")),  # 截止时间
         submit_time=utils.from_timestamp(raw.get("scsj")),  # 上传时间

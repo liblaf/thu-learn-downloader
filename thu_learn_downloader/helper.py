@@ -66,7 +66,7 @@ class Helper(Session):
         resp: Response = self.fetch_with_token(
             urls.learn_course_list(semester=semester_id, course_type=course_type)
         )
-        results = resp.json()["resultList"] or list()
+        results = resp.json()["resultList"] or []
         return list(map(parser.parse_course_info, results))
 
     def get_file_list(
@@ -75,7 +75,7 @@ class Helper(Session):
         resp: Response = self.fetch_with_token(
             urls.learn_file_clazz(course_id=course_id)
         )
-        file_clazz: dict[str, str] = dict()
+        file_clazz: dict[str, str] = {}
         rows = resp.json()["object"]["rows"]
         for row in rows:
             file_clazz[row["kjflid"]] = row["bt"]  # 课件分类 ID, 标题
@@ -128,7 +128,7 @@ class Helper(Session):
     ) -> list[t.Homework]:
         resp: Response = self.fetch_with_token(request=req)
         json = resp.json()
-        res = json["object"]["aaData"] or list()
+        res = json["object"]["aaData"] or []
         return list(
             map(
                 parser.parse_homework,
