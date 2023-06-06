@@ -2,16 +2,14 @@
 
 ## [0.1.13](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.12...v0.1.13) (2023-06-06)
 
-
 ### Bug Fixes
 
-* strip homework title ([1f97907](https://github.com/liblaf/thu-learn-downloader/commit/1f97907155fc374b7d74a5b4d853767fa3af3238))
-
+- strip homework title ([1f97907](https://github.com/liblaf/thu-learn-downloader/commit/1f97907155fc374b7d74a5b4d853767fa3af3238))
 
 ### Documentation
 
-* update demo.gif ([0fddf7e](https://github.com/liblaf/thu-learn-downloader/commit/0fddf7ebd713f6865454977cdbf59500569839cf))
-* update usage ([a1d98e7](https://github.com/liblaf/thu-learn-downloader/commit/a1d98e71282291307794da6fba3e0008ecd75811))
+- update demo.gif ([0fddf7e](https://github.com/liblaf/thu-learn-downloader/commit/0fddf7ebd713f6865454977cdbf59500569839cf))
+- update usage ([a1d98e7](https://github.com/liblaf/thu-learn-downloader/commit/a1d98e71282291307794da6fba3e0008ecd75811))
 
 ## [0.1.12](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.11...v0.1.12) (2023-04-23)
 
