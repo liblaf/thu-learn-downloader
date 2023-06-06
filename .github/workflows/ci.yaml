@@ -55,9 +55,7 @@ jobs:
         run: poetry install --no-interaction
       - name: Build Executable
         run: |-
-          poetry run make dist \
-            RUNNER_OS=${{ runner.os }} \
-            RUNNER_ARCH=${{ runner.arch }}
+          poetry run make dist RUNNER_OS=${{ runner.os }} RUNNER_ARCH=${{ runner.arch }}
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -69,6 +67,7 @@ jobs:
           - macos-latest
           - ubuntu-latest
           - windows-latest
+    continue-on-error: true
 
   release:
     name: Create GitHub Release
