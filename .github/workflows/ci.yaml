@@ -43,6 +43,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install GNU Make
+        if: runner.os == 'macOS'
+        # https://formulae.brew.sh/formula/make
+        run: |-
+          brew install make
+          echo "$(brew --prefix)/opt/make/libexec/gnubin" >> ${GITHUB_PATH}
       - name: Install Poetry
         run: pipx install poetry
       - id: python
