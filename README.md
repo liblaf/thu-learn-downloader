@@ -4,7 +4,7 @@ Download everything from Web Learning of Tsinghua University
 
 ## Demo
 
-![Demo](https://res.cloudinary.com/liblaf/image/upload/v1679497703/2023/03/22/20230322-1679497699.gif)
+![Demo](https://cdn.liblaf.me/image/2023/06/06/2023-06-06-23-25-02.gif)
 
 The resulting file structure looks like:
 

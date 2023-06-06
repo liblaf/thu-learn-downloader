@@ -51,7 +51,7 @@ $(CURDIR)/demo.gif: $(CURDIR)/demo.tape
 ifeq ($(BW_SESSION),)
 	$(error Bitwarden Locked)
 else
-	vhs < $<
+	vhs --output $@ $<
 endif
 
 $(TARGET): $(CURDIR)/main.py
