@@ -33,7 +33,7 @@ $ tld [OPTIONS]
 **Options**:
 
 - `-u, --username TEXT`: [default: liqin20]
-- `-p, --password TEXT`
+- `-p, --password TEXT`: [required]
 - `-s, --semester TEXT`: [default: 2022-2023-2]
 - `-c, --course TEXT`
 - `--prefix PATH`: [default: /home/liblaf/Desktop/thu-learn]

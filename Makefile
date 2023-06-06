@@ -27,6 +27,9 @@ clean:
 
 demo: $(CURDIR)/demo.gif
 
+docs: $(CURDIR)/main.py
+	typer $< utils docs --name $(NAME)
+
 dist: $(TARGET)
 
 install: $(TARGET_INSTALL)
