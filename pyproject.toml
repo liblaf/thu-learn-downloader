@@ -13,7 +13,7 @@ name = "thu-learn-downloader"
 packages = [{ include = "thu_learn_downloader" }]
 readme = "README.md"
 repository = "https://github.com/liblaf/thu-learn-downloader"
-version = "0.1.14"
+version = "0.1.15"
 
 [tool.poetry.dependencies]
 beautifulsoup4 = "^4.12.2"
