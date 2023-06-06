@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.15](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.14...v0.1.15) (2023-06-06)
+
+
+### Bug Fixes
+
+* build standalone executable on Windows ([eaf02b5](https://github.com/liblaf/thu-learn-downloader/commit/eaf02b567570e176ee5031d35543d02f962151c3))
+
 ## [0.1.14](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.13...v0.1.14) (2023-06-06)
 
 ### Bug Fixes
