@@ -20,15 +20,15 @@ TARGET_INSTALL := $(BIN)/$(NAME)$(EXE)
 
 all:
 
-clean:
+include make/*.mk
+
+clean: demo-clean
 	$(RM) --recursive $(CURDIR)/build
 	$(RM) --recursive $(DIST)
 	$(RM) $(CURDIR)/*.spec
 
-demo: $(CURDIR)/demo.gif
-
 docs: $(CURDIR)/main.py
-	typer $< utils docs --name $(NAME)
+	typer $< utils docs --name=$(NAME)
 
 dist: $(TARGET)
 
@@ -36,16 +36,16 @@ install: $(TARGET_INSTALL)
 
 pretty: black prettier
 
-################################################################
-#                      Auxiliary Targets                       #
-################################################################
+#####################
+# Auxiliary Targets #
+#####################
 
 black:
 	isort --profile black $(CURDIR)
 	black $(CURDIR)
 
 prettier: $(CURDIR)/.gitignore
-	prettier --write --ignore-path $< $(CURDIR)
+	prettier --write --ignore-path=$< $(CURDIR)
 
 $(TARGET_INSTALL): $(TARGET)
 	@ install -D --mode="u=rwx,go=rx" --no-target-directory --verbose $< $@
@@ -54,7 +54,7 @@ $(CURDIR)/demo.gif: $(CURDIR)/demo.tape
 ifeq ($(BW_SESSION),)
 	$(error Bitwarden Locked)
 else
-	vhs --output $@ $<
+	vhs --output=$@ $<
 endif
 
 $(TARGET): $(CURDIR)/main.py

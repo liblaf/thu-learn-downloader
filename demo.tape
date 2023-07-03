@@ -8,4 +8,4 @@ Require tld
 Type 'tld --password "$(bw get password id.tsinghua.edu.cn)"'
 Sleep 500ms
 Enter
-Sleep 10s
+Sleep 5s

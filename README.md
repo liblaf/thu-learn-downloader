@@ -1,10 +1,10 @@
-# thu-learn-downloader
+# THU Web Learning Downloader
 
 Download everything from Web Learning of Tsinghua University
 
 ## Demo
 
-![Demo](https://cdn.liblaf.me/image/2023/06/06/2023-06-06-23-25-02.gif)
+![Demo](https://github.com/liblaf/thu-learn-downloader/raw/assets/demo.png)
 
 The resulting file structure looks like:
 
