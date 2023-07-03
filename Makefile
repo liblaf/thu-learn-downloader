@@ -23,9 +23,10 @@ all:
 include make/*.mk
 
 clean: demo-clean
+	@ find $(CURDIR) -type d -name '__pycache__' -exec $(RM) --recursive --verbose '{}' +
+	@ find $(CURDIR) -type f -name '*.spec'      -exec $(RM) --verbose '{}' +
 	$(RM) --recursive $(CURDIR)/build
 	$(RM) --recursive $(DIST)
-	$(RM) $(CURDIR)/*.spec
 
 docs: $(CURDIR)/main.py
 	typer $< utils docs --name=$(NAME)
