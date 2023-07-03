@@ -2,11 +2,10 @@
 
 ## [0.1.16](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.15...v0.1.16) (2023-07-03)
 
-
 ### Documentation
 
-* add badges ([169876a](https://github.com/liblaf/thu-learn-downloader/commit/169876a09722220ebd612f59e0c2043632ab855f))
-* update demo ([fbc53be](https://github.com/liblaf/thu-learn-downloader/commit/fbc53be5846772ea507f871c837b66abe942faf0))
+- add badges ([169876a](https://github.com/liblaf/thu-learn-downloader/commit/169876a09722220ebd612f59e0c2043632ab855f))
+- update demo ([fbc53be](https://github.com/liblaf/thu-learn-downloader/commit/fbc53be5846772ea507f871c837b66abe942faf0))
 
 ## [0.1.15](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.14...v0.1.15) (2023-06-06)
 
