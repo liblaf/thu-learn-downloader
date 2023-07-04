@@ -28,9 +28,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: poetry
       - name: Install Dependencies
-        run: poetry install --no-interaction
+        run: poetry install
       - name: Build Package
-        run: poetry build --no-interaction
+        run: poetry build
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -58,10 +58,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: poetry
       - name: Install Dependencies
-        run: poetry install --no-interaction
+        run: poetry install
       - name: Build Executable
-        run: |-
-          poetry run make dist RUNNER_OS=${{ runner.os }} RUNNER_ARCH=${{ runner.arch }}
+        run: poetry run make dist
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -124,6 +123,6 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: poetry
       - name: Install Dependencies
-        run: poetry install --no-interaction
+        run: poetry install
       - name: Publish to PyPI
-        run: poetry publish --username "${{ secrets.PYPI_USERNAME }}" --password "${{ secrets.PYPI_PASSWORD }}" --build --no-interaction
+        run: poetry publish --username="${{ secrets.PYPI_USERNAME }}" --password="${{ secrets.PYPI_PASSWORD }}" --build

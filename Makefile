@@ -1,22 +1,15 @@
-BIN  := $(HOME)/.local/bin
-DIST := $(CURDIR)/dist
-NAME := tld
+BUILD := $(CURDIR)/build
+DIST  := $(CURDIR)/dist
+NAME  := tld
 
-OS   != echo $(RUNNER_OS)   | tr '[:upper:]' '[:lower:]'
-ARCH != echo $(RUNNER_ARCH) | tr '[:upper:]' '[:lower:]'
-
-ifneq ($(and $(OS), $(ARCH)),)
-	NAME := $(NAME)-$(OS)-$(ARCH)
-endif
-
-ifeq ($(OS), windows)
-	EXE := .exe
+SYSTEM  != python -c 'import platform; print(platform.system().lower())'
+MACHINE != python -c 'import platform; print(platform.machine().lower())'
+ifeq ($(SYSTEM), windows)
+  EXE := .exe
 else
-	EXE :=
+  EXE :=
 endif
-
-TARGET         := $(DIST)/$(NAME)$(EXE)
-TARGET_INSTALL := $(BIN)/$(NAME)$(EXE)
+DIST_TARGET := $(DIST)/$(NAME)-$(SYSTEM)-$(MACHINE)$(EXE)
 
 all:
 
@@ -25,21 +18,30 @@ include make/*.mk
 clean: demo-clean
 	@ find $(CURDIR) -type d -name '__pycache__' -exec $(RM) --recursive --verbose '{}' +
 	@ find $(CURDIR) -type f -name '*.spec'      -exec $(RM) --verbose '{}' +
-	$(RM) --recursive $(CURDIR)/build
+	$(RM) --recursive $(BUILD)
 	$(RM) --recursive $(DIST)
 
 docs: $(CURDIR)/main.py
 	typer $< utils docs --name=$(NAME)
 
-dist: $(TARGET)
-
-install: $(TARGET_INSTALL)
+dist: $(DIST_TARGET)
 
 pretty: black prettier
+
+setup:
+	poetry install
+	conda install --yes libpython-static
 
 #####################
 # Auxiliary Targets #
 #####################
+
+$(DIST_TARGET): $(CURDIR)/main.py
+ifeq ($(OS), windows)
+	pyinstaller --distpath=$(DIST) --workpath=$(BUILD) --onefile --name=$(NAME)-$(SYSTEM)-$(MACHINE) $<
+else
+	python -m nuitka --standalone --onefile --output-filename=$(@F) --output-dir=$(@D) --remove-output  $<
+endif
 
 black:
 	isort --profile black $(CURDIR)
@@ -47,20 +49,3 @@ black:
 
 prettier: $(CURDIR)/.gitignore
 	prettier --write --ignore-path=$< $(CURDIR)
-
-$(TARGET_INSTALL): $(TARGET)
-	@ install -D --mode="u=rwx,go=rx" --no-target-directory --verbose $< $@
-
-$(CURDIR)/demo.gif: $(CURDIR)/demo.tape
-ifeq ($(BW_SESSION),)
-	$(error Bitwarden Locked)
-else
-	vhs --output=$@ $<
-endif
-
-$(TARGET): $(CURDIR)/main.py
-ifeq ($(OS), windows)
-	pyinstaller --distpath=$(DIST) --workpath=$(CURDIR)/build --onefile --name=$(NAME) $<
-else
-	python -m nuitka --standalone --onefile --output-filename=$(NAME) --output-dir=$(DIST) --remove-output $<
-endif
