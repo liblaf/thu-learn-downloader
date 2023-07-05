@@ -1,10 +1,10 @@
 # THU Web Learning Downloader
 
+Download everything from Web Learning of Tsinghua University
+
 [![Build Status](https://img.shields.io/github/actions/workflow/status/liblaf/thu-learn-downloader/ci.yaml)](https://github.com/liblaf/thu-learn-downloader/actions/workflows/ci.yaml)
 [![Python Version](https://img.shields.io/pypi/pyversions/thu-learn-downloader)](https://pypi.org/project/thu-learn-downloader/)
 [![PyPI](https://img.shields.io/pypi/v/thu-learn-downloader)](https://pypi.org/project/thu-learn-downloader/)
-
-Download everything from Web Learning of Tsinghua University
 
 ## Demo
 
