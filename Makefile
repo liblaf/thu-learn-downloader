@@ -1,6 +1,7 @@
+NAME  := tld
+
 BUILD := $(CURDIR)/build
 DIST  := $(CURDIR)/dist
-NAME  := tld
 
 SYSTEM  != python -c 'import platform; print(platform.system().lower())'
 MACHINE != python -c 'import platform; print(platform.machine().lower())'
@@ -37,10 +38,10 @@ setup:
 #####################
 
 $(DIST_TARGET): $(CURDIR)/main.py
-ifeq ($(OS), windows)
-	pyinstaller --distpath=$(DIST) --workpath=$(BUILD) --onefile --name=$(NAME)-$(SYSTEM)-$(MACHINE) $<
-else
+ifneq ($(SYSTEM), windows)
 	python -m nuitka --standalone --onefile --output-filename=$(@F) --output-dir=$(@D) --remove-output  $<
+else
+	pyinstaller --distpath=$(DIST) --workpath=$(BUILD) --onefile --name=$(NAME)-$(SYSTEM)-$(MACHINE) $<
 endif
 
 black:
