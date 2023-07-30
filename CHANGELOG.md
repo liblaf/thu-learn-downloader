@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.17](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.16...v0.1.17) (2023-07-30)
+
+### Bug Fixes
+
+- mkdir when there is no docs or work ([3cdb387](https://github.com/liblaf/thu-learn-downloader/commit/3cdb387e66feca8e697c3059bccb1440f240f7b3)), closes [#59](https://github.com/liblaf/thu-learn-downloader/issues/59)
+
+### Documentation
+
+- pretty README ([8551cb0](https://github.com/liblaf/thu-learn-downloader/commit/8551cb0e3c000a75d4b2059e299896b997a6f33e))
+
 ## [0.1.16](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.15...v0.1.16) (2023-07-03)
 
 ### Documentation
