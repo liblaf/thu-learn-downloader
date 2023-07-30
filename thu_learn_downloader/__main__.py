@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+from typing import Annotated
 
 import typer
 from rich.console import Group
@@ -24,12 +25,17 @@ app = typer.Typer(name="tld")
 
 @app.command(name="tld")
 def main(
-    username: str = typer.Option("liqin20", "-u", "--username"),
-    password: str = typer.Option(..., "-p", "--password", prompt=True, hide_input=True),
-    semester: list[str] = typer.Option(["2022-2023-2"], "-s", "--semester"),
-    course: list[str] = typer.Option([], "-c", "--course"),
-    prefix: Path = typer.Option(Path.home() / "Desktop" / "thu-learn", "--prefix"),
-    size_limit: int = typer.Option(sys.maxsize, "-s", "--size-limit"),
+    *,
+    username: Annotated[str, typer.Option("-u", "--username")] = "liqin20",
+    password: Annotated[
+        str, typer.Option("-p", "--password", prompt=True, hide_input=True)
+    ],
+    semester: Annotated[list[str], typer.Option("-s", "--semester")] = ["2022-2023-2"],
+    course: Annotated[list[str], typer.Option("-c", "--course")] = [],
+    prefix: Annotated[Path, typer.Option("--prefix")] = Path.home()
+    / "Desktop"
+    / "thu-learn",
+    size_limit: Annotated[int, typer.Option("--size-limit")] = sys.maxsize,
 ) -> None:
     config = Config(
         username=username,

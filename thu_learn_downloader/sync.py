@@ -83,6 +83,7 @@ def sync_course(
     *,
     console: Console = Console(),
 ) -> None:
+    os.makedirs(config.prefix / course.english_name, exist_ok=True)
     sync_files(
         helper=helper,
         downloader=downloader,

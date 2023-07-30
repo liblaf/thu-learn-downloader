@@ -20,14 +20,13 @@ beautifulsoup4 = "^4.12.2"
 python = ">=3.11,<3.12"
 requests = "^2.29.0"
 rich = "^13.3.5"
-typer = "^0.7.0"
+typer = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
 isort = "^5.12.0"
 nuitka = "^1.6.1"
 pyinstaller = "^5.11.0"
-typer-cli = "^0.0.13"
 
 [tool.poetry.scripts]
 thu-learn-downloader = "thu_learn_downloader.__main__:app"
