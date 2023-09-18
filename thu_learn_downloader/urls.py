@@ -67,7 +67,7 @@ def learn_course_list(
         case t.CourseType.STUDENT:
             return make_req(
                 url=make_url(
-                    path=f"/b/wlxt/kc/v_wlkc_xs_xkb_kcb_extend/student/loadCourseBySemesterId/{semester}"
+                    path=f"/b/wlxt/kc/v_wlkc_xs_xkb_kcb_extend/student/loadCourseBySemesterId/{semester}/en"
                 )
             )
         case t.CourseType.TEACHER:

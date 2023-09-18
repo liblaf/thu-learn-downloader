@@ -30,7 +30,7 @@ def main(
     password: Annotated[
         str, typer.Option("-p", "--password", prompt=True, hide_input=True)
     ],
-    semester: Annotated[list[str], typer.Option("-s", "--semester")] = ["2022-2023-2"],
+    semester: Annotated[list[str], typer.Option("-s", "--semester")] = ["2023-2024-1"],
     course: Annotated[list[str], typer.Option("-c", "--course")] = [],
     prefix: Annotated[Path, typer.Option("--prefix")] = Path.home()
     / "Desktop"
