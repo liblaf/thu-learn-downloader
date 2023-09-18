@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.18](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.17...v0.1.18) (2023-09-18)
+
+### Bug Fixes
+
+- update web learning API ([ab52430](https://github.com/liblaf/thu-learn-downloader/commit/ab524301ac0d544455b22d0be219dca1ac07bbd5))
+
 ## [0.1.17](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.16...v0.1.17) (2023-07-30)
 
 ### Bug Fixes
