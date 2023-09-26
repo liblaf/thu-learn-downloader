@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.19](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.18...v0.1.19) (2023-09-26)
+
+
+### Bug Fixes
+
+* fix parse error of time ([7733c35](https://github.com/liblaf/thu-learn-downloader/commit/7733c35cf1b468b47a549dd1fb0da4f59de9c624))
+
 ## [0.1.18](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.17...v0.1.18) (2023-09-18)
 
 ### Bug Fixes
