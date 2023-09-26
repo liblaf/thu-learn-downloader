@@ -60,12 +60,12 @@ def parse_homework(raw: dict, status: t.HomeworkStatus, helper: "Helper") -> t.H
         student_homework_id=raw["xszyid"],  # 学生作业 ID
         number=int(raw["wz"]),  #
         title=str(html.unescape(raw["bt"])).strip(),  #  标题
-        starts_time=utils.from_timestamp(raw.get("kssj")),  # 开始时间
-        deadline=utils.from_timestamp(raw.get("jzsj")),  # 截止时间
-        submit_time=utils.from_timestamp(raw.get("scsj")),  # 上传时间
+        starts_time=utils.parse_time(raw.get("kssj")),  # 开始时间
+        deadline=utils.parse_time(raw.get("jzsj")),  # 截止时间
+        submit_time=utils.parse_time(raw.get("scsj")),  # 上传时间
         grade=raw.get("cj", ""),  # 成绩
         grader_name=raw.get("jsm", ""),  # 教师名
-        grade_time=utils.from_timestamp(raw.get("pysj")),  # 批阅时间
+        grade_time=utils.parse_time(raw.get("pysj")),  # 批阅时间
         grade_content=raw.get("pynr", ""),  # 批阅内容
         **utils.dataclass_as_dict_shallow(status),
         **utils.dataclass_as_dict_shallow(detail),

@@ -27,10 +27,14 @@ def describe_work_file(course_name: str, hw_title: str, filename: str) -> str:
     return f"{course_name} > {hw_title} > {filename}"
 
 
-def from_timestamp(t: Optional[float]) -> Optional[datetime]:
+def parse_time(t: Optional[float | str]) -> Optional[datetime]:
     if not t:
         return None
-    return datetime.fromtimestamp(t / 1000.0)
+    match t:
+        case float():
+            return datetime.fromtimestamp(t / 1000.0)
+        case str():
+            return datetime.strptime(t, "%Y-%m-%d %H:%M")
 
 
 def dataclass_as_dict_shallow(obj: Any) -> dict[str, Any]:

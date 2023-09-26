@@ -62,28 +62,21 @@ def main(
 
     with Live(progress_group) as live:
         with downloader.pool:
-            try:
-                helper.login(username=username, password=password)
-            except:
-                live.console.log(
-                    f"Login as {username} FAILED",
-                    style="bold bright_red",
-                )
-            else:
-                live.console.log(
-                    SUCCESS_PREFIX,
-                    f"Login as {username} SUCCESS",
-                    style="bold bright_green",
-                )
-                sync.sync_all(
-                    helper=helper,
-                    downloader=downloader,
-                    config=config,
-                    console=live.console,
-                    overall_progress=overall_progress,
-                    semesters_task_id=semesters_task_id,
-                    courses_task_id=courses_task_id,
-                )
+            helper.login(username=username, password=password)
+            live.console.log(
+                SUCCESS_PREFIX,
+                f"Login as {username} SUCCESS",
+                style="bold bright_green",
+            )
+            sync.sync_all(
+                helper=helper,
+                downloader=downloader,
+                config=config,
+                console=live.console,
+                overall_progress=overall_progress,
+                semesters_task_id=semesters_task_id,
+                courses_task_id=courses_task_id,
+            )
 
 
 if __name__ == "__main__":
