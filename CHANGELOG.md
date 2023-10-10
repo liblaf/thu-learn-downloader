@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.20](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.19...v0.1.20) (2023-10-10)
+
+
+### Bug Fixes
+
+* fix SSL error ([f727398](https://github.com/liblaf/thu-learn-downloader/commit/f7273980dbc15ee9a204a4830cf78337f5e5b838))
+
 ## [0.1.19](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.18...v0.1.19) (2023-09-26)
 
 ### Bug Fixes
