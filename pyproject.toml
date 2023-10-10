@@ -10,24 +10,32 @@ authors = ["liblaf <i@liblaf.me>"]
 description = "Download everything from Web Learning of Tsinghua University"
 license = "MIT"
 name = "thu-learn-downloader"
-packages = [{ include = "thu_learn_downloader" }]
 readme = "README.md"
 repository = "https://github.com/liblaf/thu-learn-downloader"
 version = "0.1.19"
 
 [tool.poetry.dependencies]
 beautifulsoup4 = "^4.12.2"
-python = ">=3.11,<3.12"
-requests = "^2.29.0"
-rich = "^13.3.5"
+pydantic = "^2.4.2"
+python = ">=3.11,<3.13"
+python-dateutil = "^2.8.2"
+requests = "^2.31.0"
+rich = "^13.6.0"
+tenacity = "^8.2.3"
 typer = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.3.0"
+black = "^23.9.1"
+icecream = "^2.1.3"
 isort = "^5.12.0"
-nuitka = "^1.6.1"
-pyinstaller = "^5.11.0"
+nuitka = "^1.8.4"
+pyinstaller = "^6.0.0"
 
 [tool.poetry.scripts]
-thu-learn-downloader = "thu_learn_downloader.__main__:app"
-tld = "thu_learn_downloader.__main__:app"
+thu-learn-downloader = "thu_learn_downloader.main:app"
+tld = "thu_learn_downloader.main:app"
+
+[[tool.poetry.source]]
+name = "mirrors"
+priority = "default"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"

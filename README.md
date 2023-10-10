@@ -36,12 +36,18 @@ $ tld [OPTIONS]
 
 **Options**:
 
-- `-u, --username TEXT`: [default: liqin20]
-- `-p, --password TEXT`: [required]
-- `-s, --semester TEXT`: [default: 2022-2023-2]
+- `-u, --username TEXT`
+- `-p, --password TEXT`
+- `--prefix DIRECTORY`: [default: $HOME/thu-learn]
+- `-s, --semester TEXT`: [default: 2023-2024-1]
 - `-c, --course TEXT`
-- `--prefix PATH`: [default: /home/liblaf/Desktop/thu-learn]
-- `-s, --size-limit INTEGER`: [default: 9223372036854775807]
+- `--document / --no-document`: [default: document]
+- `--homework / --no-homework`: [default: homework]
+- `-j, --jobs INTEGER`: [default: 8]
+- `-l, --language [en|zh]`: [default: en]
+- `--log-level [NOTSET|DEBUG|INFO|WARNING|ERROR|CRITICAL]`: [env var: LOG_LEVEL] [default: INFO]
+- `--install-completion`: Install completion for the current shell.
+- `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
 - `--help`: Show this message and exit.
 
 ## Features

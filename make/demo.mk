@@ -1,26 +1,24 @@
-ASSETS   := $(CURDIR)/assets
-FRAMES   := $(CURDIR)/frames
-TEMPLATE := $(CURDIR)/template
+ASSETS   := assets
+FRAMES   := frames
+TEMPLATE := template
 
 demo: $(ASSETS)/demo.png $(TEMPLATE)/scripts/deploy-gh-pages.sh
-	bash $(TEMPLATE)/scripts/deploy-gh-pages.sh $(dir $<) assets
+	bash $(TEMPLATE)/scripts/deploy-gh-pages.sh $(<D) assets
 
 demo-clean:
-	$(RM) --recursive $(ASSETS)
-	$(RM) --recursive $(FRAMES)
+	@ $(RM) --recursive --verbose $(ASSETS)
+	@ $(RM) --recursive --verbose $(FRAMES)
 
-$(ASSETS) $(FRAMES):
-	@ mkdir --parents --verbose $@
+$(ASSETS)/demo.png: $(FRAMES)/frame-025.png
+	@ mkdir --parents --verbose $(@D)
+	@ cp --verbose $< $@
 
-$(ASSETS)/demo.png: $(FRAMES)/frame-100.png | $(ASSETS)
-	@ install -D --mode="u=rw,go=r" --no-target-directory --verbose $< $@
-
-$(FRAMES)/demo.gif: $(CURDIR)/demo.tape | $(FRAMES)
+$(FRAMES)/demo.gif: demo.tape
 ifeq ($(BW_SESSION),)
 	$(error Bitwarden Locked)
-else
-	vhs --output=$@ $<
 endif
+	@ mkdir --parents --verbose $(@D)
+	vhs --output=$@ $<
 
 $(FRAMES)/frame-%.png: $(FRAMES)/demo.gif
 	magick convert -coalesce $< $(@D)/frame-%03d.png

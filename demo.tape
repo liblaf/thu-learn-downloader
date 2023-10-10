@@ -1,11 +1,9 @@
-Set Width 1920
-Set Height 1440
-Set FontSize 16
+Set Width 3840
+Set Height 2440
+Set FontSize 32
 
-Require bw
 Require tld
 
-Type 'tld --password "$(bw get password id.tsinghua.edu.cn)"'
-Sleep 500ms
+Type "OPENSSL_CONF=openssl.cnf tld"
 Enter
 Sleep 5s
