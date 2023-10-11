@@ -45,9 +45,7 @@ $ tld [OPTIONS]
 - `--homework / --no-homework`: [default: homework]
 - `-j, --jobs INTEGER`: [default: 8]
 - `-l, --language [en|zh]`: [default: en]
-- `--log-level [NOTSET|DEBUG|INFO|WARNING|ERROR|CRITICAL]`: [env var: LOG_LEVEL] [default: INFO]
-- `--install-completion`: Install completion for the current shell.
-- `--show-completion`: Show completion for the current shell, to copy it or customize the installation.
+- `--log-level [NOTSET|DEBUG|INFO|WARNING|ERROR|CRITICAL]`: [env var: LOG_LEVEL; default: INFO]
 - `--help`: Show this message and exit.
 
 ## Features
