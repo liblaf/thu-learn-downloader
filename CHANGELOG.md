@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.21](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.20...v0.1.21) (2023-10-16)
+
+### Bug Fixes
+
+- **pre-commit:** update pre-commit hooks version ([899f58d](https://github.com/liblaf/thu-learn-downloader/commit/899f58dcbcdd6f308d47e97c677be9e457811b72))
+- sort documents by title before upload time ([80c8bfd](https://github.com/liblaf/thu-learn-downloader/commit/80c8bfd4b7255d8f58e3fed773644a460c36f962))
+
 ## [0.1.20](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.19...v0.1.20) (2023-10-10)
 
 ### Bug Fixes
