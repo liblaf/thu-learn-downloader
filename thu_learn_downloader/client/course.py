@@ -42,6 +42,7 @@ class Course(BaseModel):
                 params={"wlkcid": self.id, "size": MAX_SIZE},
             ).json()["object"]
         ]
+        documents.sort(key=lambda document: document.title)
         documents.sort(key=lambda document: document.upload_time)
         return documents
 
