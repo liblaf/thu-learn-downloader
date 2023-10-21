@@ -43,12 +43,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install GNU Make
-        if: runner.os == 'macOS'
-        # https://formulae.brew.sh/formula/make
-        run: |-
-          brew install make
-          echo "$(brew --prefix)/opt/make/libexec/gnubin" >> ${GITHUB_PATH}
+      - name: Install GNU Softwares
+        uses: liblaf/install-action@main
+        with:
+          brew: coreutils gnu-sed make
+          choco: gnuwin32-coreutils.install make sed
       - name: Install Poetry
         run: pipx install poetry
       - id: python
@@ -72,7 +71,6 @@ jobs:
           - macos-latest
           - ubuntu-latest
           - windows-latest
-    continue-on-error: true
 
   release:
     name: Create GitHub Release
@@ -101,7 +99,7 @@ jobs:
         with:
           path: artifacts
       - name: Upload Release Assets
-        uses: softprops/action-gh-release@v0.1.15
+        uses: softprops/action-gh-release@master
         with:
           tag_name: ${{ needs.release.outputs.tag-name }}
           files: artifacts/**/*
@@ -125,4 +123,6 @@ jobs:
       - name: Install Dependencies
         run: poetry install
       - name: Publish to PyPI
-        run: poetry publish --username="${{ secrets.PYPI_USERNAME }}" --password="${{ secrets.PYPI_PASSWORD }}" --build
+        run: poetry publish --build
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}

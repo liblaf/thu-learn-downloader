@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   license:
-    name: Update LICENSE Year
+    name: LICENSE
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

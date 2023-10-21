@@ -1,7 +1,8 @@
 ci:
   skip:
-    - latexindent
-    - poetry-lock
+    - cargo-check
+    - clippy
+    - fmt
     - go-build-mod
     - go-build-repo-mod
     - go-mod-tidy
@@ -10,6 +11,8 @@ ci:
     - go-test-repo-mod
     - go-vet-mod
     - go-vet-repo-mod
+    - latexindent
+    - poetry-lock
 
 repos:
   - repo: https://github.com/cheshirekow/cmake-format-precommit
@@ -18,11 +21,17 @@ repos:
       - id: cmake-format
       - id: cmake-lint
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: 3.10.1
+    rev: 3.12.0
     hooks:
       - id: commitizen
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: cargo-check
+      - id: clippy
+      - id: fmt
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v17.0.2
+    rev: v17.0.3
     hooks:
       - id: clang-format
         types_or:
@@ -32,6 +41,8 @@ repos:
     rev: v3.0.3
     hooks:
       - id: prettier
+        stages:
+          - pre-commit
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
@@ -58,7 +69,7 @@ repos:
       - id: name-tests-test
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 23.10.0
     hooks:
       - id: black
       - id: black-jupyter
@@ -85,18 +96,18 @@ repos:
     rev: 1.6.0
     hooks:
       - id: poetry-check
-      - id: poetry-lock
-        files: pyproject.toml
       - id: poetry-export
         args:
           - --output=requirements.txt
           - --without-hashes
           - --without-urls
+      - id: poetry-lock
+        files: pyproject.toml
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.7.0-1
     hooks:
       - id: shfmt
-        files: (.sh|.zsh|.zsh-theme|envrc|zshrc)(.tmpl)?$
+        files: (\.sh|\.zsh|\.zsh-theme|envrc|zshrc)(\.tmpl)?$
         types:
           - text
         args:
@@ -106,10 +117,10 @@ repos:
           - --case-indent
           - --space-redirects
   - repo: https://github.com/sirosen/texthooks
-    rev: 0.5.0
+    rev: 0.6.2
     hooks:
-      - id: fix-smartquotes
       - id: fix-ligatures
+      - id: fix-smartquotes
       - id: fix-spaces
       - id: forbid-bidi-controls
       - id: macro-expand
@@ -118,14 +129,14 @@ repos:
     hooks:
       - id: go-build-mod
       - id: go-build-repo-mod
+      - id: go-fmt
+      - id: go-fmt-repo
       - id: go-mod-tidy
       - id: go-mod-tidy-repo
       - id: go-test-mod
       - id: go-test-repo-mod
       - id: go-vet-mod
       - id: go-vet-repo-mod
-      - id: go-fmt
-      - id: go-fmt-repo
   - repo: local
     hooks:
       - id: latexindent
