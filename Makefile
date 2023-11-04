@@ -1,4 +1,4 @@
-NAME  := tld
+NAME := tld
 
 ASSETS := assets
 BUILD  := build
@@ -32,9 +32,12 @@ demo-deploy: $(ASSETS)/demo.png scripts/deploy-gh-pages.sh
 
 dist: $(DIST_TARGET)
 
+docs: main.py
+	typer $< utils docs
+
 setup:
 	poetry install
-	conda install --yes libpython-static
+	# conda install --yes libpython-static
 
 #####################
 # Auxiliary Targets #

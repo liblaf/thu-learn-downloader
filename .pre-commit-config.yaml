@@ -1,4 +1,9 @@
 ci:
+  autofix_commit_msg: |-
+    ci(pre-commit): auto fixes from pre-commit.com hooks
+
+    for more information, see https://pre-commit.ci
+  autoupdate_commit_msg: "ci(pre-commit): pre-commit autoupdate"
   skip:
     - cargo-check
     - clippy
@@ -31,7 +36,7 @@ repos:
       - id: clippy
       - id: fmt
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v17.0.3
+    rev: v17.0.4
     hooks:
       - id: clang-format
         types_or:
@@ -69,7 +74,7 @@ repos:
       - id: name-tests-test
       - id: trailing-whitespace
   - repo: https://github.com/psf/black
-    rev: 23.10.0
+    rev: 23.10.1
     hooks:
       - id: black
       - id: black-jupyter
@@ -80,7 +85,7 @@ repos:
         args:
           - --profile=black
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.27.0
+    rev: 0.27.1
     hooks:
       - id: check-azure-pipelines
       - id: check-bamboo-spec
@@ -93,7 +98,7 @@ repos:
       - id: check-renovate
       - id: check-travis
   - repo: https://github.com/python-poetry/poetry
-    rev: 1.6.0
+    rev: 1.7.0
     hooks:
       - id: poetry-check
       - id: poetry-export

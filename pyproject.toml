@@ -25,12 +25,12 @@ tenacity = "^8.2.3"
 typer = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.9.1"
+black = "^23.10.1"
 icecream = "^2.1.3"
 isort = "^5.12.0"
-nuitka = "^1.8.4"
-pyinstaller = "^6.0.0"
-typer-cli = {git = "https://github.com/Patarimi/typer-cli.git"}
+nuitka = "^1.8.5"
+pyinstaller = "^6.1.0"
+typer-cli = { git = "https://github.com/Patarimi/typer-cli.git" }
 
 [tool.poetry.scripts]
 thu-learn-downloader = "thu_learn_downloader.main:app"
