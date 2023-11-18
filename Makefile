@@ -14,9 +14,6 @@ else
 endif
 
 DIST_TARGET := $(DIST)/$(NAME)-$(SYSTEM)-$(MACHINE)$(EXE)
-MAMBA       := micromamba --yes --name=$(NAME)
-RUN         := $(MAMBA) run
-POETRY      := $(RUN) poetry
 
 all:
 
@@ -36,14 +33,14 @@ demo-deploy: $(ASSETS)/demo.png scripts/deploy-gh-pages.sh
 dist: $(DIST_TARGET)
 
 docs: main.py
-	$(RUN) typer $< utils docs
+	typer $< utils docs
 
 run: openssl.cnf
-	OPENSSL_CONF=$< $(POETRY) run $(NAME)
+	OPENSSL_CONF=$< poetry run $(NAME)
 
 setup:
-	$(MAMBA) create libpython-static python
-	$(POETRY) install
+	micromamba --yes --name=$(NAME) create libpython-static python
+	micromamba --yes --name=$(NAME) run poetry install
 
 ###############
 # Auxiliaries #
@@ -51,12 +48,12 @@ setup:
 
 $(ASSETS)/demo.png: demo.tape
 	@ mkdir --parents --verbose $(@D)
-	$(RUN) vhs $<
+	vhs $<
 
 $(DIST_TARGET): main.py
 	@ mkdir --parents --verbose $(@D)
 ifneq ($(SYSTEM), windows)
-	$(RUN) python -m nuitka --standalone --onefile --output-filename=$(@F) --output-dir=$(@D) --remove-output  $<
+	python -m nuitka --standalone --onefile --output-filename=$(@F) --output-dir=$(@D) --remove-output  $<
 else
-	$(RUN) pyinstaller --distpath=$(DIST) --workpath=$(BUILD) --onefile --name=$(NAME)-$(SYSTEM)-$(MACHINE) $<
+	pyinstaller --distpath=$(DIST) --workpath=$(BUILD) --onefile --name=$(NAME)-$(SYSTEM)-$(MACHINE) $<
 endif
