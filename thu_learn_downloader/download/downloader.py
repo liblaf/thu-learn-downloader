@@ -238,7 +238,8 @@ class Downloader:
                 total=len(documents),
                 task_id=self.documents_task_id,
                 description="Documents",
-            )
+            ),
+            start=1,
         ):
             self.sync_document(
                 semester=semester,

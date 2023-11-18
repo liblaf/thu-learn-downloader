@@ -48,7 +48,9 @@ def attachment(
     attachment: Attachment,
 ) -> Path:
     filename: Path = Path(attachment.name)
-    filename = filename.with_stem(f"{attachment.type_}-{homework.title}")
+    filename = filename.with_stem(
+        f"{homework.number:02d}-{attachment.type_}-{homework.title}"
+    )
     return (
         prefix
         / semester.id

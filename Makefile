@@ -1,4 +1,4 @@
-NAME := tld
+NAME := thu-learn-downloader
 
 ASSETS := assets
 BUILD  := build
@@ -14,6 +14,9 @@ else
 endif
 
 DIST_TARGET := $(DIST)/$(NAME)-$(SYSTEM)-$(MACHINE)$(EXE)
+MAMBA       := micromamba --yes --name=$(NAME)
+RUN         := $(MAMBA) run
+POETRY      := $(RUN) poetry
 
 all:
 
@@ -33,24 +36,27 @@ demo-deploy: $(ASSETS)/demo.png scripts/deploy-gh-pages.sh
 dist: $(DIST_TARGET)
 
 docs: main.py
-	typer $< utils docs
+	$(RUN) typer $< utils docs
+
+run: openssl.cnf
+	OPENSSL_CONF=$< $(POETRY) run $(NAME)
 
 setup:
-	poetry install
-	# conda install --yes libpython-static
+	$(MAMBA) create libpython-static python
+	$(POETRY) install
 
-#####################
-# Auxiliary Targets #
-#####################
+###############
+# Auxiliaries #
+###############
 
 $(ASSETS)/demo.png: demo.tape
 	@ mkdir --parents --verbose $(@D)
-	vhs $<
+	$(RUN) vhs $<
 
 $(DIST_TARGET): main.py
 	@ mkdir --parents --verbose $(@D)
 ifneq ($(SYSTEM), windows)
-	python -m nuitka --standalone --onefile --output-filename=$(@F) --output-dir=$(@D) --remove-output  $<
+	$(RUN) python -m nuitka --standalone --onefile --output-filename=$(@F) --output-dir=$(@D) --remove-output  $<
 else
-	pyinstaller --distpath=$(DIST) --workpath=$(BUILD) --onefile --name=$(NAME)-$(SYSTEM)-$(MACHINE) $<
+	$(RUN) pyinstaller --distpath=$(DIST) --workpath=$(BUILD) --onefile --name=$(NAME)-$(SYSTEM)-$(MACHINE) $<
 endif
