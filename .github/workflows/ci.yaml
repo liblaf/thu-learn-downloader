@@ -10,7 +10,7 @@ permissions:
   pull-requests: write
 
 env:
-  PYTHON_VERSION: 3.x
+  PYTHON_VERSION: 3.11
 
 jobs:
   build-pkg:

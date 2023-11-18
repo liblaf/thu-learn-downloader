@@ -39,7 +39,7 @@ run: openssl.cnf
 	OPENSSL_CONF=$< poetry run $(NAME)
 
 setup:
-	micromamba --yes --name=$(NAME) create libpython-static python
+	micromamba --yes --name=$(NAME) create libpython-static python=3.11
 	micromamba --yes --name=$(NAME) run poetry install
 
 ###############
