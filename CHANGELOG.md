@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.0](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.21...v0.2.0) (2023-11-18)
+
+### Features
+
+- Update Makefile and downloader.py ([13b3289](https://github.com/liblaf/thu-learn-downloader/commit/13b328946eae0f31b16fe9a53c9b3050588e3c10))
+
 ## [0.1.21](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.20...v0.1.21) (2023-10-16)
 
 ### Bug Fixes
