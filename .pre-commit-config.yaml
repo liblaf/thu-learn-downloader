@@ -37,7 +37,7 @@ repos:
       - id: clippy
       - id: fmt
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v17.0.4
+    rev: v17.0.5
     hooks:
       - id: clang-format
         types_or:
@@ -86,7 +86,7 @@ repos:
         args:
           - --profile=black
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.27.1
+    rev: 0.27.2
     hooks:
       - id: check-azure-pipelines
       - id: check-bamboo-spec
@@ -110,7 +110,7 @@ repos:
       - id: poetry-lock
         files: pyproject.toml
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.7.0-2
+    rev: v3.7.0-4
     hooks:
       - id: shfmt-src
         files: (\.sh|\.zsh|\.zsh-theme|envrc|zshrc)(\.tmpl)?$
@@ -122,7 +122,7 @@ repos:
           - --indent=2
           - --case-indent
   - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.2
+    rev: 0.6.3
     hooks:
       - id: fix-ligatures
       - id: fix-smartquotes
