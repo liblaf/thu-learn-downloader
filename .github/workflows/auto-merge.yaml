@@ -1,0 +1,18 @@
+name: Auto-Merge
+
+on:
+  pull_request:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge:
+    if: github.actor == 'dependabot[bot]' || github.actor == 'pre-commit-ci[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable auto-merge
+        run: gh pr merge ${{ github.event.pull_request.html_url }} --auto
+        env:
+          GH_TOKEN: ${{ github.token }}

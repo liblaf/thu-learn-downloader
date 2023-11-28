@@ -37,7 +37,7 @@ repos:
       - id: clippy
       - id: fmt
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v17.0.4
+    rev: v17.0.5
     hooks:
       - id: clang-format
         types_or:
@@ -110,7 +110,7 @@ repos:
       - id: poetry-lock
         files: pyproject.toml
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.7.0-2
+    rev: v3.7.0-3
     hooks:
       - id: shfmt-src
         files: (\.sh|\.zsh|\.zsh-theme|envrc|zshrc)(\.tmpl)?$
