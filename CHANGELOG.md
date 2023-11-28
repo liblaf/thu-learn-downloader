@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/liblaf/thu-learn-downloader/compare/v0.2.0...v0.2.1) (2023-11-28)
+
+
+### Bug Fixes
+
+* **workflows:** remove unnecessary permission and add token for checkout ([2d422c8](https://github.com/liblaf/thu-learn-downloader/commit/2d422c8ffda7592e3cde26891367a144f1f72ee8))
+
 ## [0.2.0](https://github.com/liblaf/thu-learn-downloader/compare/v0.1.21...v0.2.0) (2023-11-18)
 
 ### Features
