@@ -1,9 +1,7 @@
-name: CI/CD
+name: CI
 
 on:
   push:
-    branches:
-      - main
 
 permissions:
   contents: write
@@ -74,6 +72,7 @@ jobs:
 
   release:
     name: Create GitHub Release
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     outputs:
       releases-created: ${{ steps.release.outputs.releases_created }}
