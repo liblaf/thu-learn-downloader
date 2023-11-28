@@ -1,4 +1,4 @@
-name: Sync with Template Repository
+name: Template Repository
 
 on:
   schedule:
@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
