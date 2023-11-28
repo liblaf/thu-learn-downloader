@@ -9,10 +9,12 @@ permissions:
 
 jobs:
   merge:
-    if: github.actor == 'dependabot[bot]' || github.actor == 'pre-commit-ci[bot]'
+    if: |-
+      github.event.pull_request.user.login == 'dependabot[bot]' ||
+      github.event.pull_request.user.login == 'pre-commit-ci[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Enable auto-merge
-        run: gh pr merge ${{ github.event.pull_request.html_url }} --auto
+        run: gh pr merge ${{ github.event.pull_request.html_url }} --auto --squash
         env:
           GH_TOKEN: ${{ github.token }}
