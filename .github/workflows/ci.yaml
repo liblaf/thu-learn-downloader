@@ -42,7 +42,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install GNU Softwares
-        uses: liblaf/install-action@main
+        uses: liblaf/template/.github/actions/install@main
         with:
           brew: coreutils gnu-sed make
           choco: gnuwin32-coreutils.install make sed
