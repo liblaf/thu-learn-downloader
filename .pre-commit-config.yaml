@@ -1,48 +1,39 @@
 ci:
-  autofix_commit_msg: |-
+  autofix_commit_msg: |
     ci(pre-commit): auto fixes from pre-commit.com hooks
 
     for more information, see https://pre-commit.ci
-  autoupdate_commit_msg: |-
+  autoupdate_commit_msg: |
     ci(pre-commit): pre-commit autoupdate
   skip:
     - cargo-check
-    - clippy
-    - fmt
-    - go-build-mod
-    - go-build-repo-mod
-    - go-mod-tidy
-    - go-mod-tidy-repo
-    - go-test-mod
-    - go-test-repo-mod
-    - go-vet-mod
-    - go-vet-repo-mod
-    - latexindent
+    - cargo-clippy
     - poetry-lock
 
 repos:
-  - repo: https://github.com/cheshirekow/cmake-format-precommit
-    rev: v0.6.13
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.6
     hooks:
-      - id: cmake-format
-      - id: cmake-lint
+      - id: ruff
+        args:
+          - --fix
+      - id: ruff-format
+  - repo: https://github.com/cmhughes/latexindent.pl
+    rev: V3.23.3
+    hooks:
+      - id: latexindent-conda
   - repo: https://github.com/commitizen-tools/commitizen
     rev: 3.12.0
     hooks:
       - id: commitizen
-  - repo: https://github.com/doublify/pre-commit-rust
-    rev: v1.0
-    hooks:
-      - id: cargo-check
-      - id: clippy
-      - id: fmt
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v17.0.5
+    rev: v17.0.6
     hooks:
       - id: clang-format
         types_or:
           - c
           - c++
+          - cuda
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v3.1.0
     hooks:
@@ -56,6 +47,7 @@ repos:
       - id: check-ast
       - id: check-builtin-literals
       - id: check-case-conflict
+      - id: check-docstring-first
       - id: check-executables-have-shebangs
       - id: check-json
       - id: check-merge-conflict
@@ -64,8 +56,6 @@ repos:
       - id: check-vcs-permalinks
       - id: check-xml
       - id: check-yaml
-        args:
-          - --unsafe
       - id: debug-statements
       - id: destroyed-symlinks
       - id: detect-private-key
@@ -74,46 +64,27 @@ repos:
       - id: mixed-line-ending
       - id: name-tests-test
       - id: trailing-whitespace
-  - repo: https://github.com/psf/black
-    rev: 23.11.0
-    hooks:
-      - id: black
-      - id: black-jupyter
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.12.0
-    hooks:
-      - id: isort
-        args:
-          - --profile=black
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.27.1
+    rev: 0.27.2
     hooks:
-      - id: check-azure-pipelines
-      - id: check-bamboo-spec
-      - id: check-buildkite
       - id: check-dependabot
       - id: check-github-actions
       - id: check-github-workflows
-      - id: check-gitlab-ci
-      - id: check-readthedocs
-      - id: check-renovate
-      - id: check-travis
   - repo: https://github.com/python-poetry/poetry
     rev: 1.7.0
     hooks:
       - id: poetry-check
+      - id: poetry-lock
       - id: poetry-export
         args:
-          - --output=requirements.txt
           - --without-hashes
           - --without-urls
-      - id: poetry-lock
-        files: pyproject.toml
+      - id: poetry-install
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.7.0-3
+    rev: v3.7.0-4
     hooks:
-      - id: shfmt-src
-        files: (\.sh|\.zsh|\.zsh-theme|envrc|zshrc)(\.tmpl)?$
+      - id: shfmt
+        files: \.(bash|sh|zsh)(\.tmpl)?$
         types:
           - text
         args:
@@ -121,39 +92,31 @@ repos:
           - --simplify
           - --indent=2
           - --case-indent
-  - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.2
+          - --space-redirects
+  - repo: https://github.com/streetsidesoftware/cspell-cli
+    rev: v8.0.0
     hooks:
-      - id: fix-ligatures
-      - id: fix-smartquotes
-      - id: fix-spaces
-      - id: forbid-bidi-controls
-      - id: macro-expand
-  - repo: https://github.com/TekWizely/pre-commit-golang
-    rev: v1.0.0-rc.1
-    hooks:
-      - id: go-build-mod
-      - id: go-build-repo-mod
-      - id: go-fmt
-      - id: go-fmt-repo
-      - id: go-mod-tidy
-      - id: go-mod-tidy-repo
-      - id: go-test-mod
-      - id: go-test-repo-mod
-      - id: go-vet-mod
-      - id: go-vet-repo-mod
+      - id: cspell
   - repo: local
     hooks:
-      - id: latexindent
-        name: Pretty LaTeX
-        entry: latexindent
-        language: system
-        files: .(tex|sty|cls|bib)$
+      - id: cargo-check
+        name: cargo check
+        entry: cargo check
+        language: rust
         types:
-          - text
-        args:
-          - --overwriteIfDifferent
-          - --silent
-          - --cruft=/tmp
-          - --modifylinebreaks
-          - --GCString
+          - rust
+        pass_filenames: false
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: cargo clippy
+        language: rust
+        types:
+          - rust
+        pass_filenames: false
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt
+        language: rust
+        types:
+          - rust
+        pass_filenames: false

@@ -8,12 +8,10 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: Check
-        run: |-
+        run: |
           function checks() {
-            (gh pr checks ${{ github.event.pull_request.number }} || true) |
+            (gh pr checks ${{ github.event.pull_request.html_url }} || true) |
               grep --invert-match ${{ github.run_id }}
           }
 

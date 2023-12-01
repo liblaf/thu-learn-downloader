@@ -2,9 +2,6 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
-[tool.isort]
-profile = "black"
-
 [tool.poetry]
 authors = ["liblaf <i@liblaf.me>"]
 description = "Download everything from Web Learning of Tsinghua University"
@@ -25,11 +22,9 @@ tenacity = "^8.2.3"
 typer = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.10.1"
-icecream = "^2.1.3"
-isort = "^5.12.0"
-nuitka = "^1.8.5"
-pyinstaller = "^6.1.0"
+nuitka = { markers = 'platform_system!="Windows"', version = "^1.8.5" }
+pyinstaller = { markers = 'platform_system == "Windows"', version = "^6.1.0" }
+ruff = "^0.1.6"
 typer-cli = { git = "https://github.com/Patarimi/typer-cli.git" }
 
 [tool.poetry.scripts]
@@ -40,3 +35,6 @@ tld = "thu_learn_downloader.main:app"
 name = "mirrors"
 priority = "default"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "SIM", "UP"]

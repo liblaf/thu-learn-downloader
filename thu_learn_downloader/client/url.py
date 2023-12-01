@@ -1,4 +1,6 @@
 import urllib.parse
+from collections.abc import Mapping
+from typing import Optional
 from urllib.parse import SplitResult
 
 SCHEME: str = "https"
@@ -9,9 +11,10 @@ def make_url(
     scheme: str = SCHEME,
     netloc: str = NETLOC,
     path: str = "",
-    query: dict = {},
+    query: Optional[Mapping] = None,
     fragment="",
 ) -> str:
+    query = query or {}
     return urllib.parse.urlunsplit(
         SplitResult(
             scheme=scheme,

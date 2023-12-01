@@ -1,5 +1,6 @@
+from collections.abc import Mapping
 from enum import StrEnum
-from typing import Any
+from typing import Any, Optional
 
 from requests import Response, Session
 
@@ -18,7 +19,10 @@ class Client(Session):
         super().__init__(*args, **kwargs)
         self.language = language
 
-    def get_with_token(self, url: str, params: dict[str, Any] = {}) -> Response:
+    def get_with_token(
+        self, url: str, params: Optional[Mapping[str, Any]] = None
+    ) -> Response:
+        params = params or {}
         return self.get(url=url, params={**params, "_csrf": self.token})
 
     @property

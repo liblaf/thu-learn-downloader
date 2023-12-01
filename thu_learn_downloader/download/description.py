@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from thu_learn_downloader.client.course import Course
 from thu_learn_downloader.client.document import Document, DocumentClass
 from thu_learn_downloader.client.homework import Attachment, Homework

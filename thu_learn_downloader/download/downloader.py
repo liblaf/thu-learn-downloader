@@ -29,7 +29,7 @@ from rich.style import Style, StyleType
 from thu_learn_downloader.client.client import Client
 from thu_learn_downloader.client.course import Course
 from thu_learn_downloader.client.document import Document, DocumentClass
-from thu_learn_downloader.client.homework import Attachment, Homework
+from thu_learn_downloader.client.homework import Homework
 from thu_learn_downloader.client.semester import Semester
 
 from . import description, filename, style
@@ -49,12 +49,12 @@ class Downloader:
 
     def __init__(
         self,
-        prefix: Path = Path.home() / "thu-learn",
-        selector: Selector = Selector(),
+        prefix: Optional[Path] = None,
+        selector: Optional[Selector] = None,
         jobs: int = 8,
     ) -> None:
-        self.prefix = prefix
-        self.selector = selector
+        self.prefix = prefix or Path.home() / "thu-learn"
+        self.selector = selector or Selector()
         self.executor = ThreadPoolExecutor(max_workers=jobs)
 
         self.progress_prepare = Progress(
@@ -121,28 +121,32 @@ class Downloader:
         *,
         remote_size: Optional[int] = None,
         remote_time: Optional[datetime] = None,
-        style: StyleType = Style(),
+        style: Optional[StyleType] = None,
     ) -> None:
         if remote_size is None or remote_time is None:
             response: Response = client.get(url=url, stream=True)
             if remote_size is None:
                 try:
                     remote_size = int(response.headers["Content-Length"])
-                except:
+                except Exception:
                     remote_size = None
             if remote_time is None:
                 try:
                     remote_time = dateutil.parser.parse(response.headers["Date"])
-                except:
+                except Exception:
                     remote_time = None
-        if remote_size is not None:
-            if output.exists() and output.stat().st_size == remote_size:
-                if not isinstance(style, Style):
-                    style = Style.parse(style)
-                self.live.console.log(
-                    "[reverse] SKIPPED [/]", description, style=style + Style(dim=True)
-                )
-                return
+        if (
+            remote_size is not None
+            and output.exists()
+            and output.stat().st_size == remote_size
+        ):
+            style = style or Style()
+            if not isinstance(style, Style):
+                style = Style.parse(style)
+            self.live.console.log(
+                "[reverse] SKIPPED [/]", description, style=style + Style(dim=True)
+            )
+            return
         task_id: TaskID = self.progress_download.add_task(
             description=description, total=remote_size
         )
@@ -162,7 +166,7 @@ class Downloader:
         *,
         remote_size: Optional[int] = None,
         remote_time: Optional[datetime] = None,
-        style: StyleType = Style(),
+        style: Optional[StyleType] = None,
     ) -> None:
         self.executor.submit(
             self.do_sync_file,

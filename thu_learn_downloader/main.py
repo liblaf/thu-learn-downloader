@@ -20,10 +20,12 @@ def main(
     username: Annotated[str, Option("-u", "--username")] = "",
     password: Annotated[str, Option("-p", "--password")] = "",
     *,
-    prefix: Annotated[Path, Option(file_okay=False, writable=True)] = Path.home()
+    prefix: Annotated[Path, Option(file_okay=False, writable=True)] = Path.home()  # noqa: B008
     / "thu-learn",
-    semesters: Annotated[list[str], Option("-s", "--semester")] = ["2023-2024-1"],
-    courses: Annotated[list[str], Option("-c", "--course")] = [],
+    semesters: Annotated[list[str], Option("-s", "--semester")] = [  # noqa: B006
+        "2023-2024-1"
+    ],
+    courses: Annotated[list[str], Option("-c", "--course")] = [],  # noqa: B006
     document: Annotated[bool, Option()] = True,
     homework: Annotated[bool, Option()] = True,
     jobs: Annotated[int, Option("-j", "--jobs")] = 8,

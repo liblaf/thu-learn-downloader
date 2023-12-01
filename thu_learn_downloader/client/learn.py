@@ -17,7 +17,7 @@ class Learn:
     client: Client
 
     def __init__(self, language: Language = Language.ENGLISH, *args, **kwargs) -> None:
-        self.client = Client(language=language, *args, **kwargs)
+        self.client = Client(language, *args, **kwargs)
 
     def login(self, username: str, password: str) -> None:
         response: Response = self.client.get(url=url.make_url())

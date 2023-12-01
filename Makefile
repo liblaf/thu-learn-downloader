@@ -6,12 +6,7 @@ DIST   := dist
 
 SYSTEM  != python -c 'import platform; print(platform.system().lower())'
 MACHINE != python -c 'import platform; print(platform.machine().lower())'
-
-ifeq ($(SYSTEM), windows)
-  EXE := .exe
-else
-  EXE :=
-endif
+EXE     := $(if $(filter windows,$(SYSTEM)),.exe)
 
 DIST_TARGET := $(DIST)/$(NAME)-$(SYSTEM)-$(MACHINE)$(EXE)
 
@@ -23,7 +18,7 @@ clean:
 	@ $(RM) --recursive --verbose $(DIST)
 	@ $(RM) --verbose out.gif
 	@ find . -type d -name '__pycache__' -exec $(RM) --recursive --verbose '{}' +
-	@ find . -type f -name '*.spec'      -exec $(RM) --verbose '{}' +
+	@ find . -type f -name '*.spec' -delete
 
 demo: $(ASSETS)/demo.png
 
