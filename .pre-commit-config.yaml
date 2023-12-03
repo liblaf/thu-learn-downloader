@@ -8,6 +8,8 @@ ci:
   skip:
     - cargo-check
     - cargo-clippy
+    - cspell
+    - latexindent
     - poetry-lock
 
 repos:
