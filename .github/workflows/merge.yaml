@@ -17,6 +17,10 @@ jobs:
     steps:
       - name: Check
         run: |
+          set -o errexit
+          set -o nounset
+          set -o pipefail
+
           function checks() {
             (gh pr checks "${{ github.event.pull_request.html_url }}" || true) |
               grep --invert-match "${{ github.run_id }}"
@@ -55,7 +59,7 @@ jobs:
       github.event.pull_request.user.login == 'pre-commit-ci[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Enable auto-merge
+      - name: Enable auto-merge (squash)
         run: gh pr merge ${{ github.event.pull_request.html_url }} --auto --squash
         env:
           GH_TOKEN: ${{ github.token }}
