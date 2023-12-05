@@ -127,3 +127,10 @@ repos:
         types:
           - rust
         pass_filenames: false
+      - id: cargo-test
+        name: cargo test
+        entry: cargo test
+        language: rust
+        types:
+          - rust
+        pass_filenames: false

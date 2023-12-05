@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
-      - name: Sync with template repository
+      - name: Sync with Template Repository
         uses: liblaf/template@main
         with:
           push: true
