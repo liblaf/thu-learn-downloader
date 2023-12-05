@@ -11,6 +11,7 @@ ci:
     - cspell
     - latexindent
     - poetry-lock
+    - shellcheck
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
