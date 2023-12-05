@@ -8,6 +8,7 @@ ci:
   skip:
     - cargo-check
     - cargo-clippy
+    - cargo-test
     - cspell
     - latexindent
     - poetry-lock
