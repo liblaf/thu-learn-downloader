@@ -7,23 +7,52 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      cargo:
+        patterns:
+          - "*"
+
   - package-ecosystem: gitsubmodule
     directory: /
     schedule:
       interval: weekly
+    groups:
+      gitsubmodule:
+        patterns:
+          - "*"
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
   - package-ecosystem: gomod
     directory: /
     schedule:
       interval: weekly
+    groups:
+      gomod:
+        patterns:
+          - "*"
+
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+    groups:
+      npm:
+        patterns:
+          - "*"
+
   - package-ecosystem: pip
     directory: /
     schedule:
       interval: weekly
+    groups:
+      pip:
+        patterns:
+          - "*"
