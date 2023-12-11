@@ -14,7 +14,7 @@ version = "0.2.1"
 [tool.poetry.dependencies]
 beautifulsoup4 = "^4.12.2"
 pydantic = "^2.4.2"
-python = ">=3.11,<3.13"
+python = "^3.10"
 python-dateutil = "^2.8.2"
 requests = "^2.31.0"
 rich = "^13.6.0"
@@ -22,8 +22,8 @@ tenacity = "^8.2.3"
 typer = "^0.9.0"
 
 [tool.poetry.group.dev.dependencies]
-nuitka = { markers = 'platform_system!="Windows"', version = "^1.8.5" }
-pyinstaller = { markers = 'platform_system == "Windows"', version = "^6.1.0" }
+nuitka = "^1.8.5"
+pyinstaller = { python = ">=3.10,<3.13", version = "^6.1.0" }
 ruff = "^0.1.6"
 typer-cli = { git = "https://github.com/Patarimi/typer-cli.git" }
 

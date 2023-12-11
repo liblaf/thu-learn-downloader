@@ -1,17 +1,36 @@
-name: CI
+name: Release
 
 on:
   push:
+    branches:
+      - main
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    outputs:
+      created: ${{ steps.release.outputs.releases_created }}
+      tag: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - id: release
+        name: Create GitHub Release
+        uses: google-github-actions/release-please-action@v4
+        with:
+          release-type: python
+
   build-pkg:
     name: Build Package
+    needs:
+      - release
+    if: needs.release.outputs.created == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -39,6 +58,9 @@ jobs:
 
   build-exe:
     name: Build Executable
+    needs:
+      - release
+    if: needs.release.outputs.created == 'true'
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
@@ -79,39 +101,47 @@ jobs:
           - "3.11"
           - "3.12"
 
+  publish:
+    name: Publish to PyPI
+    needs:
+      - release
+    if: needs.release.outputs.created == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Poetry
+        run: pipx install poetry
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: poetry
+      - name: Install Dependencies
+        run: poetry install
+      - name: Publish to PyPI
+        run: poetry publish --build
+        env:
+          POETRY_PYPI_TOKEN_PYPI: ${{ secrets.PYPI_TOKEN }}
+    strategy:
+      matrix:
+        python-version:
+          - "3.11"
+
   upload:
     name: Upload Release Assets
     needs:
+      - release
       - build-pkg
       - build-exe
-    if: github.ref == 'refs/heads/main'
+    if: needs.release.outputs.created == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v3
         with:
           path: artifacts
-      - name: Delete Existing Release
-        run: gh release --repo="${{ github.repository }}" delete dev --cleanup-tag
-        env:
-          GH_TOKEN: ${{ github.token }}
-        continue-on-error: true
       - name: Upload Release Assets
-        run: gh release --repo="${{ github.repository }}" create dev artifacts/**/* --generate-notes --prerelease
+        run: gh release --repo="${{ github.repository }}" upload "${{ needs.release.outputs.tag }}" artifacts/**/* --clobber
         env:
           GH_TOKEN: ${{ github.token }}
-
-  check:
-    name: Check
-    needs:
-      - build-pkg
-      - build-exe
-      - upload
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check
-        uses: re-actors/alls-green@release/v1
-        with:
-          jobs: ${{ toJSON(needs) }}
-          allowed-skips: upload

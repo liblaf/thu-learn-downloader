@@ -11,48 +11,6 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  check:
-    name: Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check
-        run: |
-          set -o errexit
-          set -o nounset
-          set -o pipefail
-
-          function checks() {
-            (gh pr checks "${{ github.event.pull_request.html_url }}" || true) |
-              grep --invert-match "${{ github.run_id }}"
-          }
-
-          function count() {
-            checks |
-              cut --fields=2 |
-              (grep --count "$@" || true)
-          }
-
-          while true; do
-            pending=$(count pending)
-            if ((pending > 0)); then
-              echo "Waiting for $pending checks to complete..."
-              sleep 10
-            else
-              break
-            fi
-          done
-
-          fail=$(count fail)
-          if ((fail > 0)); then
-            echo "$fail checks failed"
-            exit 1
-          else
-            echo "All checks passed"
-            exit 0
-          fi
-        env:
-          GH_TOKEN: ${{ github.token }}
-
   merge:
     name: Merge
     if: github.event.pull_request.user.login == 'dependabot[bot]' ||
