@@ -104,6 +104,14 @@ repos:
           - --indent=2
           - --case-indent
           - --space-redirects
+  - repo: https://github.com/sirosen/texthooks
+    rev: 0.6.3
+    hooks:
+      - id: fix-smartquotes
+      - id: fix-ligatures
+      - id: fix-spaces
+      - id: forbid-bidi-controls
+      - id: alphabetize-codeowners
   - repo: https://github.com/streetsidesoftware/cspell-cli
     rev: v8.1.1
     hooks:
