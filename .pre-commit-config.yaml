@@ -23,7 +23,7 @@ repos:
           - --fix
       - id: ruff-format
   - repo: https://github.com/cmhughes/latexindent.pl
-    rev: V3.23.3
+    rev: V3.23.5
     hooks:
       - id: latexindent
   - repo: https://github.com/commitizen-tools/commitizen
@@ -113,7 +113,7 @@ repos:
       - id: forbid-bidi-controls
       - id: alphabetize-codeowners
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.2.0
+    rev: v8.2.1
     hooks:
       - id: cspell
   - repo: local
