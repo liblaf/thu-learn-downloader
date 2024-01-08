@@ -16,7 +16,7 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.9
+    rev: v0.1.11
     hooks:
       - id: ruff
         args:
@@ -113,7 +113,7 @@ repos:
       - id: forbid-bidi-controls
       - id: alphabetize-codeowners
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.2.1
+    rev: v8.3.0
     hooks:
       - id: cspell
   - repo: local
