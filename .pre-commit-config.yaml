@@ -16,7 +16,7 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.13
+    rev: v0.1.11
     hooks:
       - id: ruff
         args:
@@ -67,6 +67,8 @@ repos:
       - id: check-vcs-permalinks
       - id: check-xml
       - id: check-yaml
+        args:
+          - --unsafe
       - id: debug-statements
       - id: destroyed-symlinks
       - id: detect-private-key
