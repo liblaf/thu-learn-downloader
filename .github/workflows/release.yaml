@@ -5,16 +5,15 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pull-requests: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   release:
     name: Create GitHub Release
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     outputs:
       created: ${{ steps.release.outputs.releases_created }}
@@ -130,6 +129,8 @@ jobs:
 
   upload:
     name: Upload Release Assets
+    permissions:
+      contents: write
     needs:
       - release
       - build-pkg
