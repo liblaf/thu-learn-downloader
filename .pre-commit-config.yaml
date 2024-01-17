@@ -49,6 +49,9 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
+        args:
+          - --cache-location
+          - /tmp/prettier/.prettier-cache
         stages:
           - pre-commit
   - repo: https://github.com/pre-commit/pre-commit-hooks
