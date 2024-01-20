@@ -26,6 +26,12 @@ repos:
     rev: V3.23.5
     hooks:
       - id: latexindent
+        args:
+          - --overwriteIfDifferent
+          - --silent
+          - --local
+          - --cruft=/tmp/latexindent
+          - --GCString
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.13.0
     hooks:
@@ -112,7 +118,7 @@ repos:
   - repo: https://github.com/sirosen/texthooks
     rev: 0.6.3
     hooks:
-      - id: fix-smartquotes
+      # - id: fix-smartquotes
       - id: fix-ligatures
       - id: fix-spaces
       - id: forbid-bidi-controls
