@@ -26,11 +26,15 @@ repos:
     rev: V3.23.6
     hooks:
       - id: latexindent
+        files: \.(tex|sty|cls|bib)$
+        types:
+          - text
         args:
           - --overwriteIfDifferent
           - --silent
           - --local
           - --cruft=/tmp/latexindent
+          - --modifylinebreaks
           - --GCString
   - repo: https://github.com/commitizen-tools/commitizen
     rev: v3.13.0
