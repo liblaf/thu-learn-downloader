@@ -9,7 +9,7 @@ license = "MIT"
 name = "thu-learn-downloader"
 readme = "README.md"
 repository = "https://github.com/liblaf/thu-learn-downloader"
-version = "0.2.1"
+version = "0.3.0"
 
 [tool.poetry.dependencies]
 beautifulsoup4 = "^4.12.2"
