@@ -2,11 +2,10 @@
 
 ## [0.3.0](https://github.com/liblaf/thu-learn-downloader/compare/v0.2.1...v0.3.0) (2024-01-26)
 
-
 ### Features
 
-* reorganize filename generation for attachments ([0c9b22f](https://github.com/liblaf/thu-learn-downloader/commit/0c9b22f0c124e64c6af196b4dd08650ce5d7779d))
-* update GitHub workflows to use new release action ([93ea0f5](https://github.com/liblaf/thu-learn-downloader/commit/93ea0f557a556de6f3e2318f3fbb4f6f3fbb8367))
+- reorganize filename generation for attachments ([0c9b22f](https://github.com/liblaf/thu-learn-downloader/commit/0c9b22f0c124e64c6af196b4dd08650ce5d7779d))
+- update GitHub workflows to use new release action ([93ea0f5](https://github.com/liblaf/thu-learn-downloader/commit/93ea0f557a556de6f3e2318f3fbb4f6f3fbb8367))
 
 ## [0.2.1](https://github.com/liblaf/thu-learn-downloader/compare/v0.2.0...v0.2.1) (2023-12-01)
 
