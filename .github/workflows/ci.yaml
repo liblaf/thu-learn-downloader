@@ -76,8 +76,8 @@ jobs:
           - "3.11"
           - "3.12"
 
-  upload:
-    name: Upload Release Assets
+  release:
+    name: Release
     permissions:
       contents: write
     needs:
@@ -89,28 +89,10 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
-      - name: Delete Existing Release
-        run: gh release --repo="${{ github.repository }}" delete dev --cleanup-tag
-        env:
-          GH_TOKEN: ${{ github.token }}
-        continue-on-error: true
-      - name: Upload Release Assets
-        run: gh release --repo="${{ github.repository }}" create dev artifacts/**/* --generate-notes --prerelease
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-  check:
-    name: Check
-    needs:
-      - build-pkg
-      - build-exe
-      - upload
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check
-        uses: re-actors/alls-green@release/v1
+          merge-multiple: true
+      - name: Create GitHub Release
+        uses: liblaf/template/.github/actions/release@main
         with:
-          jobs: ${{ toJSON(needs) }}
-          allowed-skips: upload
+          tag: dev
+          files: "*"
+          prerelease: true

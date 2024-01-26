@@ -141,8 +141,8 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          merge-multiple: true
       - name: Upload Release Assets
-        run: gh release --repo="${{ github.repository }}" upload "${{ needs.release.outputs.tag }}" artifacts/**/* --clobber
+        run: gh release --repo="${{ github.repository }}" upload "${{ needs.release.outputs.tag }}" * --clobber
         env:
           GH_TOKEN: ${{ github.token }}
