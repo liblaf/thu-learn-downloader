@@ -160,3 +160,6 @@ repos:
         types:
           - rust
         pass_filenames: false
+
+default_stages:
+  - pre-commit
