@@ -97,6 +97,7 @@ repos:
       - id: poetry-lock
       - id: poetry-export
         args:
+          - --output=requirements.txt
           - --without-hashes
           - --without-urls
       - id: poetry-install
