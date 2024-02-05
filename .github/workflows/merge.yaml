@@ -17,6 +17,7 @@ jobs:
   merge:
     name: Merge
     permissions:
+      contents: write
       pull-requests: write
     if: github.event.pull_request.user.login == 'dependabot[bot]' ||
       github.event.pull_request.user.login == 'pre-commit-ci[bot]'
