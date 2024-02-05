@@ -1,0 +1,10 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/googleapis/repo-automation-bots/main/packages/blunderbuss/src/config-schema.json
+
+assign_issues:
+  - liblaf
+
+assign_prs:
+  - liblaf
+
+ignore_authors:
+  - dependabot

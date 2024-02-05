@@ -3,10 +3,6 @@ name: Merge
 on:
   pull_request:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
 
@@ -20,11 +16,18 @@ jobs:
 
   merge:
     name: Merge
+    permissions:
+      pull-requests: write
     if: github.event.pull_request.user.login == 'dependabot[bot]' ||
       github.event.pull_request.user.login == 'pre-commit-ci[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Enable Auto-Merge (Squash)
         run: gh pr merge ${{ github.event.pull_request.html_url }} --auto --squash
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Enable Merge-on-green
+        run: |
+          gh pr edit ${{ github.event.pull_request.html_url }} --add-label "automerge: exact"
         env:
           GH_TOKEN: ${{ github.token }}
