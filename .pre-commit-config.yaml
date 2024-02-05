@@ -16,7 +16,7 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.1.14
+    rev: v0.2.0
     hooks:
       - id: ruff
         args:
@@ -37,7 +37,7 @@ repos:
           - --modifylinebreaks
           - --GCString
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.13.0
+    rev: v3.14.1
     hooks:
       - id: commitizen
   - repo: https://github.com/koalaman/shellcheck-precommit
@@ -85,7 +85,7 @@ repos:
       - id: name-tests-test
       - id: trailing-whitespace
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.27.3
+    rev: 0.27.4
     hooks:
       - id: check-dependabot
       - id: check-github-actions
@@ -115,7 +115,7 @@ repos:
           - --case-indent
           - --space-redirects
   - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.3
+    rev: 0.6.4
     hooks:
       # - id: fix-smartquotes
       - id: fix-ligatures
