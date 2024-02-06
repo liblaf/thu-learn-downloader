@@ -65,7 +65,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install Task
-        uses: arduino/setup-task@v1
+        uses: arduino/setup-task@v2
         with:
           repo-token: ${{ github.token }}
       - name: Install Poetry
