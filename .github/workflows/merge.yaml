@@ -23,6 +23,8 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Enable Auto-Merge (Squash)
         uses: liblaf/template/.github/actions/merge@main
         with:
