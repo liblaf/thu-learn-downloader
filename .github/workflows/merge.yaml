@@ -1,7 +1,6 @@
 name: Merge
 
 on:
-  push:
   pull_request:
 
 concurrency:
@@ -14,13 +13,14 @@ jobs:
     steps:
       - name: Check
         uses: liblaf/template/.github/actions/check@main
+        with:
+          pr: ${{ github.event.pull_request.html_url }}
 
   merge:
     name: Merge
     permissions:
       contents: write
       pull-requests: write
-    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: Enable Auto-Merge (Squash)
