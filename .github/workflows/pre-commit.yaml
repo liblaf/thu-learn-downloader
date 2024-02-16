@@ -19,3 +19,4 @@ jobs:
         uses: liblaf/template/.github/actions/pre-commit@main
         with:
           autofix: true
+          token: ${{ secrets.GH_TOKEN }}
