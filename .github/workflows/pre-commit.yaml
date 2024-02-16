@@ -20,5 +20,5 @@ jobs:
       - name: pre-commit
         uses: liblaf/template/.github/actions/pre-commit@main
         with:
-          autofix: ${{ ! github.ref_protected }}
+          autofix: true
           token: ${{ secrets.GH_TOKEN }}
