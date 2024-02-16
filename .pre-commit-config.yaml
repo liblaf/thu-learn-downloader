@@ -44,7 +44,7 @@ repos:
         types:
           - text
   - repo: https://github.com/liblaf/template
-    rev: main
+    rev: v1.0.0
     hooks:
       - id: cargo-check
       - id: cargo-clippy
