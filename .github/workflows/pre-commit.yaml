@@ -1,0 +1,21 @@
+name: pre-commit
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  pre-commit:
+    name: pre-commit
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: pre-commit
+        uses: liblaf/template/.github/actions/pre-commit@main
+        with:
+          autofix: true
