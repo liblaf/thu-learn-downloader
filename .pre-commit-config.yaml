@@ -37,8 +37,8 @@ repos:
         files: \.(bash|sh|zsh)(\.tmpl)?$
         types:
           - text
-  - repo: https://github.com/liblaf/template
-    rev: v1.0.0
+  - repo: https://github.com/liblaf/pre-commit-hooks
+    rev: v0.1.0
     hooks:
       - id: cargo-check
       - id: cargo-clippy

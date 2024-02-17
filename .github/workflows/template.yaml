@@ -1,4 +1,4 @@
-name: Template Repository
+name: Repository Template
 
 on:
   workflow_dispatch:
@@ -10,6 +10,7 @@ jobs:
   template:
     name: Template
     permissions:
+      actions: write
       contents: write
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +18,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
-      - name: Sync with Template Repository
+      - name: Sync with Repository Template
         uses: liblaf/template@main
         with:
-          push: true
+          token: ${{ secrets.GH_TOKEN }}
+          commit: true

@@ -18,6 +18,9 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
       - name: pre-commit
-        uses: liblaf/template/.github/actions/pre-commit@main
+        uses: liblaf/pre-commit-hooks@main
+      - name: Commit
+        if: always()
+        uses: liblaf/pre-commit-hooks/.github/actions/commit@main
         with:
-          autofix: true
+          message: "ci(pre-commit): auto fixes from pre-commit hooks"
