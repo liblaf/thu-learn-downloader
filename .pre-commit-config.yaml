@@ -11,7 +11,6 @@ repos:
       - id: ruff
         args:
           - --fix
-          - --unsafe-fixes
       - id: ruff-format
   - repo: https://github.com/cmhughes/latexindent.pl
     rev: V3.23.6
