@@ -2,6 +2,7 @@ ci:
   autofix_commit_msg: "ci(pre-commit): auto fixes from pre-commit hooks"
   autoupdate_commit_msg: "ci(pre-commit): pre-commit autoupdate"
   skip:
+    - cspell
     - poetry-lock
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
