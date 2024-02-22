@@ -2,7 +2,6 @@
 
 language:
   pullrequest: true
-  labelprefix: "lang: "
 
 staleness:
   pullrequest: true

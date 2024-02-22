@@ -1,0 +1,3 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/googleapis/repo-automation-bots/main/packages/sync-repo-settings/src/schema.json
+
+branchProtectionRules: []
