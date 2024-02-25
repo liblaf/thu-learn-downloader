@@ -8,3 +8,4 @@ assign_prs:
 
 ignore_authors:
   - dependabot[bot]
+  - renovate[bot]
