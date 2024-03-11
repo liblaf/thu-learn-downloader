@@ -364,12 +364,12 @@ reference = "mirrors"
 
 [[package]]
 name = "nuitka"
-version = "2.1"
+version = "2.1.1"
 description = "Python compiler with full language support and CPython compatibility"
 optional = false
 python-versions = "*"
 files = [
-    {file = "Nuitka-2.1.tar.gz", hash = "sha256:7afe7789491153fd76c260bd33ceedc2441119309d4e33bcf026645352a1c46d"},
+    {file = "Nuitka-2.1.1.tar.gz", hash = "sha256:c68744c64cd7e2a3117cfe505cfce56bba811c6fea5564d7265d46d529970ab6"},
 ]
 
 [package.dependencies]
