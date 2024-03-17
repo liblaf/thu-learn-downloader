@@ -3,7 +3,6 @@ ci:
   autoupdate_commit_msg: "ci(pre-commit): update pre-commit hooks"
   skip:
     - cspell
-    - poetry-lock
     - shellcheck
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -57,16 +56,6 @@ repos:
     rev: 0.28.0
     hooks:
       - id: check-github-workflows
-  - repo: https://github.com/python-poetry/poetry
-    rev: 1.7.1
-    hooks:
-      - id: poetry-check
-      - id: poetry-export
-        args:
-          - --output=requirements.txt
-          - --without-hashes
-          - --without-urls
-      - id: poetry-lock
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.8.0-1
     hooks:
