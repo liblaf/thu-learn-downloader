@@ -19,7 +19,7 @@ python-dateutil = "^2.8.2"
 requests = "^2.31.0"
 rich = "^13.6.0"
 tenacity = "^8.2.3"
-typer = "^0.9.0"
+typer = "^0.10.0"
 
 [tool.poetry.group.dev.dependencies]
 nuitka = ">=1.8.5,<3.0.0"
