@@ -13,7 +13,7 @@ repos:
           - --fix
       - id: ruff-format
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.20.0
+    rev: v3.21.3
     hooks:
       - id: commitizen
   - repo: https://github.com/koalaman/shellcheck-precommit
@@ -71,12 +71,12 @@ repos:
           - --case-indent
           - --space-redirects
   - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.4
+    rev: 0.6.6
     hooks:
       - id: fix-ligatures
       - id: fix-spaces
       - id: forbid-bidi-controls
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.6.0
+    rev: v8.6.1
     hooks:
       - id: cspell
