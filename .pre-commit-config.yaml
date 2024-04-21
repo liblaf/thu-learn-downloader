@@ -6,14 +6,14 @@ ci:
     - shellcheck
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.5
+    rev: v0.3.7
     hooks:
       - id: ruff
         args:
           - --fix
       - id: ruff-format
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.21.3
+    rev: v3.22.0
     hooks:
       - id: commitizen
   - repo: https://github.com/koalaman/shellcheck-precommit
@@ -54,7 +54,7 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.1
+    rev: 0.28.2
     hooks:
       - id: check-github-workflows
   - repo: https://github.com/scop/pre-commit-shfmt
@@ -77,6 +77,6 @@ repos:
       - id: fix-spaces
       - id: forbid-bidi-controls
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.6.1
+    rev: v8.7.0
     hooks:
       - id: cspell
