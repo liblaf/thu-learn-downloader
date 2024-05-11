@@ -79,7 +79,7 @@ class Homework(BaseModel):
     grade_attachment: Optional[Attachment]
     grade_content: str = Field("", alias="pynr")
     grade_time: Optional[datetime] = Field(alias="pysj")
-    grade: Optional[int | str] = Field(alias="cj")
+    grade: Optional[float | str] = Field(alias="cj")
     grader_name: str = Field("", alias="jsm")
     number: int = Field(alias="wz")
     start_time: datetime = Field(alias="kssj")
