@@ -6,14 +6,14 @@ ci:
     - shellcheck
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.2
+    rev: v0.4.4
     hooks:
       - id: ruff
         args:
           - --fix
       - id: ruff-format
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.24.0
+    rev: v3.25.0
     hooks:
       - id: commitizen
   - repo: https://github.com/koalaman/shellcheck-precommit
@@ -23,13 +23,11 @@ repos:
         files: \.(bash|sh|zsh)(\.tmpl)?$
         types:
           - text
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v4.0.0-alpha.8
+  - repo: https://github.com/liblaf/pre-commit-hooks
+    rev: v0.1.1
     hooks:
       - id: prettier
         exclude: (.*-lock\..*)|(.*\.lock)$
-        stages:
-          - pre-commit
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
@@ -54,7 +52,7 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.28.2
+    rev: 0.28.3
     hooks:
       - id: check-github-workflows
   - repo: https://github.com/scop/pre-commit-shfmt
@@ -77,6 +75,6 @@ repos:
       - id: fix-spaces
       - id: forbid-bidi-controls
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.7.0
+    rev: v8.8.0
     hooks:
       - id: cspell
