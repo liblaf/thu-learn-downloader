@@ -13,7 +13,7 @@ repos:
           - --fix
       - id: ruff-format
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.25.0
+    rev: v3.26.0
     hooks:
       - id: commitizen
   - repo: https://github.com/koalaman/shellcheck-precommit
@@ -24,7 +24,7 @@ repos:
         types:
           - text
   - repo: https://github.com/liblaf/pre-commit-hooks
-    rev: v0.1.1
+    rev: dev
     hooks:
       - id: prettier
         exclude: (.*-lock\..*)|(.*\.lock)$
@@ -75,6 +75,6 @@ repos:
       - id: fix-spaces
       - id: forbid-bidi-controls
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.8.0
+    rev: v8.8.1
     hooks:
       - id: cspell
