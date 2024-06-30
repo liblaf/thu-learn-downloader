@@ -6,7 +6,7 @@ ci:
     - shellcheck
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.9
+    rev: v0.4.10
     hooks:
       - id: ruff
         args:
@@ -75,6 +75,6 @@ repos:
       - id: fix-spaces
       - id: forbid-bidi-controls
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.8.2
+    rev: v8.9.0
     hooks:
       - id: cspell
