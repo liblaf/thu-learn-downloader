@@ -49,7 +49,9 @@ def attachment(
 ) -> Path:
     filename: Path = Path(attachment.name)
     filename = filename.with_stem(
-        f"{homework.number:02d}-{homework.title}-{attachment.type_}".replace("/", "-slash-")
+        f"{homework.number:02d}-{homework.title}-{attachment.type_}".replace(
+            "/", "-slash-"
+        )
     )
     return (
         prefix
