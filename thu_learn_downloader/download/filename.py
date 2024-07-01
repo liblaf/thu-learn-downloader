@@ -20,7 +20,7 @@ def document(
         / course.name
         / "docs"
         / document_class.title
-        / f"{index:02d}-{document.title}"
+        / f"{index:02d}-{document.title}".replace("/", "-slash-")
     )
     if document.file_type:
         filename = filename.with_suffix("." + document.file_type)
@@ -35,7 +35,7 @@ def homework(
         / semester.id
         / course.name
         / "work"
-        / f"{homework.number:02d}-{homework.title}"
+        / f"{homework.number:02d}-{homework.title}".replace("/", "-slash-")
         / "README.md"
     )
 
@@ -49,13 +49,13 @@ def attachment(
 ) -> Path:
     filename: Path = Path(attachment.name)
     filename = filename.with_stem(
-        f"{homework.number:02d}-{homework.title}-{attachment.type_}"
+        f"{homework.number:02d}-{homework.title}-{attachment.type_}".replace("/", "-slash-")
     )
     return (
         prefix
         / semester.id
         / course.name
         / "work"
-        / f"{homework.number:02d}-{homework.title}"
+        / f"{homework.number:02d}-{homework.title}".replace("/", "-slash-")
         / filename
     )
