@@ -8,4 +8,5 @@ assign_prs:
 
 ignore_authors:
   - dependabot[bot]
+  - pre-commit-ci[bot]
   - renovate[bot]

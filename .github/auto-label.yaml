@@ -2,6 +2,12 @@
 
 language:
   pullrequest: true
+  labelprefix: "lang: "
+
+path:
+  pullrequest: true
+  paths:
+    docs: "type: docs"
 
 staleness:
   pullrequest: true

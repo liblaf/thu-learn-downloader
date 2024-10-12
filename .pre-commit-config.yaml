@@ -6,14 +6,14 @@ ci:
     - shellcheck
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.6
+    rev: v0.6.5
     hooks:
       - id: ruff
         args:
           - --fix
       - id: ruff-format
   - repo: https://github.com/commitizen-tools/commitizen
-    rev: v3.28.0
+    rev: v3.29.0
     hooks:
       - id: commitizen
   - repo: https://github.com/koalaman/shellcheck-precommit
@@ -23,11 +23,6 @@ repos:
         files: \.(bash|sh|zsh)(\.tmpl)?$
         types:
           - text
-  - repo: https://github.com/liblaf/pre-commit-hooks
-    rev: dev
-    hooks:
-      - id: prettier
-        exclude: (.*-lock\..*)|(.*\.lock)$
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
@@ -52,11 +47,11 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.29.1
+    rev: 0.29.2
     hooks:
       - id: check-github-workflows
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.8.0-1
+    rev: v3.9.0-1
     hooks:
       - id: shfmt
         files: \.(bash|sh|zsh)(\.tmpl)?$
@@ -69,12 +64,12 @@ repos:
           - --case-indent
           - --space-redirects
   - repo: https://github.com/sirosen/texthooks
-    rev: 0.6.6
+    rev: 0.6.7
     hooks:
       - id: fix-ligatures
       - id: fix-spaces
       - id: forbid-bidi-controls
   - repo: https://github.com/streetsidesoftware/cspell-cli
-    rev: v8.13.1
+    rev: v8.13.3
     hooks:
       - id: cspell
