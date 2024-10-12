@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.1](https://github.com/liblaf/thu-learn-downloader/compare/v0.3.0...v0.3.1) (2024-10-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency pydantic to v2.6.4 ([86b7fe8](https://github.com/liblaf/thu-learn-downloader/commit/86b7fe872c3429fc83db340cfa9ad412ab772622))
+* **deps:** update dependency python-dateutil to v2.9.0 ([c00edca](https://github.com/liblaf/thu-learn-downloader/commit/c00edca41f23dba093826363dda31da1bd457dcc))
+* **deps:** update dependency rich to v13.7.1 ([9e2bfdc](https://github.com/liblaf/thu-learn-downloader/commit/9e2bfdcf9604b125875bbe6e860d6bbe73073c93))
+* **deps:** update dependency tenacity to v8.5.0 ([18d45a6](https://github.com/liblaf/thu-learn-downloader/commit/18d45a6ac7e5ddc3724a75c68c801f15e3adb697))
+* **deps:** update dependency tenacity to v9 ([4c6def6](https://github.com/liblaf/thu-learn-downloader/commit/4c6def695fac89adaaa51322f6c00a7daeaa82cf))
+* **deps:** update dependency typer to v0.10.0 ([45edfab](https://github.com/liblaf/thu-learn-downloader/commit/45edfabd22bd7aa6eb1e746c788b1cac46e45aaf))
+* **deps:** update dependency typer to v0.11.0 ([3bbe540](https://github.com/liblaf/thu-learn-downloader/commit/3bbe540ca98848f4fee05fa6575c2d18fb0c5f5c))
+* **deps:** update dependency typer to v0.12.0 ([b3c41a6](https://github.com/liblaf/thu-learn-downloader/commit/b3c41a6104b21149254ba48136ffadfe9c8e4cd4))
+* error caused by slash in name and OPENSSL_CONF ([#171](https://github.com/liblaf/thu-learn-downloader/issues/171)) ([d89efaf](https://github.com/liblaf/thu-learn-downloader/commit/d89efaf63902d54c9cd8632a4839bcb00256a721))
+* update data type for 'grade' field in Homework class ([bb79eb0](https://github.com/liblaf/thu-learn-downloader/commit/bb79eb0dfefcfeb22b23d9ddde57dd2d977cad03))
+
 ## [0.3.0](https://github.com/liblaf/thu-learn-downloader/compare/v0.2.1...v0.3.0) (2024-01-26)
 
 ### Features
