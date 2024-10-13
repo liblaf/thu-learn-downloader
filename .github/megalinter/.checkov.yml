@@ -1,9 +1,0 @@
-# ref: <https://github.com/oxsecurity/megalinter/blob/225e1b5c3a044775005d0ec772cabee5d21006ed/TEMPLATES/.checkov.yml>
-
-# You can see all available properties here: https://github.com/bridgecrewio/checkov#configuration-using-a-config-file
-quiet: true
-
-skip-check:
-  - CKV_DOCKER_2
-  - CKV_GHA_7
-  - CKV2_GHA_1
