@@ -1,0 +1,62 @@
+#:schema https://json.schemastore.org/ruff.json
+builtins = ["ic"]
+fix = true
+show-fixes = true
+target-version = "py312"
+
+[format]
+docstring-code-format = true
+
+[lint]
+explicit-preview-rules = true
+ignore = [
+  "ANN002",
+  "ANN003",
+  "ANN401",
+  "COM812",
+  "D100",
+  "D101",
+  "D102",
+  "D103",
+  "D104",
+  "E501",
+  "ERA001",
+  "FIX002",
+  "INP001",
+  "PLR0913",
+  "PLR2004",
+  "RET504",
+  "S101",
+  "S603",
+  "T201",
+  "TD002",
+  "TD003",
+  "TD004",
+  "TD005",
+]
+preview = true
+select = ["ALL", "RUF022"]
+
+[lint.flake8-annotations]
+allow-star-arg-any = true
+
+[lint.flake8-import-conventions.aliases]
+"asyncio.subprocess" = "asp"
+"jax.numpy" = "jnp"
+"jax.typing" = "jxt"
+"matplotlib" = "mpl"
+"matplotlib.pyplot" = "plt"
+"numpy" = "np"
+"numpy.typing" = "npt"
+"open3d" = "o3d"
+"pandas" = "pd"
+"polars" = "pl"
+"pyvista" = "pv"
+"seaborn" = "sns"
+"subprocess" = "sp"
+"taichi" = "ti"
+"trimesh" = "tm"
+"trimesh.transformations" = "tf"
+
+[lint.pydocstyle]
+convention = "google"

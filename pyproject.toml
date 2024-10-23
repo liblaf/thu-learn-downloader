@@ -1,40 +1,31 @@
 [build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core"]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
 
-[tool.poetry]
-authors = ["liblaf <i@liblaf.me>"]
-description = "Download everything from Web Learning of Tsinghua University"
-license = "MIT"
+[project]
+authors = [
+  { email = "30631553+liblaf@users.noreply.github.com", name = "liblaf" },
+]
+dependencies = [
+  "beautifulsoup4>=4.12.3",
+  "hishel>=0.0.33",
+  "httpx[socks]>=0.27.2",
+  "lazy-loader>=0.4",
+  "pydantic>=2.9.2",
+  "rich>=13.9.2",
+  "tenacity>=9.0.0",
+  "typer>=0.12.5",
+  "yarl>=1.16.0",
+]
+description = "Add your description here"
 name = "thu-learn-downloader"
 readme = "README.md"
-repository = "https://github.com/liblaf/thu-learn-downloader"
+requires-python = ">=3.11"
 version = "0.3.1"
 
-[tool.poetry.dependencies]
-beautifulsoup4 = "^4.12.2"
-pydantic = "^2.4.2"
-python = "^3.10"
-python-dateutil = "^2.8.2"
-requests = "^2.31.0"
-rich = "^13.6.0"
-tenacity = "^8.5.0"
-typer = "^0.12.0"
+[project.scripts]
+thu-learn-downloader = "thu_learn_downloader:app"
+tld = "thu_learn_downloader:app"
 
-[tool.poetry.group.dev.dependencies]
-nuitka = ">=1.8.5,<3.0.0"
-pyinstaller = { python = ">=3.10,<3.13", version = "^6.1.0" }
-ruff = ">=0.6.0,<0.7.0"
-typer-cli = { git = "https://github.com/Patarimi/typer-cli.git" }
-
-[tool.poetry.scripts]
-thu-learn-downloader = "thu_learn_downloader.main:app"
-tld = "thu_learn_downloader.main:app"
-
-[[tool.poetry.source]]
-name = "mirrors"
-priority = "default"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
-
-[tool.ruff.lint]
-select = ["B", "E", "F", "I", "SIM", "UP"]
+[tool.uv]
+dev-dependencies = ["icecream>=2.1.3", "marimo>=0.9.11"]

@@ -175,7 +175,4 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
-*.gif
-*.png
-assets
-frames
+!pyrightconfig.json

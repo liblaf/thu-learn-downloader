@@ -2,4 +2,4 @@
 # ref: <https://megalinter.io/latest/config-file/>
 
 EXTENDS:
-  - https://github.com/liblaf/repo/raw/refs/heads/main/.github/linters/.mega-linter.yaml
+  - https://github.com/liblaf/.github/raw/refs/heads/main/.mega-linter.yaml

@@ -1,0 +1,2 @@
+#:schema https://json.schemastore.org/ruff.json
+extend = ".github/linters/.ruff.toml"
