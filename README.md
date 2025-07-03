@@ -1,5 +1,8 @@
 # THU Web Learning Downloader
 
+> [!WARNING]
+> username + password 登陆方式已失效, 致使本项目目前不可用 [#223](https://github.com/liblaf/thu-learn-downloader/issues/223). PR Welcome!
+
 Download everything from Web Learning of Tsinghua University
 
 [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/liblaf/thu-learn-downloader/ci.yaml)](https://github.com/liblaf/thu-learn-downloader/actions/workflows/ci.yaml)
