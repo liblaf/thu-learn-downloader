@@ -19,6 +19,8 @@ app: Typer = Typer(name="tld")
 def main(
     username: Annotated[str, Option("-u", "--username")] = "",
     password: Annotated[str, Option("-p", "--password")] = "",
+    save_cookie: Annotated[bool, Option("-save", "-save-cookie",help="保存浏览器Cookie到本地")] = True,
+
     *,
     prefix: Annotated[Path, Option(file_okay=False, writable=True)] = Path.home()  # noqa: B008
     / "thu-learn",
@@ -33,12 +35,35 @@ def main(
     log_level: Annotated[LogLevel, Option(envvar="LOG_LEVEL")] = LogLevel.INFO,
 ) -> None:
     logging.getLogger().setLevel(log_level)
-    username = username or login.username() or typer.prompt(text="Username")
-    password = (
-        password or login.password() or typer.prompt(text="Password", hide_input=True)
-    )
     learn: Learn = Learn(language=language)
-    learn.login(username=username, password=password)
+    # 尝试加载cookie文件
+    try:
+        with open("cookies.txt", "r") as f:
+            cookies = {}
+            for line in f:
+                name, value = line.strip().split("=", 1)
+                cookies[name] = value
+            learn.client.cookies.update(cookies)
+    #如果 cookies.txt 文件不存在，则使用浏览器登录
+    except FileNotFoundError:
+        learn.login()
+        if save_cookie:
+            try:
+                with open("cookies.txt", "w") as f:
+                    for name, value in learn.client.cookies.items():
+                        f.write(f"{name}={value}\n")
+                print("✅ Cookie已保存到 cookies.txt")
+            except Exception as e:
+                print(f"⚠️ 保存cookie失败: {e}")
+    # else:
+    #     # 使用传统的用户名密码登录
+    #     if not username:
+    #         username = login.username() or typer.prompt(text="Username")
+    #     if not password:
+    #         password = login.password() or typer.prompt(text="Password", hide_input=True)
+    #     print("使用用户名密码登录...")
+    # learn.login(username=username, password=password)
+    
     with Downloader(
         prefix=prefix,
         selector=Selector(

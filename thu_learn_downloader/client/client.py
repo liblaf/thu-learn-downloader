@@ -26,5 +26,13 @@ class Client(Session):
         return self.get(url=url, params={**params, "_csrf": self.token})
 
     @property
-    def token(self) -> None:
-        return self.cookies["XSRF-TOKEN"]
+    def token(self) -> str:
+        try:
+            token = self.cookies.get("XSRF-TOKEN")
+            if token is None:
+                raise KeyError("XSRF-TOKEN not found in cookies")
+            return token
+        except KeyError as e:
+            print(f"无法获取CSRF token: {e}")
+            print(f"当前cookies: {list(self.cookies.keys())}")
+            raise Exception("登录状态可能已失效，请重新登录") from e
