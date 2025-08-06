@@ -46,6 +46,7 @@ class Downloader:
     semesters_task_id: TaskID
     courses_task_id: TaskID
     documents_task_id: TaskID
+    homeworks_task_id: TaskID
 
     def __init__(
         self,
@@ -75,6 +76,7 @@ class Downloader:
         self.semesters_task_id = self.progress_prepare.add_task(description="Semesters")
         self.courses_task_id = self.progress_prepare.add_task(description="Courses")
         self.documents_task_id = self.progress_prepare.add_task(description="Documents")
+        self.homeworks_task_id = self.progress_prepare.add_task(description="Homeworks")
         self.live = Live(
             Group(
                 Panel(self.progress_download, height=jobs + 2),
@@ -187,13 +189,10 @@ class Downloader:
                 if semester.id in self.selector.semesters
             ]
         self.progress_prepare.reset(task_id=self.semesters_task_id)
-        for semester in self.progress_prepare.track(
-            sequence=semesters,
-            total=len(semesters),
-            task_id=self.semesters_task_id,
-            description="Semesters",
-        ):
+        self.progress_prepare.update(task_id=self.semesters_task_id, total=len(semesters))
+        for semester in semesters:
             self.sync_semester(semester=semester)
+            self.progress_prepare.advance(task_id=self.semesters_task_id, advance=1)
 
     def sync_semester(self, semester: Semester) -> None:
         self.sync_courses(semester=semester, courses=semester.courses)
@@ -204,13 +203,10 @@ class Downloader:
                 course for course in courses if course.id in self.selector.courses
             ]
         self.progress_prepare.reset(task_id=self.courses_task_id)
-        for course in self.progress_prepare.track(
-            sequence=courses,
-            total=len(courses),
-            task_id=self.courses_task_id,
-            description="Courses",
-        ):
+        self.progress_prepare.update(task_id=self.courses_task_id, total=len(courses))
+        for course in courses:
             self.sync_course(semester=semester, course=course)
+            self.progress_prepare.advance(task_id=self.courses_task_id, advance=1)
 
     def sync_course(self, semester: Semester, course: Course) -> None:
         if self.selector.document:
@@ -236,15 +232,8 @@ class Downloader:
             document_class.id: document_class for document_class in document_classes
         }
         self.progress_prepare.reset(task_id=self.documents_task_id)
-        for index, document in enumerate(
-            self.progress_prepare.track(
-                sequence=documents,
-                total=len(documents),
-                task_id=self.documents_task_id,
-                description="Documents",
-            ),
-            start=1,
-        ):
+        self.progress_prepare.update(task_id=self.documents_task_id, total=len(documents))
+        for index, document in enumerate(documents, start=1):
             self.sync_document(
                 semester=semester,
                 course=course,
@@ -252,6 +241,7 @@ class Downloader:
                 document=document,
                 index=index,
             )
+            self.progress_prepare.advance(task_id=self.documents_task_id, advance=1)
 
     def sync_document(
         self,
@@ -287,14 +277,11 @@ class Downloader:
     def sync_homeworks(
         self, semester: Semester, course: Course, homeworks: Sequence[Homework]
     ) -> None:
-        self.progress_prepare.reset(task_id=self.documents_task_id)
-        for homework in self.progress_prepare.track(
-            sequence=homeworks,
-            total=len(homeworks),
-            task_id=self.documents_task_id,
-            description="Homeworks",
-        ):
+        self.progress_prepare.reset(task_id=self.homeworks_task_id)
+        self.progress_prepare.update(task_id=self.homeworks_task_id, total=len(homeworks))
+        for homework in homeworks:
             self.sync_homework(semester=semester, course=course, homework=homework)
+            self.progress_prepare.advance(task_id=self.homeworks_task_id, advance=1)
 
     def sync_homework(
         self, semester: Semester, course: Course, homework: Homework
