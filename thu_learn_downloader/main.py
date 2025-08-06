@@ -20,7 +20,7 @@ def main(
     username: Annotated[str, Option("-u", "--username")] = "",
     password: Annotated[str, Option("-p", "--password")] = "",
     save_cookie: Annotated[bool, Option("-save", "-save-cookie",help="保存浏览器Cookie到本地")] = True,
-
+    all_years: Annotated[str, Option("-all", "--all-years", help="下载指定年份范围内的所有课程，格式: 入学年-毕业年 (如: 2021-2025)")] = "",
     *,
     prefix: Annotated[Path, Option(file_okay=False, writable=True)] = Path.home()  # noqa: B008
     / "thu-learn",
@@ -35,6 +35,40 @@ def main(
     log_level: Annotated[LogLevel, Option(envvar="LOG_LEVEL")] = LogLevel.INFO,
 ) -> None:
     logging.getLogger().setLevel(log_level)
+    
+    # 处理年份范围参数
+    if all_years:
+        try:
+            start_year, end_year = map(int, all_years.split("-"))
+            if start_year >= end_year:
+                raise ValueError("入学年份必须小于毕业年份")
+            
+            print(f"📅 生成学期范围: {start_year} 年入学 - {end_year} 年毕业")
+            
+            # 生成所有学期
+            generated_semesters = []
+            for year in range(start_year, end_year):
+                # 每学年有两个学期：秋季学期 (1) 和春季学期 (2)
+                generated_semesters.append(f"{year}-{year+1}-1")  # 秋季学期
+                generated_semesters.append(f"{year}-{year+1}-2")  # 春季学期
+            
+            # 覆盖原有的学期设置
+            semesters = generated_semesters
+            print(f"📚 将下载以下学期的课程:")
+            for sem in semesters:
+                print(f"   • {sem}")
+            print(f"   共 {len(semesters)} 个学期")
+            
+        except ValueError as e:
+            if "invalid literal" in str(e):
+                print(f"❌ 年份范围格式错误: {all_years}")
+                print("   正确格式: 入学年-毕业年 (例如: 2021-2025)")
+            else:
+                print(f"❌ 年份范围参数错误: {e}")
+            return
+        except Exception as e:
+            print(f"❌ 解析年份范围时发生错误: {e}")
+            return
     learn: Learn = Learn(language=language)
     # 尝试加载cookie文件
     try:
