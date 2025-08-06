@@ -75,6 +75,38 @@ def main(
         jobs=jobs,
     ) as downloader:
         downloader.sync_semesters(semesters=learn.semesters)
+    
+    # 显示课程问题汇总
+    from .client.course import get_course_issues
+    issues = get_course_issues()
+    
+    # 统计并显示问题汇总
+    total_issues = sum(len(issue_list) for issue_list in issues.values())
+    if total_issues > 0:
+        print("\n" + "="*60)
+        print("📋 课程内容缺失汇总报告")
+        print("="*60)
+        
+        if issues['missing_document_classes']:
+            print(f"\n📂 缺少文档分类的课程 ({len(issues['missing_document_classes'])}门):")
+            for issue in issues['missing_document_classes']:
+                print(f"   • {issue['course']} - {issue['reason']}")
+        
+        if issues['missing_documents']:
+            print(f"\n📄 缺少文档的课程 ({len(issues['missing_documents'])}门):")
+            for issue in issues['missing_documents']:
+                print(f"   • {issue['course']} - {issue['reason']}")
+        
+        if issues['missing_homeworks']:
+            print(f"\n📝 缺少作业的课程 ({len(issues['missing_homeworks'])}门):")
+            for issue in issues['missing_homeworks']:
+                print(f"   • {issue['course']} - {issue['reason']}")
+        
+        print(f"\n💡 提示: 共有 {total_issues} 门课程存在内容缺失情况")
+        print("   这可能是因为老师还未上传相关内容，或者该课程确实没有相应内容。")
+        print("="*60)
+    else:
+        print("\n✅ 所有课程内容获取正常！")
 
 
 if __name__ == "__main__":
