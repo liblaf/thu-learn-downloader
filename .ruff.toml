@@ -1,0 +1,5 @@
+#:schema https://json.schemastore.org/ruff.json
+# ref: <https://docs.astral.sh/ruff/settings/>
+
+extend = ".config/linters/.ruff.toml"
+target-version = "py312"

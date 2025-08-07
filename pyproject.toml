@@ -1,41 +1,111 @@
-[build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core"]
+#:schema https://json.schemastore.org/pyproject.json
+# ref: <https://packaging.python.org/en/latest/specifications/pyproject-toml/>
 
-[tool.poetry]
-authors = ["liblaf <i@liblaf.me>"]
-description = "Download everything from Web Learning of Tsinghua University"
-license = "MIT"
+[project]
 name = "thu-learn-downloader"
+description = "Download everything from Web Learning of Tsinghua University"
 readme = "README.md"
-repository = "https://github.com/liblaf/thu-learn-downloader"
-version = "0.4.0"
+requires-python = ">=3.12"
+license = "MIT"
+authors = [
+  { name = "liblaf", email = "30631553+liblaf@users.noreply.github.com" },
+]
+keywords = []
+classifiers = [
+  # common classifiers
+  # ref: <https://pypi.org/classifiers/>
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Typing :: Typed",
+]
+dependencies = [
+  "beautifulsoup4>=4.0.0,<5",
+  "lazy-loader>=0.4.0,<0.5",
+  "loguru>=0.7.0,<0.8",
+  "pydantic>=2.0.0,<3",
+  "python-dateutil>=2.0.0,<3",
+  "requests>=2.0.0,<3",
+  "rich>=14.0.0,<15",
+  "selenium>=4.0.0,<5",
+  "tenacity>=9.0.0,<10",
+  "typer>=0.16.0,<0.17",
+]
+dynamic = ["version"]
 
-[tool.poetry.dependencies]
-beautifulsoup4 = "^4.12.2"
-pydantic = "^2.4.2"
-python = "^3.10"
-python-dateutil = "^2.8.2"
-requests = "^2.31.0"
-rich = "^13.7.1"
-selenium = "^4.15.0"
-tenacity = "^9.0.0"
-typer = "^0.16.0"
+[project.urls]
+"Changelog" = "https://github.com/liblaf/thu-learn-downloader/blob/main/CHANGELOG.md"
+"Documentation" = "https://liblaf.github.io/thu-learn-downloader/"
+"Funding" = "https://github.com/liblaf/thu-learn-downloader?sponsor=1"
+"Homepage" = "https://github.com/liblaf/thu-learn-downloader"
+"Issue Tracker" = "https://github.com/liblaf/thu-learn-downloader/issues"
+"Release Notes" = "https://github.com/liblaf/thu-learn-downloader/releases"
+"Source Code" = "https://github.com/liblaf/thu-learn-downloader"
 
-[tool.poetry.group.dev.dependencies]
-nuitka = ">=1.8.5,<3.0.0"
-pyinstaller = { python = ">=3.10,<3.13", version = "^6.1.0" }
-ruff = ">=0.12.7,<0.13.0"
-typer-cli = { git = "https://github.com/Patarimi/typer-cli.git" }
-
-[tool.poetry.scripts]
+[project.scripts]
 thu-learn-downloader = "thu_learn_downloader.main:app"
 tld = "thu_learn_downloader.main:app"
 
-[[tool.poetry.source]]
-name = "mirrors"
-priority = "default"
-url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+[dependency-groups]
+build = ["check-wheel-contents", "hatch", "twine"]
+dev = ["icecream"]
+docs = [
+  "docstring-inheritance",
+  "griffe-fieldz",
+  "griffe-generics",
+  "griffe-inherited-docstrings",
+  "griffe-modernized-annotations",
+  "griffe-pydantic",
+  "griffe-warnings-deprecated",
+  "mdx-truly-sane-lists",
+  "mkdocs",
+  "mkdocs-api-autonav",
+  "mkdocs-autorefs",
+  "mkdocs-git-committers-plugin-2",
+  "mkdocs-git-revision-date-localized-plugin",
+  "mkdocs-include-markdown-plugin",
+  "mkdocs-material[imaging]",
+  "mkdocs-section-index",
+  "mkdocstrings",
+  "mkdocstrings-python",
+  "pymdown-extensions",
+  "ruff",
+]
+test = ["hypothesis", "pytest", "pytest-codspeed", "pytest-cov", "pytest-xdist"]
 
-[tool.ruff.lint]
-select = ["B", "E", "F", "I", "SIM", "UP"]
+[build-system]
+requires = ["hatch-vcs", "hatchling"]
+build-backend = "hatchling.build"
+
+[tool.check-wheel-contents]
+ignore = ["W002"]
+
+[tool.coverage.run]
+branch = true
+source = ["src/"]
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/thu_learn_downloader/_version.py"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src/"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/thu_learn_downloader/"]
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.pytest]
+[tool.pytest.ini_options]
+addopts = ["--showlocals", "--strict-config", "--strict-markers"]
+testpaths = ["benches/", "tests/"]
+
+[tool.uv]
+default-groups = "all"

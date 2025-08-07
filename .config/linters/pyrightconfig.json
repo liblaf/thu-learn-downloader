@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/pyright/main/packages/vscode-pyright/schemas/pyrightconfig.schema.json",
+
+  "enableTypeIgnoreComments": false,
+
+  "typeCheckingMode": "standard",
+
+  "reportArgumentType": "information",
+  "reportAssignmentType": "information",
+  "reportRedeclaration": "none",
+  "reportIncompatibleMethodOverride": "warning",
+  "reportIncompatibleVariableOverride": "warning"
+}

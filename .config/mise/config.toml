@@ -1,0 +1,7 @@
+#:schema https://mise.jdx.dev/schema/mise.json
+
+[task_config]
+includes = [".config/mise/tasks/", ".config/copier/mise/tasks/"]
+
+[tasks.lint]
+depends = ["lint-python", "lint-toml"]

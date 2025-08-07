@@ -171,7 +171,7 @@ poetry.toml
 .ruff_cache/
 
 # LSP config files
-pyrightconfig.json
+# pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
@@ -179,3 +179,4 @@ pyrightconfig.json
 *.png
 assets
 frames
+_version.py

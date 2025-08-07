@@ -1,0 +1,12 @@
+# -*- mode: yaml; -*-
+
+INHERIT: .config/copier/mkdocs.yaml
+site_name: "THU Learn Downloader"
+site_description: TODO
+
+plugins:
+  mkdocstrings:
+    handlers:
+      python:
+        inventories:
+          - https://docs.python.org/3/objects.inv
