@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.4.0](https://github.com/liblaf/thu-learn-downloader/compare/v0.3.1...v0.4.0) (2025-08-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* 通过selenium接入了统一身份认证 ([#239](https://github.com/liblaf/thu-learn-downloader/issues/239))
+
+### Features
+
+* 通过selenium接入了统一身份认证 ([#239](https://github.com/liblaf/thu-learn-downloader/issues/239)) ([ef64ec4](https://github.com/liblaf/thu-learn-downloader/commit/ef64ec42984710537605378d87928c86908bf346))
+
+
+### Bug Fixes
+
+* **deps:** update dependency rich to v13.9.4 ([#235](https://github.com/liblaf/thu-learn-downloader/issues/235)) ([13e2f3b](https://github.com/liblaf/thu-learn-downloader/commit/13e2f3bd308dd1fabb2f42122623bb0dbf629e0d))
+* **deps:** update dependency rich to v14 ([#234](https://github.com/liblaf/thu-learn-downloader/issues/234)) ([987bf20](https://github.com/liblaf/thu-learn-downloader/commit/987bf20e329a8a1c617110a1b0d9a3ec2b443546))
+* **deps:** update dependency tenacity to v9.1.2 ([#232](https://github.com/liblaf/thu-learn-downloader/issues/232)) ([9e85345](https://github.com/liblaf/thu-learn-downloader/commit/9e8534500e71a6ae7f90e26cb4499d19e9d2b953))
+* **deps:** update dependency typer to v0.16.0 ([#213](https://github.com/liblaf/thu-learn-downloader/issues/213)) ([4e036fe](https://github.com/liblaf/thu-learn-downloader/commit/4e036fe24979d311101fcf114d7d6abca0c14d46))
+* trigger release ([6eccc5c](https://github.com/liblaf/thu-learn-downloader/commit/6eccc5cd3a9cce9954626b9893877e02ff20f29e))
+
+
+### Documentation
+
+* add warning about login method deprecation ([e1fb5f2](https://github.com/liblaf/thu-learn-downloader/commit/e1fb5f2c73ebad33af3a537973d808ec12acc2e3))
+
 ## [0.3.1](https://github.com/liblaf/thu-learn-downloader/compare/v0.3.0...v0.3.1) (2024-10-12)
 
 
