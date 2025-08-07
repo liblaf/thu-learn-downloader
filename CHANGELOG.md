@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.4.2](https://github.com/liblaf/github-bot/compare/v0.4.1..v0.4.2) - 2025-08-07
+
+### 📝 Documentation
+
+- remove deprecated login warning from README - ([c0b47ee](https://github.com/liblaf/github-bot/commit/c0b47ee2a88660a561ba58ecf2f52d22501d28e7))
+
 ## [0.4.1](https://github.com/liblaf/github-bot/compare/v0.4.0..v0.4.1) - 2025-08-07
 
 ### 💥 BREAKING CHANGES
