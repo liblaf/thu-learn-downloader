@@ -24,7 +24,7 @@ jobs:
         name: Auth App
         uses: liblaf/actions/auth-app@main
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           token: ${{ steps.auth.outputs.token }}
           fetch-depth: 0

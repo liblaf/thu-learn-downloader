@@ -21,7 +21,7 @@ jobs:
       test: ${{ steps.test.outcome == 'success' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - id: test
         name: Detect Tests
         run: |-
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # I don't know why, but it is present in the official example
       - name: Setup Python
