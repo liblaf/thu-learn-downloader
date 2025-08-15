@@ -77,9 +77,8 @@ jobs:
         run: cat 'megalinter-reports/megalinter-report.md' >> "$GITHUB_STEP_SUMMARY"
       - if: success() || failure()
         name: Remove MegaLinter Reports
-        run: |-
-          rm --force mega-linter.log
-          rm --force --recursive 'megalinter-reports/'
+        run: >-
+          sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports/'
       - if: github.ref == 'refs/heads/main' && steps.lint.outputs.has-updated-sources > 0
         name: Create PR with Applied Fixes
         uses: peter-evans/create-pull-request@v7
