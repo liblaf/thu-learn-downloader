@@ -10,14 +10,31 @@ on:
   workflow_dispatch:
 
 jobs:
+  pre:
+    name: Pre
+    permissions:
+      actions: write
+    runs-on: ubuntu-latest
+    outputs:
+      should-skip: ${{ steps.pre.outputs.should-skip }}
+    steps:
+      - id: pre
+        name: Skip Duplicate Actions
+        uses: liblaf/actions-ts/pre@dist
+        with:
+          cancel-others: true
+
   build:
     name: Build
+    needs:
+      - pre
+    if: needs.pre.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
     outputs:
       artifact-name: ${{ steps.build.outputs.artifact-name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - id: build
         name: Build and Inspect a Python Package
         uses: hynek/build-and-inspect-python-package@v2
@@ -31,7 +48,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-publish
+      group: ${{ github.workflow }} @ ${{ github.ref }}
       cancel-in-progress: true
     steps:
       - name: Download Artifacts
@@ -51,11 +68,11 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}-release
+      group: ${{ github.workflow }} @ ${{ github.ref }}
       cancel-in-progress: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Download Artifacts

@@ -9,19 +9,37 @@ on:
   push:
     branches-ignore:
       - assets**
+      - dist**
       - gh-pages
   pull_request:
   workflow_dispatch:
 
 jobs:
+  pre:
+    name: Pre
+    permissions:
+      actions: write
+    runs-on: ubuntu-latest
+    outputs:
+      should-skip: ${{ steps.pre.outputs.should-skip }}
+    steps:
+      - id: pre
+        name: Skip Duplicate Actions
+        uses: liblaf/actions-ts/pre@dist
+        with:
+          cancel-others: true
+
   detect:
     name: Detect
+    needs:
+      - pre
+    if: needs.pre.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
     outputs:
       test: ${{ steps.test.outcome == 'success' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - id: test
         name: Detect Tests
         run: |-
@@ -39,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # I don't know why, but it is present in the official example
       - name: Setup Python
