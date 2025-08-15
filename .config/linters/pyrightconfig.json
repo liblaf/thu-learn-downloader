@@ -7,5 +7,5 @@
   "reportIncompatibleMethodOverride": "warning",
   "reportIncompatibleVariableOverride": "warning",
   "reportPrivateImportUsage": "none",
-  "reportRedeclaration": "none",
+  "reportRedeclaration": "none"
 }

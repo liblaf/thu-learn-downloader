@@ -77,7 +77,8 @@ jobs:
         run: cat 'megalinter-reports/megalinter-report.md' >> "$GITHUB_STEP_SUMMARY"
       - if: success() || failure()
         name: Remove MegaLinter Reports
-        run: >-
+        run: |-
+          cp --archive --target-directory='${{ runner.temp }}' --verbose 'megalinter-reports/megalinter-report.md'
           sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports/'
       - if: github.ref == 'refs/heads/main' && steps.lint.outputs.has-updated-sources > 0
         name: Create PR with Applied Fixes
@@ -90,7 +91,7 @@ jobs:
           branch: mega-linter-fix/${{ github.ref_name }}
           sign-commits: true
           title: "chore(mega-linter): apply linters automatic fixes"
-          body-path: megalinter-reports/megalinter-report.md
+          body-path: ${{ runner.temp }}/megalinter-report.md
           labels: automerge
           assignees: ${{ github.repository_owner }}
           reviewers: ${{ github.repository_owner }}
