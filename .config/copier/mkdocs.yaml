@@ -117,6 +117,7 @@ plugins:
           - https://autoregistry.readthedocs.io/en/stable/objects.inv
           - https://beartype.github.io/plum/objects.inv
           - https://beartype.readthedocs.io/en/stable/objects.inv
+          - https://cappa.readthedocs.io/en/stable/objects.inv
           - https://cherries.readthedocs.io/en/stable/objects.inv
           - https://chex.readthedocs.io/en/stable/objects.inv
           - https://cyclopts.readthedocs.io/en/stable/objects.inv
@@ -137,6 +138,7 @@ plugins:
           - https://grantjenks.com/docs/sortedcollections/objects.inv
           - https://grantjenks.com/docs/sortedcontainers/objects.inv
           - https://ipctk.xyz/objects.inv
+          - https://jaxopt.github.io/stable/objects.inv
           - https://jcristharif.com/msgspec/objects.inv
           - https://jinja.palletsprojects.com/en/stable/objects.inv
           - https://joblib.readthedocs.io/en/stable/objects.inv
@@ -152,6 +154,7 @@ plugins:
           - https://pydicom.github.io/pydicom/stable/objects.inv
           - https://pymeshfix.pyvista.org/objects.inv
           - https://pytorch3d.readthedocs.io/en/latest/objects.inv
+          - https://questionary.readthedocs.io/en/stable/objects.inv
           - https://rich.readthedocs.io/en/stable/objects.inv
           - https://toolz.readthedocs.io/en/stable/objects.inv
           - https://trimesh.org/objects.inv

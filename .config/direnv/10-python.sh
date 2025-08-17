@@ -4,12 +4,8 @@
 
 pushd "$(git rev-parse --show-toplevel)" > /dev/null || return 1
 
-function replace-mirrors() {
-  local file="$1"
-  if [[ -f $file ]]; then
-    sd 'https://(\S+)/simple\b' 'https://pypi.org/simple' "$file"
-    sd 'https://(\S+)/packages\b' 'https://files.pythonhosted.org/packages' "$file"
-  fi
+function has() {
+  type "$@" &> /dev/null
 }
 
 if [[ -f 'pixi.lock' ]]; then
@@ -17,13 +13,15 @@ if [[ -f 'pixi.lock' ]]; then
   if [[ -t 2 ]]; then
     options+=(--color=always)
   fi
-  eval "$(pixi shell-hook "${options[@]}")"
-  replace-mirrors 'pixi.lock'
+  pixi='pixi'
+  if has pixi-wrapper.sh; then pixi='pixi-wrapper.sh'; fi
+  eval "$("$pixi" shell-hook "${options[@]}")"
 fi
 
 if [[ -f 'uv.lock' ]]; then
-  uv sync --all-extras --all-groups
-  replace-mirrors 'uv.lock'
+  uv='uv'
+  if has uv-wrapper.sh; then uv='uv-wrapper.sh'; fi
+  "$uv" sync --all-extras --all-groups
   sed --in-place --regexp-extended \
     's|\s*(include-system-site-packages)\s*=\s*.*\s*|\1 = true|' '.venv/pyvenv.cfg'
   # shellcheck disable=SC1091

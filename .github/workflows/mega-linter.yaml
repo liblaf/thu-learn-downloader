@@ -92,7 +92,9 @@ jobs:
           sign-commits: true
           title: "chore(mega-linter): apply linters automatic fixes"
           body-path: ${{ runner.temp }}/megalinter-report.md
-          labels: automerge
+          labels: |-
+            autofix
+            automerge
           assignees: ${{ github.repository_owner }}
           reviewers: ${{ github.repository_owner }}
       - if: github.ref != 'refs/heads/main' && steps.lint.outputs.has-updated-sources > 0

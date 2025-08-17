@@ -6,21 +6,18 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-function replace-mirrors() {
-  local file="$1"
-  if [[ -f $file ]]; then
-    # ref: <https://github.com/astral-sh/uv/issues/6349#issuecomment-3076752818>
-    sd 'https://(\S+)/packages\b' 'https://files.pythonhosted.org/packages' "$file"
-    sd 'https://(\S+)/simple\b' 'https://pypi.org/simple' "$file"
-  fi
+function has() {
+  type "$@" &> /dev/null
 }
 
 if [[ -f 'pixi.lock' ]]; then
-  pixi upgrade
-  replace-mirrors 'pixi.lock'
+  pixi='pixi'
+  if has pixi-wrapper.sh; then pixi='pixi-wrapper.sh'; fi
+  "$pixi" upgrade
 fi
 
 if [[ -f 'uv.lock' ]]; then
-  uv sync --upgrade
-  replace-mirrors 'uv.lock'
+  uv='uv'
+  if has uv-wrapper.sh; then uv='uv-wrapper.sh'; fi
+  "$uv" sync --upgrade
 fi
