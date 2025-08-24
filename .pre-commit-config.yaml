@@ -11,6 +11,10 @@ ci:
     for more information, see https://pre-commit.ci
   autoupdate_commit_msg: |-
     chore(pre-commit.ci): pre-commit autoupdate
+  skip:
+    - dvc-post-checkout
+    - dvc-pre-commit
+    - dvc-pre-push
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
@@ -24,22 +28,26 @@ repos:
     rev: v2.2.0
     hooks:
       - id: biome-check
-        exclude_types:
-          - json
-          - json5
+        exclude: \.jsonc?$
   - repo: https://github.com/iterative/dvc
     rev: 3.62.0
     hooks:
-      - id: dvc-pre-commit
-        stages:
-          - pre-commit
-      - id: dvc-pre-push
-        stages:
-          - pre-push
       - id: dvc-post-checkout
         always_run: true
         stages:
           - post-checkout
+        additional_dependencies:
+          - .[all]
+      - id: dvc-pre-commit
+        stages:
+          - pre-commit
+        additional_dependencies:
+          - .[all]
+      - id: dvc-pre-push
+        stages:
+          - pre-push
+        additional_dependencies:
+          - .[all]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
@@ -58,6 +66,8 @@ repos:
     rev: v0.11.0.1
     hooks:
       - id: shellcheck
+        args:
+          - --exclude=SC1091
 
 default_install_hook_types:
   - post-checkout

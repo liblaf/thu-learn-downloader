@@ -10,16 +10,22 @@ function has() {
 }
 
 function pretty-toml() {
+  local files=()
+  for file in "$@"; do
+    if [[ -f $file ]]; then
+      files+=("$file")
+    fi
+  done
   if has toml-sort; then
-    toml-sort --in-place --all "$@"
-    sed --expression='s/# :schema /#:schema /g' --in-place "$@"
+    toml-sort --in-place --all "${files[@]}"
+    sed --expression='s/# :schema /#:schema /g' --in-place "${files[@]}"
   fi
   if has tombi; then
-    tombi format "$@"
+    tombi format "${files[@]}"
   fi
 }
 
-pretty-toml .ruff.toml pyproject.toml
+pretty-toml '.ruff.toml' 'pyproject.toml'
 
 if has tombi; then
   tombi lint
