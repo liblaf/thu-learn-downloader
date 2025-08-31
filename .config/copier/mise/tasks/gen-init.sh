@@ -27,7 +27,7 @@ if [[ -d $src_dir ]]; then
         if [[ ! -f $file ]]; then
           tangerine <<< "$TEMPLATE" > "$file"
         else
-          tangerine "$file"
+          tangerine --in-place "$file"
         fi
       else
         if [[ ! -f $file ]]; then

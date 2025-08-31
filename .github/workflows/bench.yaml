@@ -5,10 +5,6 @@ name: Bench
 
 on:
   push:
-    branches-ignore:
-      - assets**
-      - dist**
-      - gh-pages
   pull_request:
   workflow_dispatch:
 
@@ -55,7 +51,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Setup Python
-        uses: liblaf/actions/setup-python@main
+        uses: liblaf/actions-ts/setup-python@dist
       - name: Install Mise
         uses: jdx/mise-action@v3
       - name: Bench
