@@ -55,6 +55,6 @@ jobs:
       - name: Install Mise
         uses: jdx/mise-action@v3
       - name: Bench
-        uses: CodSpeedHQ/action@v3
+        uses: CodSpeedHQ/action@v4
         with:
           run: mise run bench
