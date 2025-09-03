@@ -12,23 +12,34 @@ on:
 jobs:
   build:
     name: Build
+    permissions:
+      attestations: write
+      id-token: write
     runs-on: ubuntu-latest
     outputs:
       artifact-name: ${{ steps.build.outputs.artifact-name }}
+      package-name: ${{ steps.build.outputs.package_name }}
+      package-version: ${{ steps.build.outputs.package_version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
       - id: build
         name: Build and Inspect a Python Package
         uses: hynek/build-and-inspect-python-package@v2
+        with:
+          attest-build-provenance-github: true
 
   publish:
     name: Publish
     permissions:
+      attestations: write
       id-token: write
     needs:
       - build
     runs-on: ubuntu-latest
+    environment:
+      name: PyPI
+      url: https://pypi.org/project/${{ needs.build.outputs.package-name }}/${{ needs.build.outputs.package-version }}/
     steps:
       - name: Download Artifacts
         uses: actions/download-artifact@v5
@@ -37,6 +48,8 @@ jobs:
           path: dist
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          attestations: true
 
   release:
     name: Release
@@ -56,7 +69,7 @@ jobs:
           name: ${{ needs.build.outputs.artifact-name }}
           path: dist
       - name: Upload Release Assets
-        uses: liblaf/actions-ts/release@dist
+        uses: liblaf/actions/release@dist
         with:
           files: dist/*
           tag: ${{ github.ref_name }}

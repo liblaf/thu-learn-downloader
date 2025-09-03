@@ -6,7 +6,6 @@ builtins = ["ic"]
 exclude = ["_version.py"]
 fix = true
 show-fixes = true
-target-version = "py312"
 
 [format]
 docstring-code-format = true

@@ -11,25 +11,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  pre:
-    name: Pre
+  skip-duplicate:
+    name: Skip Duplicate
     permissions:
       actions: write
     runs-on: ubuntu-latest
     outputs:
-      should-skip: ${{ steps.pre.outputs.should-skip }}
+      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
     steps:
-      - id: pre
-        name: Skip Duplicate Actions
-        uses: liblaf/actions-ts/pre@dist
+      - id: skip-duplicate
+        name: Skip Duplicate
+        uses: liblaf/actions/skip-duplicate@dist
         with:
           cancel-others: true
 
   detect:
     name: Detect
     needs:
-      - pre
-    if: needs.pre.outputs.should-skip != 'true'
+      - skip-duplicate
+    if: needs.skip-duplicate.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
     outputs:
       test: ${{ steps.test.outcome == 'success' }}
@@ -39,8 +39,8 @@ jobs:
       - id: test
         name: Detect Tests
         run: |-
-          find "tests/" -name "test_*.py" -type f -print -quit |
-            grep --quiet "tests/"
+          find "tests" -name "test_*.py" -type f -print -quit |
+            grep --quiet "tests"
         continue-on-error: true
 
   test:
@@ -57,7 +57,7 @@ jobs:
         with:
           fetch-depth: 0 # I don't know why, but it is present in the official example
       - name: Setup Python
-        uses: liblaf/actions-ts/setup-python@dist
+        uses: liblaf/actions/setup-python@dist
       - name: Install Mise
         uses: jdx/mise-action@v3
       - name: Test

@@ -8,4 +8,4 @@ set -o pipefail
 # ref: <https://github.com/scientific-python/lazy-loader#early-failure>
 export EAGER_IMPORT=1
 
-pytest --codspeed "$@"
+pytest -m 'benchmark' --numprocesses 0 --codspeed --codspeed-warmup-time='0.2' "$@"

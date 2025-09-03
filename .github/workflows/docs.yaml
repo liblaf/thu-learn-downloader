@@ -9,17 +9,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  pre:
-    name: Pre
+  skip-duplicate:
+    name: Skip Duplicate
     permissions:
       actions: write
     runs-on: ubuntu-latest
     outputs:
-      should-skip: ${{ steps.pre.outputs.should-skip }}
+      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
     steps:
-      - id: pre
-        name: Skip Duplicate Actions
-        uses: liblaf/actions-ts/pre@dist
+      - id: skip-duplicate
+        name: Skip Duplicate
+        uses: liblaf/actions/skip-duplicate@dist
         with:
           cancel-others: true
 
@@ -29,8 +29,8 @@ jobs:
       contents: write
       pages: write
     needs:
-      - pre
-    if: needs.pre.outputs.should-skip != 'true'
+      - skip-duplicate
+    if: needs.skip-duplicate.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Setup Python
-        uses: liblaf/actions-ts/setup-python@dist
+        uses: liblaf/actions/setup-python@dist
       - if: hashFiles('docs/scripts/pre-build.sh') != ''
         name: Pre-Build
         run: docs/scripts/pre-build.sh
@@ -52,7 +52,7 @@ jobs:
           single-commit: true
       - if: ${{ github.ref == 'refs/heads/main' }}
         name: Setup GitHub Pages
-        uses: liblaf/actions-ts/setup-pages@dist
+        uses: liblaf/actions/setup-pages@dist
         with:
           token: ${{ github.token }}
         continue-on-error: true

@@ -4,22 +4,58 @@
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
   "changelog-sections": [
-    { "type": "feat", "section": "✨ Features" },
-    { "type": "fix", "section": "🐛 Bug Fixes" },
-    { "type": "refactor", "section": "♻ Code Refactoring" },
-    { "type": "docs", "section": "📝 Documentation" },
-    { "type": "perf", "section": "⚡ Performance Improvements" },
-    { "type": "style", "section": "💄 Styles" },
-    { "type": "test", "section": "✅ Tests" },
-    { "type": "build", "section": "👷 Build System" },
-    { "type": "ci", "section": "🔧 Continuous Integration" },
-    { "type": "revert", "section": "⏪ Reverts" },
-    { "type": "chore", "section": "🎫 Chores", "hidden": true }
+    {
+      "type": "feat",
+      "section": "✨ Features"
+    },
+    {
+      "type": "fix",
+      "section": "🐛 Bug Fixes"
+    },
+    {
+      "type": "docs",
+      "section": "📝 Documentation"
+    },
+    {
+      "type": "style",
+      "section": "💄 Styles"
+    },
+    {
+      "type": "refactor",
+      "section": "♻️ Code Refactoring"
+    },
+    {
+      "type": "perf",
+      "section": "⚡️ Performance Improvements"
+    },
+    {
+      "type": "test",
+      "section": "✅ Tests"
+    },
+    {
+      "type": "build",
+      "section": "👷 Builds"
+    },
+    {
+      "type": "ci",
+      "section": "🔧 Continuous Integration"
+    },
+    {
+      "type": "chore",
+      "section": "🎫 Chores",
+      "hidden": true
+    },
+    {
+      "type": "revert",
+      "section": "⏪️ Reverts"
+    }
   ],
   "skip-changelog": true,
   "extra-label": "automerge",
   "include-component-in-tag": false,
   "always-update": true,
   "initial-version": "0.1.0",
-  "packages": { ".": {} }
+  "packages": {
+    ".": {}
+  }
 }

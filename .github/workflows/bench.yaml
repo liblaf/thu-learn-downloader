@@ -9,25 +9,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  pre:
-    name: Pre
+  skip-duplicate:
+    name: Skip Duplicate
     permissions:
       actions: write
     runs-on: ubuntu-latest
     outputs:
-      should-skip: ${{ steps.pre.outputs.should-skip }}
+      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
     steps:
-      - id: pre
-        name: Skip Duplicate Actions
-        uses: liblaf/actions-ts/pre@dist
+      - id: skip-duplicate
+        name: Skip Duplicate
+        uses: liblaf/actions/skip-duplicate@dist
         with:
           cancel-others: true
 
   detect:
     name: Detect
     needs:
-      - pre
-    if: needs.pre.outputs.should-skip != 'true'
+      - skip-duplicate
+    if: needs.skip-duplicate.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
     outputs:
       bench: ${{ steps.bench.outcome == 'success' }}
@@ -37,8 +37,8 @@ jobs:
       - id: bench
         name: Detect Benches
         run: |-
-          find "benches/" -name "test_*.py" -type f -print -quit |
-            grep --quiet "benches/"
+          find "benches" -name "test_*.py" -type f -print -quit |
+            grep --quiet "benches"
         continue-on-error: true
 
   bench:
@@ -51,10 +51,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
       - name: Setup Python
-        uses: liblaf/actions-ts/setup-python@dist
+        uses: liblaf/actions/setup-python@dist
       - name: Install Mise
         uses: jdx/mise-action@v3
       - name: Bench
         uses: CodSpeedHQ/action@v4
         with:
           run: mise run bench
+          mode: instrumentation

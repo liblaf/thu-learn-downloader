@@ -13,6 +13,9 @@ ci:
   autoupdate_commit_msg: |-
     chore(ci): pre-commit autoupdate
   skip:
+    # `biome.jsonc` may extend from an NPM package.
+    # `additional_dependencies` won't work in this case.
+    - biome-check
     - dvc-post-checkout
     - dvc-pre-commit
     - dvc-pre-push
@@ -30,8 +33,6 @@ repos:
     hooks:
       - id: biome-check
         exclude: \.jsonc?$
-        additional_dependencies:
-          - "@liblaf/config@latest"
   - repo: https://github.com/iterative/dvc
     rev: 3.62.0
     hooks:

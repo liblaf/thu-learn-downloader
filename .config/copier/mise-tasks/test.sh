@@ -20,7 +20,12 @@ function is-true() {
 export EAGER_IMPORT=1
 
 if is-true "${CI-}"; then
-  pytest --junit-xml="junit.xml" --cov --cov-branch --numprocesses="auto" "$@"
+  # ref: <https://docs.codecov.com/docs/test-analytics#1-output-a-junit-xml-file-in-your-ci>
+  pytest \
+    --junit-xml='junit.xml' --override-ini junit_family=legacy \
+    --cov --cov-branch \
+    --numprocesses 'auto' \
+    "$@"
 else
-  pytest --numprocesses="auto" "$@"
+  pytest --numprocesses 'auto' "$@"
 fi
