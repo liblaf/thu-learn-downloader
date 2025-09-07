@@ -23,29 +23,11 @@ jobs:
         with:
           cancel-others: true
 
-  detect:
-    name: Detect
-    needs:
-      - skip-duplicate
-    if: needs.skip-duplicate.outputs.should-skip != 'true'
-    runs-on: ubuntu-latest
-    outputs:
-      bench: ${{ steps.bench.outcome == 'success' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-      - id: bench
-        name: Detect Benches
-        run: |-
-          find "benches" -name "test_*.py" -type f -print -quit |
-            grep --quiet "benches"
-        continue-on-error: true
-
   bench:
     name: Bench
     needs:
-      - detect
-    if: needs.detect.outputs.bench == 'true'
+      - skip-duplicate
+    if: needs.skip-duplicate.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,3 +41,5 @@ jobs:
         with:
           run: mise run bench
           mode: instrumentation
+        env:
+          FORCE_COLOR: 1

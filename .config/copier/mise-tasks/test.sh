@@ -5,27 +5,45 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-function is-true() {
-  case "${1,,}" in
+function is-in-ci() {
+  if [[ -z ${CI:-} ]]; then
+    return 1
+  fi
+  case "${CI,,}" in
     1 | on | true | y | yes) return 0 ;;
     0 | off | false | n | no | "") return 1 ;;
     *)
-      echo "Invalid boolean: $1." >&2
+      echo "Invalid boolean: $CI." >&2
       exit 1
       ;;
   esac
 }
 
+function needs-gpu() {
+  for pkg in jax torch warp; do
+    if python -c "import $pkg"; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 # ref: <https://github.com/scientific-python/lazy-loader#early-failure>
 export EAGER_IMPORT=1
 
-if is-true "${CI-}"; then
+if needs-gpu; then
+  numprocesses='0'
+else
+  numprocesses='auto'
+fi
+
+if is-in-ci; then
   # ref: <https://docs.codecov.com/docs/test-analytics#1-output-a-junit-xml-file-in-your-ci>
   pytest \
     --junit-xml='junit.xml' --override-ini junit_family=legacy \
     --cov --cov-branch \
-    --numprocesses 'auto' \
+    --numprocesses "$numprocesses" \
     "$@"
 else
-  pytest --numprocesses 'auto' "$@"
+  pytest --numprocesses "$numprocesses" "$@"
 fi

@@ -25,29 +25,11 @@ jobs:
         with:
           cancel-others: true
 
-  detect:
-    name: Detect
-    needs:
-      - skip-duplicate
-    if: needs.skip-duplicate.outputs.should-skip != 'true'
-    runs-on: ubuntu-latest
-    outputs:
-      test: ${{ steps.test.outcome == 'success' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-      - id: test
-        name: Detect Tests
-        run: |-
-          find "tests" -name "test_*.py" -type f -print -quit |
-            grep --quiet "tests"
-        continue-on-error: true
-
   test:
     name: Test
     needs:
-      - detect
-    if: needs.detect.outputs.test == 'true'
+      - skip-duplicate
+    if: needs.skip-duplicate.outputs.should-skip != 'true'
     permissions:
       id-token: write
     runs-on: ubuntu-latest
@@ -62,6 +44,8 @@ jobs:
         uses: jdx/mise-action@v3
       - name: Test
         run: mise run test
+        env:
+          FORCE_COLOR: 1
       - name: Upload Coverage
         uses: codecov/codecov-action@v5
         with:

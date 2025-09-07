@@ -12,11 +12,11 @@ function has() {
 if [[ -f 'pixi.lock' ]]; then
   pixi='pixi'
   if has pixi-wrapper.sh; then pixi='pixi-wrapper.sh'; fi
-  "$pixi" install
+  "$pixi" install "$@"
 fi
 
 if [[ -f 'uv.lock' ]]; then
   uv='uv'
   if has uv-wrapper.sh; then uv='uv-wrapper.sh'; fi
-  "$uv" sync --all-extras --all-groups
+  "$uv" sync --all-extras --all-groups "$@"
 fi
