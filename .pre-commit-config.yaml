@@ -22,19 +22,19 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.10
+    rev: v0.12.12
     hooks:
       - id: ruff-check
         args:
           - --fix
       - id: ruff-format
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.2.0
+    rev: v2.2.3
     hooks:
       - id: biome-check
         exclude: \.jsonc?$
   - repo: https://github.com/iterative/dvc
-    rev: 3.62.0
+    rev: 3.63.0
     hooks:
       - id: dvc-post-checkout
         always_run: true
