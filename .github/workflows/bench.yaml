@@ -23,11 +23,33 @@ jobs:
         with:
           cancel-others: true
 
-  bench:
-    name: Bench
+  collect:
+    name: Collect
     needs:
       - skip-duplicate
     if: needs.skip-duplicate.outputs.should-skip != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      has-benches: ${{ steps.collect.outputs.has-benches }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Python
+        uses: liblaf/actions/setup-python@dist
+      - id: collect
+        name: Collect
+        run: |-
+          if pytest -m 'benchmark' --collect-only; then
+            echo 'has-benches=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'has-benches=false' >> "$GITHUB_OUTPUT"
+          fi
+
+  bench:
+    name: Bench
+    needs:
+      - collect
+    if: needs.collect.outputs.has-benches == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

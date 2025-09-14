@@ -34,11 +34,11 @@
     },
     {
       "type": "build",
-      "section": "👷 Builds"
+      "section": "🛠 Builds"
     },
     {
       "type": "ci",
-      "section": "🔧 Continuous Integration"
+      "section": "⚙️ Continuous Integration"
     },
     {
       "type": "chore",
@@ -50,7 +50,6 @@
       "section": "⏪️ Reverts"
     }
   ],
-  "skip-changelog": true,
   "extra-label": "automerge",
   "include-component-in-tag": false,
   "always-update": true,

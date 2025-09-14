@@ -21,7 +21,7 @@ function is-in-ci() {
 
 function needs-gpu() {
   for pkg in jax torch warp; do
-    if python -c "import $pkg"; then
+    if python -c "import $pkg" &> /dev/null; then
       return 0
     fi
   done

@@ -5,35 +5,42 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+function get-docstring() {
+  local file=$1
+  docstring="$(sed '/"""$/q' "$file")"
+  if diff --brief "$file" <(echo "$docstring") > /dev/null; then
+    return
+  else
+    echo -n "$docstring"
+  fi
+}
+
 function has() {
   type "$@" &> /dev/null
 }
 
 TEMPLATE="\
-# >>> tangerine-start: lazy-loader.py >>>
 import lazy_loader as lazy
 
 __getattr__, __dir__, __all__ = lazy.attach_stub(__name__, __file__)
-# <<< tangerine-end <<<
-"
+del lazy"
 
 git_root=$(git rev-parse --show-toplevel)
 src_dir="$git_root/src"
 if [[ -d $src_dir ]]; then
   while IFS= read -d '' -r file; do
     file="${file/%'.pyi'/'.py'}"
-    if has tangerine; then
-      if [[ ! -f $file ]]; then
-        tangerine <<< "$TEMPLATE" > "$file"
-      else
-        tangerine --in-place "$file"
-      fi
+    if [[ ! -f $file ]]; then
+      echo "$TEMPLATE" > "$file"
     else
-      if [[ ! -f $file ]]; then
-        printf '%s' "$TEMPLATE" > "$file"
-      else
-        : # skip existing files
-      fi
+      docstring=$(get-docstring "$file")
+      {
+        if [[ -n $docstring ]]; then
+          echo "$docstring"
+          echo
+        fi
+        echo "$TEMPLATE"
+      } > "$file"
     fi
   done < <(find "$src_dir" -name '__init__.pyi' -type f -print0)
 fi

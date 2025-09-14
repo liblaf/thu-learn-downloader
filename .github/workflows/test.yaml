@@ -25,11 +25,33 @@ jobs:
         with:
           cancel-others: true
 
-  test:
-    name: Test
+  collect:
+    name: Collect
     needs:
       - skip-duplicate
     if: needs.skip-duplicate.outputs.should-skip != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      has-tests: ${{ steps.collect.outputs.has-tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup Python
+        uses: liblaf/actions/setup-python@dist
+      - id: collect
+        name: Collect
+        run: |-
+          if pytest --collect-only; then
+            echo 'has-tests=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'has-tests=false' >> "$GITHUB_OUTPUT"
+          fi
+
+  test:
+    name: Test
+    needs:
+      - collect
+    if: needs.collect.outputs.has-tests == 'true'
     permissions:
       id-token: write
     runs-on: ubuntu-latest
