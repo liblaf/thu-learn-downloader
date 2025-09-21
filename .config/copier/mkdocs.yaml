@@ -252,6 +252,9 @@ markdown_extensions:
     alternate_style: true
   pymdownx.tasklist:
 
+  # ref: <https://python-markdown.github.io/extensions/#officially-supported-extensions>
+  smarty:
+
   # ref: <https://github.com/radude/mdx_truly_sane_lists>
   mdx_truly_sane_lists:
 
