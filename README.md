@@ -31,7 +31,7 @@ thu-learn
 **Usage**:
 
 ```console
-$ tld [OPTIONS]
+tld [OPTIONS]
 ```
 
 **Options**:
