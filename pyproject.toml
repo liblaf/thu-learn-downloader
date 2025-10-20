@@ -35,7 +35,7 @@ dependencies = [
   "rich>=14.0.0,<15",
   "selenium>=4.0.0,<5",
   "tenacity>=9.0.0,<10",
-  "typer>=0.16.0,<0.17",
+  "typer>=0.20,<0.21",
 ]
 dynamic = ["version"]
 
