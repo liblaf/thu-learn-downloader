@@ -42,7 +42,7 @@ jobs:
       url: https://pypi.org/project/${{ needs.build.outputs.package-name }}/${{ needs.build.outputs.package-version }}/
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           path: dist
@@ -64,7 +64,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Download Artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           path: dist
