@@ -7,11 +7,11 @@
 
 ci:
   autofix_commit_msg: |-
-    chore(ci): auto fixes from pre-commit.com hooks
+    chore(pre-commit): auto fixes from pre-commit.com hooks
 
     for more information, see https://pre-commit.ci
   autoupdate_commit_msg: |-
-    chore(ci): pre-commit autoupdate
+    chore(pre-commit): pre-commit autoupdate
   skip:
     # `biome.jsonc` may extend from an NPM package.
     # `additional_dependencies` won't work in this case.
@@ -19,14 +19,14 @@ ci:
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.1
+    rev: v0.15.7
     hooks:
       - id: ruff-check
         args:
           - --fix
       - id: ruff-format
   - repo: https://github.com/biomejs/pre-commit
-    rev: v2.2.6
+    rev: v2.4.8
     hooks:
       - id: biome-check
         exclude: \.jsonc?$
@@ -34,6 +34,7 @@ repos:
     rev: v6.0.0
     hooks:
       - id: check-added-large-files
+        exclude: ^(.+\.lock)|(.+-lock\..+)$
       - id: check-case-conflict
       - id: check-illegal-windows-names
       - id: check-merge-conflict

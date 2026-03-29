@@ -5,63 +5,56 @@ name: Bench
 
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
-jobs:
-  skip-duplicate:
-    name: Skip Duplicate
-    permissions:
-      actions: write
-    runs-on: ubuntu-latest
-    outputs:
-      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
-    steps:
-      - id: skip-duplicate
-        name: Skip Duplicate
-        uses: liblaf/actions/skip-duplicate@dist
-        with:
-          cancel-others: true
+env:
+  FORCE_COLOR: 1
 
+jobs:
   collect:
     name: Collect
-    needs:
-      - skip-duplicate
-    if: needs.skip-duplicate.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
     outputs:
-      has-benches: ${{ steps.collect.outputs.has-benches }}
+      sessions: ${{ steps.collect.outputs.sessions }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
+        uses: actions/checkout@v6
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - id: collect
         name: Collect
         run: |-
-          if pytest -m 'benchmark' --collect-only; then
-            echo 'has-benches=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'has-benches=false' >> "$GITHUB_OUTPUT"
-          fi
+          echo "sessions=$(
+            nox --list-sessions --json --tags 'bench' |
+              jq --compact-output '[.[].session]'
+          )" >> "$GITHUB_OUTPUT"
 
+  # CodSpeedHQ does not support the same benchmark multiple times
+  # so we don't run on multiple python versions here.
   bench:
     name: Bench
     needs:
       - collect
-    if: needs.collect.outputs.has-benches == 'true'
+    if: needs.collect.outputs.sessions != '[]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
-      - name: Install Mise
-        uses: jdx/mise-action@v3
+        uses: actions/checkout@v6
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - name: Bench
         uses: CodSpeedHQ/action@v4
         with:
-          run: mise run bench
+          run: nox --tags 'bench'
           mode: instrumentation
-        env:
-          FORCE_COLOR: 1

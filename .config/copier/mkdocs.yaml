@@ -15,7 +15,6 @@ edit_uri: blob/main/docs/
 
 extra_css:
   - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/fonts.min.css
-  - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/mkdocstrings/api-autonav.min.css
   - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/mkdocstrings/material.min.css
   - https://cdn.jsdelivr.net/gh/liblaf/copier-python/docs/css/mkdocstrings/syntax-highlight-in-signatures.min.css
 
@@ -165,30 +164,33 @@ plugins:
           # General
           backlinks: tree
           extensions:
-            # Official extensions
+            # Built-in
+            - dataclasses
+            - unpack_typeddict
+            # Official
             - griffe_inherited_docstrings
             - griffe_pydantic:
                 schema: true
             - griffe_warnings_deprecated
             # Third-party extensions
-            - docstring_inheritance.griffe
+            # - docstring_inheritance.griffe # crash
             - griffe_fieldz:
                 include_inherited: true
             # - griffe_generics # crash
             # - griffe_inherited_method_crossrefs # does not work
           find_stubs_package: true
           show_inheritance_diagram: true
+          skip_local_inventory: true
           # Headings
           heading_level: 1
+          parameter_headings: true
           show_root_heading: true
           show_symbol_type_heading: true
           show_symbol_type_toc: true
+          type_parameter_headings: true
           # Members
           inherited_members: true
-          filters:
-            - "!__all__"
-            - "!^_[^_]"
-            - "!^_$"
+          filters: public
           summary: true
           # Docstrings
           docstring_style: google
@@ -201,9 +203,10 @@ plugins:
           show_if_no_docstring: true
           # Signatures
           modernize_annotations: true
+          overloads_only: true
           show_signature_annotations: true
+          show_signature_type_parameters: true
           separate_signature: true
-          show_overloads: true
           signature_crossrefs: true
 
   # ---------------------------- External Plugins ---------------------------- #

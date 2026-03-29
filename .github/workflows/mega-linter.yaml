@@ -8,45 +8,41 @@ name: MegaLinter
 
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
-jobs:
-  skip-duplicate:
-    name: Skip Duplicate
-    permissions:
-      actions: write
-    runs-on: ubuntu-latest
-    outputs:
-      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
-    steps:
-      - id: skip-duplicate
-        name: Skip Duplicate
-        uses: liblaf/actions/skip-duplicate@dist
-        with:
-          cancel-others: true
+env:
+  FORCE_COLOR: 1
 
+jobs:
   mega-linter:
     name: MegaLinter
     permissions:
       contents: write
-      issues: write
       pull-requests: write
-    needs:
-      - skip-duplicate
-    if: needs.skip-duplicate.outputs.should-skip != 'true'
     runs-on: ubuntu-latest
+    environment:
+      name: MegaLinter
+      deployment: false
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - id: auth
+        name: Auth
+        uses: actions/create-github-app-token@v3
         with:
-          ref: ${{ github.head_ref || github.ref }}
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v6
       - id: lint
         name: MegaLinter
-        uses: liblaf/actions/mega-linter@dist
+        uses: liblaf/actions/mega-linter@v1
+        with:
+          token: ${{ steps.auth.outputs.token }}
       - if: success() || failure()
         name: Upload Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mega-linter-reports
           path: |-
@@ -58,23 +54,7 @@ jobs:
         run: |-
           cp --target-directory='${{ runner.temp }}' --verbose 'megalinter-reports/megalinter-report.md'
           sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports'
-      - if: steps.lint.outputs.has-updated-sources > 0 && github.ref == 'refs/heads/main'
-        name: Create PR with Applied Fixes
-        uses: peter-evans/create-pull-request@v7
+      - name: autofix
+        uses: autofix-ci/action@v1
         with:
           commit-message: "chore(mega-linter): apply linters automatic fixes"
-          branch: mega-linter-fix/${{ github.ref_name }}
-          sign-commits: true
-          title: "chore(mega-linter): apply linters automatic fixes"
-          body-path: ${{ runner.temp }}/megalinter-report.md
-          labels: |-
-            autofix
-            automerge
-          assignees: ${{ github.repository_owner }}
-          reviewers: ${{ github.repository_owner }}
-      - if: steps.lint.outputs.has-updated-sources > 0 && github.ref != 'refs/heads/main'
-        name: Commit and Push Applied Linter Fixes
-        uses: liblaf/actions/commit@dist
-        with:
-          add-options: --verbose --update
-          message: "chore(mega-linter): apply linters automatic fixes"

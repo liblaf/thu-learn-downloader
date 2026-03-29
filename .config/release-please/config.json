@@ -50,7 +50,6 @@
       "section": "⏪️ Reverts"
     }
   ],
-  "extra-label": "automerge",
   "include-component-in-tag": false,
   "always-update": true,
   "initial-version": "0.1.0",

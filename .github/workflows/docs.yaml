@@ -5,54 +5,57 @@ name: Docs
 
 on:
   push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 
-jobs:
-  skip-duplicate:
-    name: Skip Duplicate
-    permissions:
-      actions: write
-    runs-on: ubuntu-latest
-    outputs:
-      should-skip: ${{ steps.skip-duplicate.outputs.should-skip }}
-    steps:
-      - id: skip-duplicate
-        name: Skip Duplicate
-        uses: liblaf/actions/skip-duplicate@dist
-        with:
-          cancel-others: true
+env:
+  FORCE_COLOR: 1
 
-  docs:
-    name: Docs
-    permissions:
-      contents: write
-      pages: write
-    needs:
-      - skip-duplicate
-    if: needs.skip-duplicate.outputs.should-skip != 'true'
+jobs:
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
+      - id: config
+        name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Set Environment Variables
+        run: echo 'SITE_URL=${{ steps.config.outputs.base_url }}' >> "$GITHUB_ENV"
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+      - name: Install Dependencies
+        run: uv sync --active --frozen --all-packages
       - if: hashFiles('docs/scripts/pre-build.sh') != ''
         name: Pre-Build
         run: docs/scripts/pre-build.sh
       - name: Build
         run: mkdocs build
-      - if: ${{ github.ref == 'refs/heads/main' }}
-        name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload Github Pages Artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          folder: site
-          single-commit: true
-      - if: ${{ github.ref == 'refs/heads/main' }}
-        name: Setup GitHub Pages
-        uses: liblaf/actions/setup-pages@dist
-        with:
-          token: ${{ github.token }}
-        continue-on-error: true
+          path: site
+
+  deploy:
+    name: Deploy
+    permissions:
+      id-token: write
+      pages: write
+    needs:
+      - build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        name: Deploy Github Pages Site
+        uses: actions/deploy-pages@v5
