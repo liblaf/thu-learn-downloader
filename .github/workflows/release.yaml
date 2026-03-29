@@ -9,6 +9,9 @@ on:
       - published
   workflow_dispatch:
 
+env:
+  FORCE_COLOR: 1
+
 jobs:
   build:
     name: Build
@@ -22,7 +25,7 @@ jobs:
       package-version: ${{ steps.build.outputs.package_version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - id: build
         name: Build and Inspect a Python Package
         uses: hynek/build-and-inspect-python-package@v2
@@ -42,13 +45,15 @@ jobs:
       url: https://pypi.org/project/${{ needs.build.outputs.package-name }}/${{ needs.build.outputs.package-version }}/
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           path: dist
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          verbose: true
+          print-hash: true
           attestations: true
 
   release:
@@ -59,17 +64,12 @@ jobs:
       - build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
       - name: Download Artifacts
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: ${{ needs.build.outputs.artifact-name }}
           path: dist
       - name: Upload Release Assets
-        uses: liblaf/actions/release@dist
+        uses: softprops/action-gh-release@v2
         with:
           files: dist/*
-          tag: ${{ github.ref_name }}

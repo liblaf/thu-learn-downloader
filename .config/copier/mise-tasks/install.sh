@@ -9,14 +9,27 @@ function has() {
   type "$@" &> /dev/null
 }
 
+function lock() {
+  local -r root="${MISE_PROJECT_ROOT:-"$PWD"}"
+  local -r name="$(basename -- "${root}")"
+  mkdir --parents --verbose '/tmp/mise-flock'
+  flock --nonblock --verbose "/tmp/mise-flock/$name.lock" "$@"
+}
+
 if [[ -f 'pixi.lock' ]]; then
-  pixi='pixi'
-  if has pixi-wrapper.sh; then pixi='pixi-wrapper.sh'; fi
-  "$pixi" install "$@"
+  if has pypi-lock-wrapper.sh; then
+    pixi=(pypi-lock-wrapper.sh pixi)
+  else
+    pixi=(pixi)
+  fi
+  lock "${pixi[@]}" install "$@"
 fi
 
 if [[ -f 'uv.lock' ]]; then
-  uv='uv'
-  if has uv-wrapper.sh; then uv='uv-wrapper.sh'; fi
-  "$uv" sync --all-extras --all-groups "$@"
+  if has uv-sync.py; then
+    uv_sync=(uv-sync.py)
+  else
+    uv_sync=(uv sync)
+  fi
+  lock "${uv_sync[@]}" "$@"
 fi
