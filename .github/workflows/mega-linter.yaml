@@ -60,7 +60,7 @@ jobs:
           sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports'
       - if: steps.lint.outputs.has-updated-sources > 0 && github.ref == 'refs/heads/main'
         name: Create PR with Applied Fixes
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
           commit-message: "chore(mega-linter): apply linters automatic fixes"
           branch: mega-linter-fix/${{ github.ref_name }}
