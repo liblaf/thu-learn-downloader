@@ -69,7 +69,7 @@ jobs:
         env:
           FORCE_COLOR: 1
       - name: Upload Coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6
         with:
           use_oidc: true
       - if: success() || failure()
