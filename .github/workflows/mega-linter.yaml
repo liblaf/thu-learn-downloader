@@ -22,7 +22,7 @@ jobs:
     steps:
       - id: skip-duplicate
         name: Skip Duplicate
-        uses: liblaf/actions/skip-duplicate@dist
+        uses: liblaf/actions/skip-duplicate@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
         with:
           cancel-others: true
 
@@ -38,15 +38,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: ${{ github.head_ref || github.ref }}
       - id: lint
         name: MegaLinter
-        uses: liblaf/actions/mega-linter@dist
+        uses: liblaf/actions/mega-linter@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
       - if: success() || failure()
         name: Upload Reports
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: mega-linter-reports
           path: |-
@@ -60,7 +60,7 @@ jobs:
           sudo rm --force --recursive 'mega-linter.log' 'megalinter-reports'
       - if: steps.lint.outputs.has-updated-sources > 0 && github.ref == 'refs/heads/main'
         name: Create PR with Applied Fixes
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
         with:
           commit-message: "chore(mega-linter): apply linters automatic fixes"
           branch: mega-linter-fix/${{ github.ref_name }}
@@ -74,7 +74,7 @@ jobs:
           reviewers: ${{ github.repository_owner }}
       - if: steps.lint.outputs.has-updated-sources > 0 && github.ref != 'refs/heads/main'
         name: Commit and Push Applied Linter Fixes
-        uses: liblaf/actions/commit@dist
+        uses: liblaf/actions/commit@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
         with:
           add-options: --verbose --update
           message: "chore(mega-linter): apply linters automatic fixes"
