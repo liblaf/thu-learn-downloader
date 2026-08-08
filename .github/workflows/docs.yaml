@@ -19,7 +19,7 @@ jobs:
     steps:
       - id: skip-duplicate
         name: Skip Duplicate
-        uses: liblaf/actions/skip-duplicate@dist
+        uses: liblaf/actions/skip-duplicate@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
         with:
           cancel-others: true
 
@@ -34,11 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
       - name: Setup Python
-        uses: liblaf/actions/setup-python@dist
+        uses: liblaf/actions/setup-python@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
       - if: hashFiles('docs/scripts/pre-build.sh') != ''
         name: Pre-Build
         run: docs/scripts/pre-build.sh
@@ -46,13 +46,13 @@ jobs:
         run: mkdocs build
       - if: ${{ github.ref == 'refs/heads/main' }}
         name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@fa24774553152dd7873cd16ebd8d959b010c5445 # v4
         with:
           folder: site
           single-commit: true
       - if: ${{ github.ref == 'refs/heads/main' }}
         name: Setup GitHub Pages
-        uses: liblaf/actions/setup-pages@dist
+        uses: liblaf/actions/setup-pages@f6cf271d2b7400fb019d0366c1a389ab23239730 # dist
         with:
           token: ${{ github.token }}
         continue-on-error: true
